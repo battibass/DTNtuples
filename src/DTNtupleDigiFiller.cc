@@ -42,7 +42,7 @@ void DTNtupleDigiFiller::initialize()
   m_tree->Branch((m_label + "_sector").c_str(),  &m_digi_sector);
   m_tree->Branch((m_label + "_station").c_str(), &m_digi_station);
 
-  m_tree->Branch((m_label + "_superlayer").c_str(), &m_digi_superlayer);
+  m_tree->Branch((m_label + "_superLayer").c_str(), &m_digi_superLayer);
   m_tree->Branch((m_label + "_layer").c_str(),      &m_digi_layer);
   m_tree->Branch((m_label + "_wire").c_str(),       &m_digi_wire);
 
@@ -59,7 +59,7 @@ void DTNtupleDigiFiller::clear()
   m_digi_sector.clear();
   m_digi_station.clear();
 
-  m_digi_superlayer.clear();
+  m_digi_superLayer.clear();
   m_digi_layer.clear();
   m_digi_wire.clear();
 
@@ -94,7 +94,7 @@ void DTNtupleDigiFiller::fill(const edm::Event & ev)
 	      m_digi_sector.push_back(dtLayerId.sector());
 	      m_digi_station.push_back(dtLayerId.station());
 
-	      m_digi_superlayer.push_back(dtLayerId.superLayer());
+	      m_digi_superLayer.push_back(dtLayerId.superLayer());
 	      m_digi_layer.push_back(dtLayerId.layer());
 	      m_digi_wire.push_back(digiIt->wire());
 

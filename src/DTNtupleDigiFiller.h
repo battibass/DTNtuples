@@ -64,7 +64,7 @@ class DTNtupleDigiFiller : public DTNtupleBaseFiller
                                      // sector 14 used for the second MB4 of sector 10
   std::vector<short> m_digi_station; // station (short in [1:4] range)
   
-  std::vector<short> m_digi_superlayer; // superlayer (short in [1:3] range)
+  std::vector<short> m_digi_superLayer; // superlayer (short in [1:3] range)
                                         // SL 1 and 3 are phi SLs
                                         // SL 2 is theta SL
   std::vector<short> m_digi_layer;      // layer (short in [1:4] range)

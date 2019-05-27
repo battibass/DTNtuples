@@ -44,13 +44,13 @@ class DTNtupleBaseFiller
  protected :
 
   /// Definition of default values for int variables
-  static constexpr int DEFAULT_INT_VAL = -100;
+  static constexpr int DEFAULT_INT_VAL = -999;
 
   /// Definition of default values for positive int variables
   static constexpr int DEFAULT_INT_VAL_POS = -1;
 
   /// Definition of default values for float variables
-  static constexpr double DEFAULT_DOUBLE_VAL = -100.;
+  static constexpr double DEFAULT_DOUBLE_VAL = -999.;
 
   /// Definition of default values for positive float variables
   static constexpr double DEFAULT_DOUBLE_VAL_POS = -1.;

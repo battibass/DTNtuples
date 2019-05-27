@@ -24,7 +24,10 @@
 #include "FWCore/ServiceRegistry/interface/Service.h"
 #include "CommonTools/UtilAlgos/interface/TFileService.h"
 
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleEventFiller.h"
+
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleDigiFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGThetaFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGPhiFiller.h"
@@ -39,8 +42,13 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 
   m_config = std::make_shared<DTNtupleConfig>(DTNtupleConfig(config));
 
+  m_fillers.push_back(std::make_unique<DTNtupleEventFiller>(m_config, m_tree, "event"));
+  
   m_fillers.push_back(std::make_unique<DTNtupleDigiFiller>(consumesCollector(), m_config, m_tree, "digi",    DTNtupleDigiFiller::DigiTag::PH1));
   m_fillers.push_back(std::make_unique<DTNtupleDigiFiller>(consumesCollector(), m_config, m_tree, "ph2Digi", DTNtupleDigiFiller::DigiTag::PH2));
+
+  m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
+  m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
 
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
@@ -90,29 +98,6 @@ void DTNtupleProducer::analyze(const edm::Event & ev, const edm::EventSetup & en
     }
 
  m_tree->Fill();
-
-}
-
-void DTNtupleProducer::fillDescriptions(edm::ConfigurationDescriptions & descriptions) 
-{
-
-  edm::ParameterSetDescription desc;
-
-  desc.addUntracked<edm::InputTag>("ph1DtDigiTag", edm::InputTag("muonDTDigis"));
-  desc.addUntracked<edm::InputTag>("ph2DtDigiTag", edm::InputTag("muonDTDigis"));
-
-  desc.addUntracked<edm::InputTag>("ph1TwinMuxInTag",  edm::InputTag("twinMuxStage2Digis","PhIn"));
-  desc.addUntracked<edm::InputTag>("ph1TwinMuxOutTag", edm::InputTag("twinMuxStage2Digis","PhOut"));
-  desc.addUntracked<edm::InputTag>("ph1BmtfInTag",     edm::InputTag("bmtfDigis"));
-
-  desc.addUntracked<edm::InputTag>("ph1TwinMuxInThTag", edm::InputTag("twinMuxStage2Digis","ThIn"));
-  desc.addUntracked<edm::InputTag>("ph1BmtfInThTag",    edm::InputTag("bmtfDigis"));
-
-  desc.addUntracked<edm::InputTag>("ph2TPGPhiHwTag",    edm::InputTag("none"));
-  desc.addUntracked<edm::InputTag>("ph2TPGPhiEmuHbTag", edm::InputTag("none"));
-  desc.addUntracked<edm::InputTag>("ph2TPGPhiEmuAmTag", edm::InputTag("none"));
-
-  descriptions.add("dtNtupleProducer", desc);
 
 }
 

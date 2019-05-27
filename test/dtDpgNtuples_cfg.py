@@ -61,6 +61,9 @@ process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
     )
 
+process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
+process.load("Configuration.StandardSequences.MagneticField_cff")
+
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_cfi')
 

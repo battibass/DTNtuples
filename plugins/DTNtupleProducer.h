@@ -37,9 +37,6 @@ class DTNtupleProducer : public edm::EDAnalyzer // CB change it to appropriate c
   /// Write ntuples to file
   virtual void endJob();
   
-  /// Generates the default cfg
-  static void fillDescriptions(edm::ConfigurationDescriptions & descriptions);
-
  private:
   
   /// Pointer to the TTree

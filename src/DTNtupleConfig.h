@@ -13,9 +13,16 @@
  */
 
 #include "FWCore/Utilities/interface/InputTag.h"
+#include "FWCore/Framework/interface/ESHandle.h"
+
+#include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
+#include "Geometry/CommonDetUnit/interface/GlobalTrackingGeometry.h"
+#include "Geometry/DTGeometry/interface/DTGeometry.h"
+
 
 #include <map>
 #include <string>
+#include <memory>
 
 namespace edm
 {
@@ -36,6 +43,15 @@ class DTNtupleConfig
 
   /// Map containing different input tags
   std::map<std::string, edm::InputTag> m_inputTags;
+
+  /// The class to handle DT trigger time pedestals
+  DTTTrigBaseSync * m_dtSync; // CB find a way to handle this with a smart pointer
+
+  /// Handle to the tracking geometry
+  edm::ESHandle<GlobalTrackingGeometry> m_trackingGeometry;
+
+  /// Handle to the DT geometry
+  edm::ESHandle<DTGeometry> m_dtGeometry;
 
 };
 

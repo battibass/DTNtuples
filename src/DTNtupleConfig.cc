@@ -14,6 +14,11 @@
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/EventSetup.h"
 
+#include "Geometry/Records/interface/GlobalTrackingGeometryRecord.h"
+#include "Geometry/Records/interface/MuonGeometryRecord.h"
+
+#include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
+
 DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config) 
 { 
 
@@ -21,6 +26,9 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   m_inputTags["ph1DtDigiTag"] = config.getUntrackedParameter<edm::InputTag>("ph1DtDigiTag", none);
   m_inputTags["ph2DtDigiTag"] = config.getUntrackedParameter<edm::InputTag>("ph2DtDigiTag", none);
+
+  m_inputTags["ph1DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph1DtSegmentTag", none);
+  m_inputTags["ph2DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph2DtSegmentTag", none);
 
   m_inputTags["ph1TwinMuxInTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxInTag", none);
   m_inputTags["ph1TwinMuxOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxOutTag", none);
@@ -33,9 +41,17 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
   m_inputTags["ph2TPGPhiEmuHbTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuHbTag", none);
   m_inputTags["ph2TPGPhiEmuAmTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuAmTag", none);
 
+  m_dtSync = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("tTrigMode"),
+					       config.getUntrackedParameter<edm::ParameterSet>("tTrigModeConfig"));
+
 }
 
 void DTNtupleConfig::getES(const edm::EventSetup & environment) 
 { 
+
+  m_dtSync->setES(environment);
+
+  environment.get<MuonGeometryRecord>().get(m_dtGeometry);
+  environment.get<GlobalTrackingGeometryRecord>().get(m_trackingGeometry);
 
 }
