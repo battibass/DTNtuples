@@ -65,7 +65,7 @@ process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
-process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_cfi')
+process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
 process.p = cms.Path(process.muonDTDigis 
                      + process.twinMuxStage2Digis
