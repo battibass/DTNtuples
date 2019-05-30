@@ -31,5 +31,13 @@
 *.out
 *.app
 
-# Python config
+# Python
 *.pyc
+__init__.py
+
+# ROOT files and macros
+*.root
+*.pcm
+
+# Intermediate files
+*~
