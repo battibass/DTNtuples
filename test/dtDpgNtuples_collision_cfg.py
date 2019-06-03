@@ -31,6 +31,14 @@ options.register('ntupleName',
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
 
+options.register('runOnMC',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "Apply customizations to run on MC")
+
+
+
 
 options.parseArguments()
 
@@ -68,9 +76,13 @@ process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
 process.p = cms.Path(process.muonDTDigis 
-                     + process.twinMuxStage2Digis
                      + process.bmtfDigis
+                     + process.twinMuxStage2Digis
+                     + process.scalersRawToDigi
                      + process.dtNtupleProducer)
 
+if options.runOnMC :
+    from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRuningOnMC
+    customiseForRuningOnMC(process,"p")
 
 

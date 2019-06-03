@@ -26,6 +26,10 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   m_inputTags["genPartTag"] = config.getUntrackedParameter<edm::InputTag>("genPartTag", none);
 
+  m_inputTags["puInfoTag"] = config.getUntrackedParameter<edm::InputTag>("puInfoTag", none);
+  m_inputTags["lumiScalerTag"] = config.getUntrackedParameter<edm::InputTag>("lumiScalerTag", none);
+  m_inputTags["primaryVerticesTag"] = config.getUntrackedParameter<edm::InputTag>("primaryVerticesTag", none);
+
   m_inputTags["ph1DtDigiTag"] = config.getUntrackedParameter<edm::InputTag>("ph1DtDigiTag", none);
   m_inputTags["ph2DtDigiTag"] = config.getUntrackedParameter<edm::InputTag>("ph2DtDigiTag", none);
 
