@@ -32,6 +32,25 @@ public :
    ULong64_t       event_timeStamp;
    Int_t           event_bunchCrossing;
    Long64_t        event_orbitNumber;
+   UInt_t          gen_nGenParts;
+   vector<int>     *gen_gen_pdgId;
+   vector<float>   *gen_gen_pt;
+   vector<float>   *gen_gen_phi;
+   vector<float>   *gen_gen_eta;
+   vector<short>   *gen_gen_charge;
+   Short_t         environment_truePileUp;
+   Short_t         environment_actualPileUp;
+   Int_t           environment_instLumi;
+   Short_t         environment_nPV;
+   Float_t         environment_pv_x;
+   Float_t         environment_pv_y;
+   Float_t         environment_pv_z;
+   Float_t         environment_pv_xxErr;
+   Float_t         environment_pv_yyErr;
+   Float_t         environment_pv_zzErr;
+   Float_t         environment_pv_xyErr;
+   Float_t         environment_pv_xzErr;
+   Float_t         environment_pv_yzErr;
    UInt_t          digi_nDigis;
    vector<short>   *digi_wheel;
    vector<short>   *digi_sector;
@@ -214,6 +233,25 @@ public :
    TBranch        *b_event_timeStamp;   //!
    TBranch        *b_event_bunchCrossing;   //!
    TBranch        *b_event_orbitNumber;   //!
+   TBranch        *b_gen_nGenParts;   //!
+   TBranch        *b_gen_gen_pdgId;   //!
+   TBranch        *b_gen_gen_pt;   //!
+   TBranch        *b_gen_gen_phi;   //!
+   TBranch        *b_gen_gen_eta;   //!
+   TBranch        *b_gen_gen_charge;   //!
+   TBranch        *b_environment_truePileUp;   //!
+   TBranch        *b_environment_actualPileUp;   //!
+   TBranch        *b_environment_instLumi;   //!
+   TBranch        *b_environment_nPV;   //!
+   TBranch        *b_environment_pv_x;   //!
+   TBranch        *b_environment_pv_y;   //!
+   TBranch        *b_environment_pv_z;   //!
+   TBranch        *b_environment_pv_xxErr;   //!
+   TBranch        *b_environment_pv_yyErr;   //!
+   TBranch        *b_environment_pv_zzErr;   //!
+   TBranch        *b_environment_pv_xyErr;   //!
+   TBranch        *b_environment_pv_xzErr;   //!
+   TBranch        *b_environment_pv_yzErr;   //!
    TBranch        *b_digi_nDigis;   //!
    TBranch        *b_digi_wheel;   //!
    TBranch        *b_digi_sector;   //!

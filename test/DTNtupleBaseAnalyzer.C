@@ -54,6 +54,11 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
+   gen_gen_pdgId = 0;
+   gen_gen_pt = 0;
+   gen_gen_phi = 0;
+   gen_gen_eta = 0;
+   gen_gen_charge = 0;
    digi_wheel = 0;
    digi_sector = 0;
    digi_station = 0;
@@ -229,6 +234,25 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("event_timeStamp", &event_timeStamp, &b_event_timeStamp);
    fChain->SetBranchAddress("event_bunchCrossing", &event_bunchCrossing, &b_event_bunchCrossing);
    fChain->SetBranchAddress("event_orbitNumber", &event_orbitNumber, &b_event_orbitNumber);
+   fChain->SetBranchAddress("gen_nGenParts", &gen_nGenParts, &b_gen_nGenParts);
+   fChain->SetBranchAddress("gen_gen_pdgId", &gen_gen_pdgId, &b_gen_gen_pdgId);
+   fChain->SetBranchAddress("gen_gen_pt", &gen_gen_pt, &b_gen_gen_pt);
+   fChain->SetBranchAddress("gen_gen_phi", &gen_gen_phi, &b_gen_gen_phi);
+   fChain->SetBranchAddress("gen_gen_eta", &gen_gen_eta, &b_gen_gen_eta);
+   fChain->SetBranchAddress("gen_gen_charge", &gen_gen_charge, &b_gen_gen_charge);
+   fChain->SetBranchAddress("environment_truePileUp", &environment_truePileUp, &b_environment_truePileUp);
+   fChain->SetBranchAddress("environment_actualPileUp", &environment_actualPileUp, &b_environment_actualPileUp);
+   fChain->SetBranchAddress("environment_instLumi", &environment_instLumi, &b_environment_instLumi);
+   fChain->SetBranchAddress("environment_nPV", &environment_nPV, &b_environment_nPV);
+   fChain->SetBranchAddress("environment_pv_x", &environment_pv_x, &b_environment_pv_x);
+   fChain->SetBranchAddress("environment_pv_y", &environment_pv_y, &b_environment_pv_y);
+   fChain->SetBranchAddress("environment_pv_z", &environment_pv_z, &b_environment_pv_z);
+   fChain->SetBranchAddress("environment_pv_xxErr", &environment_pv_xxErr, &b_environment_pv_xxErr);
+   fChain->SetBranchAddress("environment_pv_yyErr", &environment_pv_yyErr, &b_environment_pv_yyErr);
+   fChain->SetBranchAddress("environment_pv_zzErr", &environment_pv_zzErr, &b_environment_pv_zzErr);
+   fChain->SetBranchAddress("environment_pv_xyErr", &environment_pv_xyErr, &b_environment_pv_xyErr);
+   fChain->SetBranchAddress("environment_pv_xzErr", &environment_pv_xzErr, &b_environment_pv_xzErr);
+   fChain->SetBranchAddress("environment_pv_yzErr", &environment_pv_yzErr, &b_environment_pv_yzErr);
    fChain->SetBranchAddress("digi_nDigis", &digi_nDigis, &b_digi_nDigis);
    fChain->SetBranchAddress("digi_wheel", &digi_wheel, &b_digi_wheel);
    fChain->SetBranchAddress("digi_sector", &digi_sector, &b_digi_sector);
