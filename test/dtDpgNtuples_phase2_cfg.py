@@ -20,7 +20,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('inputFolder',
-                 '/eos/cms/store/data/Run2018D/SingleMuon/RAW-RECO/ZMu-PromptReco-v2/000/321/475/00000/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
@@ -32,19 +32,10 @@ options.register('secondaryInputFolder',
                  "EOS folder with input files for secondary files")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_3_3_ZMuSkim_2018D.root', #default value
+                 './DTDPGNtuple_10_5_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
-
-options.register('runOnMC',
-                 False, #default value
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.bool,
-                 "Apply customizations to run on MC")
-
-
-
 
 options.parseArguments()
 
@@ -91,8 +82,10 @@ process.p = cms.Path(process.muonDTDigis
                      + process.scalersRawToDigi
                      + process.dtNtupleProducer)
 
-if options.runOnMC :
-    from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC
-    customiseForRunningOnMC(process,"p")
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation
+customiseForRunningOnMC(process,"p")
+customiseForPhase2Simulation(process)
+
+
 
 

@@ -1,13 +1,13 @@
 import FWCore.ParameterSet.Config as cms
 
 
-def customiseForRuningOnMC(process, pathName) :
+def customiseForRunningOnMC(process, pathName) :
 
     if hasattr(process,"dtNtupleProducer") :
-        print "[customiseForRuningOnMC]: updating ntuple input tags"
+        print "[customiseForRunningOnMC]: updating ntuple input tags"
 
         process.dtNtupleProducer.genPartTag = "prunedGenParticles"
-        process.dtNtupleProducer.puInfoTag = ""
+        process.dtNtupleProducer.puInfoTag = "addPileupInfo"
 
         process.dtNtupleProducer.lumiScalerTag = "none"
 
@@ -16,12 +16,28 @@ def customiseForRuningOnMC(process, pathName) :
         process.dtNtupleProducer.ph1TwinMuxInThTag = "none"
 
         if hasattr(process,pathName) :
-            print "[customiseForRuningOnMC]: adding prunedGenParitcles"
+            print "[customiseForRunningOnMC]: adding prunedGenParitcles"
 
             process.load('DTDPGAnalysis.DTNtuples.prunedGenParticles_cfi')
 
             getattr(process,pathName).replace(process.dtNtupleProducer,
                                               process.prunedGenParticles
                                               + process.dtNtupleProducer)
+
+    return process
+
+def customiseForPhase2Simulation(process) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print "[customiseForPhase2Simulation]: updating ntuple input tags"
+
+        process.dtNtupleProducer.puInfoTag = "none"
+        process.dtNtupleProducer.ph1BmtfInTag = "none"
+        process.dtNtupleProducer.ph1BmtfInThTag = "none"
+        process.dtNtupleProducer.primaryVerticesTag = "none"
+
+        process.dtNtupleProducer.ph1DtDigiTag = "simMuonDTDigis"
+        process.dtNtupleProducer.ph1TwinMuxInTag = "simDtTriggerPrimitiveDigis"
+        process.dtNtupleProducer.ph1TwinMuxInThTag = "simDtTriggerPrimitiveDigis"
 
     return process
