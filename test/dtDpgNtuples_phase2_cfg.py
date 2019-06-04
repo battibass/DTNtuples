@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '103X_dataRun2_Prompt_v3', #default value
+                 '106X_upgrade2018_realistic_v4', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -32,7 +32,7 @@ options.register('secondaryInputFolder',
                  "EOS folder with input files for secondary files")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_5_0_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -76,11 +76,7 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
-process.p = cms.Path(process.muonDTDigis 
-                     + process.bmtfDigis
-                     + process.twinMuxStage2Digis
-                     + process.scalersRawToDigi
-                     + process.dtNtupleProducer)
+process.p = cms.Path(process.dtNtupleProducer)
 
 from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation
 customiseForRunningOnMC(process,"p")
