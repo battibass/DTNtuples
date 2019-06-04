@@ -25,6 +25,12 @@ options.register('inputFolder',
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
 
+options.register('secondaryInputFolder',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "EOS folder with input files for secondary files")
+
 options.register('ntupleName',
                  './DTDPGNtuple_10_3_3_ZMuSkim_2018D.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -64,6 +70,10 @@ process.source = cms.Source("PoolSource",
 
 files = subprocess.check_output(["ls", options.inputFolder])
 process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
+
+if options.secondaryInputFolder != "" :
+    files = subprocess.check_output(["ls", options.secondaryInputFolder])
+    process.source.secondaryFileNames = ["file://" + options.secondaryInputFolder + "/" + f for f in files.split()]
 
 process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
