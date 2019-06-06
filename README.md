@@ -7,6 +7,7 @@ In the present days this code is evolving fast, hence the installation recipe ma
 
 ### Installation:
 ```
+cmsrel CMSSW_10_6_0
 cd CMSSW_10_6_0/src/
 cmsenv
 git cms-merge-topic battibass:phase2UnpackerFromOscar_10_6_X
@@ -16,6 +17,7 @@ scramv1 b -j 5
 
 ### Ntuple prduction:
 ```
+cd DTDPGAnalysis/DTNtuples/test/
 cmsRun dtDpgNtuples_slicetest_cfg.py nEvents=10000
 # or
 cmsRun dtDpgNtuples_phase2_cfg.py nEvents=10000
@@ -26,9 +28,9 @@ cmsRun dtDpgNtuples_phase2_cfg.py nEvents=10000
 root -b
 root [0] .x loadExampleAnalysis.C
 
-DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_SX5.root","results.root")
+root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_SX5.root","results.root")
 // or
-DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_Phase2_Simulation.root","results.root")
+root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_Phase2_Simulation.root","results.root")
 
-analysis.Loop()
+root [2] analysis.Loop()
 ```
