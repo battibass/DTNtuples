@@ -41,3 +41,13 @@ def customiseForPhase2Simulation(process) :
         process.dtNtupleProducer.ph1TwinMuxInThTag = "simDtTriggerPrimitiveDigis"
 
     return process
+
+def customiseForFakePhase2Info(process) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print "[customiseForFakePhase2Info]: updating ntuple input tags"
+
+        process.dtNtupleProducer.ph2DtDigiTag = process.dtNtupleProducer.ph1DtDigiTag
+        process.dtNtupleProducer.ph2DtSegmentTag = process.dtNtupleProducer.ph1DtSegmentTag
+
+    return process
