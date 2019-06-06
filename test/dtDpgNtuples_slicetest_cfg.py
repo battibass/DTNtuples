@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '103X_dataRun2_Prompt_v3', #default value
+                 '106X_dataRun2_v10', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -26,7 +26,7 @@ options.register('inputFolder',
                  "EOS folder with input files")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_3_3_SX5.root', #default value
+                 './DTDPGNtuple_10_6_0_SX5.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")

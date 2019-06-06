@@ -78,9 +78,10 @@ process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
 process.p = cms.Path(process.dtNtupleProducer)
 
-from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation, customiseForFakePhase2Info
 customiseForRunningOnMC(process,"p")
 customiseForPhase2Simulation(process)
+customiseForFakePhase2Info(process)
 
 
 
