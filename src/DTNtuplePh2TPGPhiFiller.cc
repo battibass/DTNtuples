@@ -55,6 +55,8 @@ void DTNtuplePh2TPGPhiFiller::initialize()
   m_tree->Branch((m_label + "_station").c_str(), &m_lt_station);
 
   m_tree->Branch((m_label + "_quality").c_str(), &m_lt_quality);
+  m_tree->Branch((m_label + "_superLayer").c_str(), &m_lt_superLayer);
+
   m_tree->Branch((m_label + "_rpcFlag").c_str(), &m_lt_rpcFlag);
   m_tree->Branch((m_label + "_chi2").c_str(),    &m_lt_chi2);
 
@@ -78,6 +80,8 @@ void DTNtuplePh2TPGPhiFiller::clear()
   m_lt_station.clear();
 
   m_lt_quality.clear();
+  m_lt_superLayer.clear();
+
   m_lt_rpcFlag.clear();
   m_lt_chi2.clear();
 
@@ -109,6 +113,8 @@ void DTNtuplePh2TPGPhiFiller::fill(const edm::Event & ev)
 	  m_lt_station.push_back(trig.stNum());
 	  
 	  m_lt_quality.push_back(trig.quality());
+	  m_lt_superLayer.push_back(trig.slNum());
+
 	  m_lt_rpcFlag.push_back(trig.rpcFlag());
 	  m_lt_chi2.push_back(trig.chi2());
 

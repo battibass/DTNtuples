@@ -192,6 +192,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiHw_sector = 0;
    ph2TpgPhiHw_station = 0;
    ph2TpgPhiHw_quality = 0;
+   ph2TpgPhiHw_superLayer = 0;
    ph2TpgPhiHw_rpcFlag = 0;
    ph2TpgPhiHw_chi2 = 0;
    ph2TpgPhiHw_phi = 0;
@@ -203,6 +204,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiEmuHb_sector = 0;
    ph2TpgPhiEmuHb_station = 0;
    ph2TpgPhiEmuHb_quality = 0;
+   ph2TpgPhiEmuHb_superLayer = 0;
    ph2TpgPhiEmuHb_rpcFlag = 0;
    ph2TpgPhiEmuHb_chi2 = 0;
    ph2TpgPhiEmuHb_phi = 0;
@@ -214,6 +216,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiEmuAm_sector = 0;
    ph2TpgPhiEmuAm_station = 0;
    ph2TpgPhiEmuAm_quality = 0;
+   ph2TpgPhiEmuAm_superLayer = 0;
    ph2TpgPhiEmuAm_rpcFlag = 0;
    ph2TpgPhiEmuAm_chi2 = 0;
    ph2TpgPhiEmuAm_phi = 0;
@@ -396,6 +399,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiHw_sector", &ph2TpgPhiHw_sector, &b_ph2TpgPhiHw_sector);
    fChain->SetBranchAddress("ph2TpgPhiHw_station", &ph2TpgPhiHw_station, &b_ph2TpgPhiHw_station);
    fChain->SetBranchAddress("ph2TpgPhiHw_quality", &ph2TpgPhiHw_quality, &b_ph2TpgPhiHw_quality);
+   fChain->SetBranchAddress("ph2TpgPhiHw_superLayer", &ph2TpgPhiHw_superLayer, &b_ph2TpgPhiHw_superLayer);
    fChain->SetBranchAddress("ph2TpgPhiHw_rpcFlag", &ph2TpgPhiHw_rpcFlag, &b_ph2TpgPhiHw_rpcFlag);
    fChain->SetBranchAddress("ph2TpgPhiHw_chi2", &ph2TpgPhiHw_chi2, &b_ph2TpgPhiHw_chi2);
    fChain->SetBranchAddress("ph2TpgPhiHw_phi", &ph2TpgPhiHw_phi, &b_ph2TpgPhiHw_phi);
@@ -408,6 +412,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_sector", &ph2TpgPhiEmuHb_sector, &b_ph2TpgPhiEmuHb_sector);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_station", &ph2TpgPhiEmuHb_station, &b_ph2TpgPhiEmuHb_station);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_quality", &ph2TpgPhiEmuHb_quality, &b_ph2TpgPhiEmuHb_quality);
+   fChain->SetBranchAddress("ph2TpgPhiEmuHb_superLayer", &ph2TpgPhiEmuHb_superLayer, &b_ph2TpgPhiEmuHb_superLayer);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_rpcFlag", &ph2TpgPhiEmuHb_rpcFlag, &b_ph2TpgPhiEmuHb_rpcFlag);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_chi2", &ph2TpgPhiEmuHb_chi2, &b_ph2TpgPhiEmuHb_chi2);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_phi", &ph2TpgPhiEmuHb_phi, &b_ph2TpgPhiEmuHb_phi);
@@ -420,6 +425,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_sector", &ph2TpgPhiEmuAm_sector, &b_ph2TpgPhiEmuAm_sector);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_station", &ph2TpgPhiEmuAm_station, &b_ph2TpgPhiEmuAm_station);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_quality", &ph2TpgPhiEmuAm_quality, &b_ph2TpgPhiEmuAm_quality);
+   fChain->SetBranchAddress("ph2TpgPhiEmuAm_superLayer", &ph2TpgPhiEmuAm_superLayer, &b_ph2TpgPhiEmuAm_superLayer);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_rpcFlag", &ph2TpgPhiEmuAm_rpcFlag, &b_ph2TpgPhiEmuAm_rpcFlag);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_chi2", &ph2TpgPhiEmuAm_chi2, &b_ph2TpgPhiEmuAm_chi2);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_phi", &ph2TpgPhiEmuAm_phi, &b_ph2TpgPhiEmuAm_phi);

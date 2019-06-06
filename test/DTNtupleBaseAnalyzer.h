@@ -194,6 +194,7 @@ public :
    vector<short>   *ph2TpgPhiHw_sector;
    vector<short>   *ph2TpgPhiHw_station;
    vector<short>   *ph2TpgPhiHw_quality;
+   vector<short>   *ph2TpgPhiHw_superLayer;
    vector<short>   *ph2TpgPhiHw_rpcFlag;
    vector<int>     *ph2TpgPhiHw_chi2;
    vector<int>     *ph2TpgPhiHw_phi;
@@ -206,6 +207,7 @@ public :
    vector<short>   *ph2TpgPhiEmuHb_sector;
    vector<short>   *ph2TpgPhiEmuHb_station;
    vector<short>   *ph2TpgPhiEmuHb_quality;
+   vector<short>   *ph2TpgPhiEmuHb_superLayer;
    vector<short>   *ph2TpgPhiEmuHb_rpcFlag;
    vector<int>     *ph2TpgPhiEmuHb_chi2;
    vector<int>     *ph2TpgPhiEmuHb_phi;
@@ -218,6 +220,7 @@ public :
    vector<short>   *ph2TpgPhiEmuAm_sector;
    vector<short>   *ph2TpgPhiEmuAm_station;
    vector<short>   *ph2TpgPhiEmuAm_quality;
+   vector<short>   *ph2TpgPhiEmuAm_superLayer;
    vector<short>   *ph2TpgPhiEmuAm_rpcFlag;
    vector<int>     *ph2TpgPhiEmuAm_chi2;
    vector<int>     *ph2TpgPhiEmuAm_phi;
@@ -395,6 +398,7 @@ public :
    TBranch        *b_ph2TpgPhiHw_sector;   //!
    TBranch        *b_ph2TpgPhiHw_station;   //!
    TBranch        *b_ph2TpgPhiHw_quality;   //!
+   TBranch        *b_ph2TpgPhiHw_superLayer;   //!
    TBranch        *b_ph2TpgPhiHw_rpcFlag;   //!
    TBranch        *b_ph2TpgPhiHw_chi2;   //!
    TBranch        *b_ph2TpgPhiHw_phi;   //!
@@ -407,6 +411,7 @@ public :
    TBranch        *b_ph2TpgPhiEmuHb_sector;   //!
    TBranch        *b_ph2TpgPhiEmuHb_station;   //!
    TBranch        *b_ph2TpgPhiEmuHb_quality;   //!
+   TBranch        *b_ph2TpgPhiEmuHb_superLayer;   //!
    TBranch        *b_ph2TpgPhiEmuHb_rpcFlag;   //!
    TBranch        *b_ph2TpgPhiEmuHb_chi2;   //!
    TBranch        *b_ph2TpgPhiEmuHb_phi;   //!
@@ -419,6 +424,7 @@ public :
    TBranch        *b_ph2TpgPhiEmuAm_sector;   //!
    TBranch        *b_ph2TpgPhiEmuAm_station;   //!
    TBranch        *b_ph2TpgPhiEmuAm_quality;   //!
+   TBranch        *b_ph2TpgPhiEmuAm_superLayer;   //!
    TBranch        *b_ph2TpgPhiEmuAm_rpcFlag;   //!
    TBranch        *b_ph2TpgPhiEmuAm_chi2;   //!
    TBranch        *b_ph2TpgPhiEmuAm_phi;   //!

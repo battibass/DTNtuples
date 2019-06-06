@@ -64,6 +64,9 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
   std::vector<short> m_lt_quality; // quality (short in [X:Y] range)
                                    // ... // CB to be defined
 
+  std::vector<short> m_lt_superLayer; // superlayer (short in [X:Y] range)
+                                      // ... // CB to be defined
+
   std::vector<int> m_lt_chi2; // chi2 (int in [X:Y] range)
                               // ... // CB to be defined
 
