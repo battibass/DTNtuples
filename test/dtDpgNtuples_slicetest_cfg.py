@@ -25,6 +25,12 @@ options.register('inputFolder',
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
 
+options.register('tTrigFile',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT tTrigs, used only if non ''")
+
 options.register('ntupleName',
                  './DTDPGNtuple_10_6_0_SX5.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -47,6 +53,16 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
+if options.tTrigFile != '' :
+
+    process.GlobalTag.toGet = cms.VPSet(
+        cms.PSet(record = cms.string("DTTtrigRcd"),
+                 tag = cms.string("ttrig"),
+                 connect = cms.string("sqlite_file:" + options.tTrigFile),
+                 label = cms.untracked.string("cosmics")
+                 )
+        )
+
 process.source = cms.Source("PoolSource",
                             
         fileNames = cms.untracked.vstring(),
@@ -66,10 +82,14 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
+
+process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
+                     + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
 
 

@@ -21,7 +21,7 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph2TPGPhiHbTag  = cms.untracked.InputTag("none"),
                                   ph2TPGPhiAmTag  = cms.untracked.InputTag("none"),
 
-                                  ph1DtSegmentTag = cms.untracked.InputTag("none"),        
+                                  ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),        
                                   ph2DtSegmentTag = cms.untracked.InputTag("none"),
 
                                   tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
