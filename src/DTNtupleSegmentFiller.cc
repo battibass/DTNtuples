@@ -280,17 +280,20 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 			  LocalPoint  segPosAtZWireLayer   = layer->toLocal(segExrapolationToLayer); 
 			  LocalPoint  segPosAtZWireChamber = chamb->toLocal(segExrapolationToLayer); 
 			  
-			  theExpPos   = segPosAtZWireLayer.x();
-			  theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
 
 			  if ((iWire < 4 || iWire > 7) && hasPhi)
 			    {
+			      theExpPos   = segPosAtZWireLayer.x();
 			      theExpPosCh = segPosAtZWireChamber.x();
+			      theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
 			    }
-			  else if ((iWire >= 4 && iWire<=7) &&hasZed)
+			  else if ((iWire >= 4 && iWire<=7) && hasZed)
 			    {
+			      theExpPos   = segPosAtZWireLayer.x();
 			      theExpPosCh = segPosAtZWireChamber.y();
+			      theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
 			    }
+			  
 			}
 		      
 		      hitExpectedPos[iWire] = theExpPos;
@@ -305,7 +308,7 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 		    }
 
 		  new ((*m_seg4D_hitsExpPos)[m_nSegments])     TVectorF(hitExpectedPos);
-		  new ((*m_seg4D_hitsExpPosCh)[m_nSegments])   TVectorF(hitExpectedPos);
+		  new ((*m_seg4D_hitsExpPosCh)[m_nSegments])   TVectorF(hitExpectedPosCh);
 		  new ((*m_seg4D_hitsExpWire)[m_nSegments])    TVectorF(hitExpectedWire);
 		}
 	      else 
