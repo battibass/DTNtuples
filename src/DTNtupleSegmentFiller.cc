@@ -44,6 +44,7 @@ void DTNtupleSegmentFiller::initialize()
 {
 
   m_seg4D_hitsExpPos     = new TClonesArray("TVectorF", 500); //CB what if the limit exceeds 500 ? 
+  m_seg4D_hitsExpPosCh   = new TClonesArray("TVectorF", 500);
   m_seg4D_hitsExpWire    = new TClonesArray("TVectorF", 500);
 
   m_seg2D_phiHits_pos        = new TClonesArray("TVectorF", 500);
@@ -51,6 +52,7 @@ void DTNtupleSegmentFiller::initialize()
   m_seg2D_phiHits_posErr     = new TClonesArray("TVectorF", 500);
   m_seg2D_phiHits_side       = new TClonesArray("TVectorF", 500);
   m_seg2D_phiHits_wire       = new TClonesArray("TVectorF", 500);
+  m_seg2D_phiHits_wirePos    = new TClonesArray("TVectorF", 500);
   m_seg2D_phiHits_layer      = new TClonesArray("TVectorF", 500);
   m_seg2D_phiHits_superLayer = new TClonesArray("TVectorF", 500);
   m_seg2D_phiHits_time       = new TClonesArray("TVectorF", 500);
@@ -61,6 +63,7 @@ void DTNtupleSegmentFiller::initialize()
   m_seg2D_zHits_posErr   = new TClonesArray("TVectorF", 500);
   m_seg2D_zHits_side     = new TClonesArray("TVectorF", 500);
   m_seg2D_zHits_wire     = new TClonesArray("TVectorF", 500);
+  m_seg2D_zHits_wirePos  = new TClonesArray("TVectorF", 500);
   m_seg2D_zHits_layer    = new TClonesArray("TVectorF", 500);
   m_seg2D_zHits_time     = new TClonesArray("TVectorF", 500);
   m_seg2D_zHits_timeCali = new TClonesArray("TVectorF", 500);
@@ -87,8 +90,9 @@ void DTNtupleSegmentFiller::initialize()
   m_tree->Branch((m_label + "_dirGlb_phi").c_str(), &m_seg4D_dirGlb_phi);
   m_tree->Branch((m_label + "_dirGlb_eta").c_str(), &m_seg4D_dirGlb_eta);
 
-  m_tree->Branch((m_label + "_hitsExpPos").c_str(),  &m_seg4D_hitsExpPos,  2048000,0);
-  m_tree->Branch((m_label + "_hitsExpWire").c_str(), &m_seg4D_hitsExpWire, 2048000,0);
+  m_tree->Branch((m_label + "_hitsExpPos").c_str(),     &m_seg4D_hitsExpPos,     2048000,0);
+  m_tree->Branch((m_label + "_hitsExpPosCh").c_str(),   &m_seg4D_hitsExpPosCh,   2048000,0);
+  m_tree->Branch((m_label + "_hitsExpWire").c_str(),    &m_seg4D_hitsExpWire,    2048000,0);
 
   m_tree->Branch((m_label + "_phi_t0").c_str(), &m_seg2D_phi_t0);
   m_tree->Branch((m_label + "_phi_vDrift").c_str(), &m_seg2D_phi_vDrift);
@@ -101,6 +105,7 @@ void DTNtupleSegmentFiller::initialize()
   m_tree->Branch((m_label + "_phiHits_posErr").c_str(),     &m_seg2D_phiHits_posErr,     2048000,0);
   m_tree->Branch((m_label + "_phiHits_side").c_str(),       &m_seg2D_phiHits_side,       2048000,0);
   m_tree->Branch((m_label + "_phiHits_wire").c_str(),       &m_seg2D_phiHits_wire,       2048000,0);
+  m_tree->Branch((m_label + "_phiHits_wirePos").c_str(),    &m_seg2D_phiHits_wirePos,    2048000,0);
   m_tree->Branch((m_label + "_phiHits_layer").c_str(),      &m_seg2D_phiHits_layer,      2048000,0);
   m_tree->Branch((m_label + "_phiHits_superLayer").c_str(), &m_seg2D_phiHits_superLayer, 2048000,0);
   m_tree->Branch((m_label + "_phiHits_time").c_str(),       &m_seg2D_phiHits_time,       2048000,0);
@@ -115,6 +120,7 @@ void DTNtupleSegmentFiller::initialize()
   m_tree->Branch((m_label + "_zHits_posErr").c_str(),   &m_seg2D_zHits_posErr,   2048000,0);
   m_tree->Branch((m_label + "_zHits_side").c_str(),     &m_seg2D_zHits_side,     2048000,0);
   m_tree->Branch((m_label + "_zHits_wire").c_str(),     &m_seg2D_zHits_wire,     2048000,0);
+  m_tree->Branch((m_label + "_zHits_wirePos").c_str(),  &m_seg2D_zHits_wirePos,  2048000,0);
   m_tree->Branch((m_label + "_zHits_layer").c_str(),    &m_seg2D_zHits_layer,    2048000,0);
   m_tree->Branch((m_label + "_zHits_time").c_str(),     &m_seg2D_zHits_time,     2048000,0);
   m_tree->Branch((m_label + "_zHits_timeCali").c_str(), &m_seg2D_zHits_timeCali, 2048000,0);
@@ -146,6 +152,7 @@ void DTNtupleSegmentFiller::clear()
   m_seg4D_dirGlb_eta.clear();
 
   m_seg4D_hitsExpPos->Clear();
+  m_seg4D_hitsExpPosCh->Clear();
   m_seg4D_hitsExpWire->Clear();
 
   m_seg2D_phi_t0.clear();
@@ -159,6 +166,7 @@ void DTNtupleSegmentFiller::clear()
   m_seg2D_phiHits_posErr->Clear();
   m_seg2D_phiHits_side->Clear();
   m_seg2D_phiHits_wire->Clear();
+  m_seg2D_phiHits_wirePos->Clear();
   m_seg2D_phiHits_layer->Clear();
   m_seg2D_phiHits_superLayer->Clear();
   m_seg2D_phiHits_time->Clear();
@@ -173,6 +181,7 @@ void DTNtupleSegmentFiller::clear()
   m_seg2D_zHits_posErr->Clear();
   m_seg2D_zHits_side->Clear();
   m_seg2D_zHits_wire->Clear();
+  m_seg2D_zHits_wirePos->Clear();
   m_seg2D_zHits_layer->Clear();
   m_seg2D_zHits_time->Clear();
   m_seg2D_zHits_timeCali->Clear();
@@ -228,9 +237,10 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 	      m_seg4D_dirLoc_y.push_back(dir.y());
 	      m_seg4D_dirLoc_z.push_back(dir.z());
 	      
-	      if (hasPhi||hasZed)
+	      if (hasPhi || hasZed)
 		{
 		  TVectorF hitExpectedPos(12);
+		  TVectorF hitExpectedPosCh(12);
 		  TVectorF hitExpectedWire(12);
 		  
 		  std::vector<DTWireId> wireVector;
@@ -260,8 +270,9 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 		      
 		      bool success = ppt.first; // check for failure
 		      
-		      int theExpWire  = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 		      float theExpPos = DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL;
+		      float theExpPosCh = DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL;
+		      int theExpWire = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 		       
 		      if (success)
 			{ 
@@ -269,20 +280,22 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 			  LocalPoint  segPosAtZWireLayer   = layer->toLocal(segExrapolationToLayer); 
 			  LocalPoint  segPosAtZWireChamber = chamb->toLocal(segExrapolationToLayer); 
 			  
+			  theExpPos   = segPosAtZWireLayer.x();
+			  theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
+
 			  if ((iWire < 4 || iWire > 7) && hasPhi)
 			    {
-			      theExpPos  = segPosAtZWireChamber.x();
-			      theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
+			      theExpPosCh = segPosAtZWireChamber.x();
 			    }
 			  else if ((iWire >= 4 && iWire<=7) &&hasZed)
 			    {
-			      theExpPos  = segPosAtZWireChamber.y();
-			      theExpWire = layer->specificTopology().channel(segPosAtZWireLayer);
+			      theExpPosCh = segPosAtZWireChamber.y();
 			    }
 			}
 		      
+		      hitExpectedPos[iWire] = theExpPos;
+		      hitExpectedPosCh[iWire] = theExpPosCh;
 		      hitExpectedWire[iWire] = theExpWire;
-		      hitExpectedPos[iWire]  = theExpPos;
 		      
 		      ++iWire;
 		      
@@ -291,13 +304,15 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 		      
 		    }
 
-		  new ((*m_seg4D_hitsExpPos)[m_nSegments])  TVectorF(hitExpectedPos);
-		  new ((*m_seg4D_hitsExpWire)[m_nSegments]) TVectorF(hitExpectedWire);
+		  new ((*m_seg4D_hitsExpPos)[m_nSegments])     TVectorF(hitExpectedPos);
+		  new ((*m_seg4D_hitsExpPosCh)[m_nSegments])   TVectorF(hitExpectedPos);
+		  new ((*m_seg4D_hitsExpWire)[m_nSegments])    TVectorF(hitExpectedWire);
 		}
 	      else 
 		{
-		  new ((*m_seg4D_hitsExpPos)[m_nSegments])  TVectorF(m_nullVecF);
-		  new ((*m_seg4D_hitsExpWire)[m_nSegments]) TVectorF(m_nullVecF);
+		  new ((*m_seg4D_hitsExpPos)[m_nSegments])     TVectorF(m_nullVecF);
+		  new ((*m_seg4D_hitsExpPosCh)[m_nSegments])   TVectorF(m_nullVecF);
+		  new ((*m_seg4D_hitsExpWire)[m_nSegments])    TVectorF(m_nullVecF);
 		}
 
 	      const GeomDet * geomDet = m_config->m_trackingGeometry->idToDet(segment4D->geographicalId());
@@ -349,6 +364,7 @@ void DTNtupleSegmentFiller::fillPhi(const DTChamberRecSegment2D* phiSeg, const G
   TVectorF posErrRechits(nRecHits);
   TVectorF sideRechits(nRecHits);
   TVectorF wireRechits(nRecHits);
+  TVectorF wirePosRechits(nRecHits);
   TVectorF layerRechits(nRecHits);
   TVectorF superLayerRechits(nRecHits);
   TVectorF timeRechits(nRecHits);
@@ -362,7 +378,7 @@ void DTNtupleSegmentFiller::fillPhi(const DTChamberRecSegment2D* phiSeg, const G
       const auto wireId  = recHit.wireId();
       const auto layerId = wireId.layerId();
 
-      const auto * layer = m_config->m_trackingGeometry->idToDet(layerId);
+      const auto * layer = m_config->m_dtGeometry->layer(layerId);
 
       posRechits(iRecHit)    = recHit.localPosition().x();
       posChRechits(iRecHit)  = chamb->toLocal(layer->toGlobal(recHit.localPosition())).x();
@@ -370,6 +386,7 @@ void DTNtupleSegmentFiller::fillPhi(const DTChamberRecSegment2D* phiSeg, const G
 
       sideRechits(iRecHit)       = recHit.lrSide();
       wireRechits(iRecHit)       = wireId.wire();
+      wirePosRechits(iRecHit)    = layer->specificTopology().wirePosition(wireId.wire());
       layerRechits(iRecHit)      = layerId.layer();
       superLayerRechits(iRecHit) = layerId.superlayer();
 
@@ -387,6 +404,7 @@ void DTNtupleSegmentFiller::fillPhi(const DTChamberRecSegment2D* phiSeg, const G
   new ((*m_seg2D_phiHits_posErr)[m_nSegments])     TVectorF(posErrRechits);
   new ((*m_seg2D_phiHits_side)[m_nSegments])       TVectorF(sideRechits);
   new ((*m_seg2D_phiHits_wire)[m_nSegments])       TVectorF(wireRechits);
+  new ((*m_seg2D_phiHits_wirePos)[m_nSegments])    TVectorF(wirePosRechits);
   new ((*m_seg2D_phiHits_layer)[m_nSegments])      TVectorF(layerRechits);
   new ((*m_seg2D_phiHits_superLayer)[m_nSegments]) TVectorF(superLayerRechits);
   new ((*m_seg2D_phiHits_time)[m_nSegments])       TVectorF(timeRechits);
@@ -413,6 +431,7 @@ void DTNtupleSegmentFiller::fillZ(const DTSLRecSegment2D* zSeg, const GeomDet* c
   TVectorF posErrRechits(nRecHits);
   TVectorF sideRechits(nRecHits);
   TVectorF wireRechits(nRecHits);
+  TVectorF wirePosRechits(nRecHits);
   TVectorF layerRechits(nRecHits);
   TVectorF timeRechits(nRecHits);
   TVectorF timeCaliRechits(nRecHits);
@@ -425,7 +444,7 @@ void DTNtupleSegmentFiller::fillZ(const DTSLRecSegment2D* zSeg, const GeomDet* c
       const auto wireId  = recHit.wireId();
       const auto layerId = wireId.layerId();
 
-      const auto * layer = m_config->m_trackingGeometry->idToDet(layerId);
+      const auto * layer = m_config->m_dtGeometry->layer(layerId);
 
       posRechits(iRecHit)    = recHit.localPosition().x();
       posChRechits(iRecHit)  = chamb->toLocal(layer->toGlobal(recHit.localPosition())).y();
@@ -433,6 +452,7 @@ void DTNtupleSegmentFiller::fillZ(const DTSLRecSegment2D* zSeg, const GeomDet* c
 
       sideRechits(iRecHit)       = recHit.lrSide();
       wireRechits(iRecHit)       = wireId.wire();
+      wirePosRechits(iRecHit)    = layer->specificTopology().wirePosition(wireId.wire());
       layerRechits(iRecHit)      = layerId.layer();
 
       float digiTime = recHit.digiTime();
@@ -449,6 +469,7 @@ void DTNtupleSegmentFiller::fillZ(const DTSLRecSegment2D* zSeg, const GeomDet* c
   new ((*m_seg2D_zHits_posErr)[m_nSegments])     TVectorF(posErrRechits);
   new ((*m_seg2D_zHits_side)[m_nSegments])       TVectorF(sideRechits);
   new ((*m_seg2D_zHits_wire)[m_nSegments])       TVectorF(wireRechits);
+  new ((*m_seg2D_zHits_wirePos)[m_nSegments])    TVectorF(wirePosRechits);
   new ((*m_seg2D_zHits_layer)[m_nSegments])      TVectorF(layerRechits);
   new ((*m_seg2D_zHits_time)[m_nSegments])       TVectorF(timeRechits);
   new ((*m_seg2D_zHits_timeCali)[m_nSegments])   TVectorF(timeCaliRechits);
@@ -467,6 +488,7 @@ void DTNtupleSegmentFiller::fillPhiEmpty()
   new ((*m_seg2D_phiHits_posErr)[m_nSegments])     TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_side)[m_nSegments])       TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_wire)[m_nSegments])       TVectorF(m_nullVecF);
+  new ((*m_seg2D_phiHits_wirePos)[m_nSegments])    TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_layer)[m_nSegments])      TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_superLayer)[m_nSegments]) TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_time)[m_nSegments])       TVectorF(m_nullVecF);
@@ -484,6 +506,7 @@ void DTNtupleSegmentFiller::fillZEmpty()
   new ((*m_seg2D_zHits_posErr)[m_nSegments])     TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_side)[m_nSegments])       TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_wire)[m_nSegments])       TVectorF(m_nullVecF);
+  new ((*m_seg2D_zHits_wirePos)[m_nSegments])    TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_layer)[m_nSegments])      TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_time)[m_nSegments])       TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_timeCali)[m_nSegments])   TVectorF(m_nullVecF);

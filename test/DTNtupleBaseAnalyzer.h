@@ -84,6 +84,7 @@ public :
    vector<float>   *seg_dirGlb_phi;
    vector<float>   *seg_dirGlb_eta;
    TClonesArray    *seg_hitsExpPos;
+   TClonesArray    *seg_hitsExpPosCh;
    TClonesArray    *seg_hitsExpWire;
    vector<float>   *seg_phi_t0;
    vector<float>   *seg_phi_vDrift;
@@ -94,6 +95,7 @@ public :
    TClonesArray    *seg_phiHits_posErr;
    TClonesArray    *seg_phiHits_side;
    TClonesArray    *seg_phiHits_wire;
+   TClonesArray    *seg_phiHits_wirePos;
    TClonesArray    *seg_phiHits_layer;
    TClonesArray    *seg_phiHits_superLayer;
    TClonesArray    *seg_phiHits_time;
@@ -105,6 +107,7 @@ public :
    TClonesArray    *seg_zHits_posErr;
    TClonesArray    *seg_zHits_side;
    TClonesArray    *seg_zHits_wire;
+   TClonesArray    *seg_zHits_wirePos;
    TClonesArray    *seg_zHits_layer;
    TClonesArray    *seg_zHits_time;
    TClonesArray    *seg_zHits_timeCali;
@@ -125,6 +128,7 @@ public :
    vector<float>   *ph2Seg_dirGlb_phi;
    vector<float>   *ph2Seg_dirGlb_eta;
    TClonesArray    *ph2Seg_hitsExpPos;
+   TClonesArray    *ph2Seg_hitsExpPosCh;
    TClonesArray    *ph2Seg_hitsExpWire;
    vector<float>   *ph2Seg_phi_t0;
    vector<float>   *ph2Seg_phi_vDrift;
@@ -135,6 +139,7 @@ public :
    TClonesArray    *ph2Seg_phiHits_posErr;
    TClonesArray    *ph2Seg_phiHits_side;
    TClonesArray    *ph2Seg_phiHits_wire;
+   TClonesArray    *ph2Seg_phiHits_wirePos;
    TClonesArray    *ph2Seg_phiHits_layer;
    TClonesArray    *ph2Seg_phiHits_superLayer;
    TClonesArray    *ph2Seg_phiHits_time;
@@ -146,6 +151,7 @@ public :
    TClonesArray    *ph2Seg_zHits_posErr;
    TClonesArray    *ph2Seg_zHits_side;
    TClonesArray    *ph2Seg_zHits_wire;
+   TClonesArray    *ph2Seg_zHits_wirePos;
    TClonesArray    *ph2Seg_zHits_layer;
    TClonesArray    *ph2Seg_zHits_time;
    TClonesArray    *ph2Seg_zHits_timeCali;
@@ -288,6 +294,7 @@ public :
    TBranch        *b_seg_dirGlb_phi;   //!
    TBranch        *b_seg_dirGlb_eta;   //!
    TBranch        *b_seg_hitsExpPos;   //!
+   TBranch        *b_seg_hitsExpPosCh;   //!
    TBranch        *b_seg_hitsExpWire;   //!
    TBranch        *b_seg_phi_t0;   //!
    TBranch        *b_seg_phi_vDrift;   //!
@@ -298,6 +305,7 @@ public :
    TBranch        *b_seg_phiHits_posErr;   //!
    TBranch        *b_seg_phiHits_side;   //!
    TBranch        *b_seg_phiHits_wire;   //!
+   TBranch        *b_seg_phiHits_wirePos;   //!
    TBranch        *b_seg_phiHits_layer;   //!
    TBranch        *b_seg_phiHits_superLayer;   //!
    TBranch        *b_seg_phiHits_time;   //!
@@ -309,6 +317,7 @@ public :
    TBranch        *b_seg_zHits_posErr;   //!
    TBranch        *b_seg_zHits_side;   //!
    TBranch        *b_seg_zHits_wire;   //!
+   TBranch        *b_seg_zHits_wirePos;   //!
    TBranch        *b_seg_zHits_layer;   //!
    TBranch        *b_seg_zHits_time;   //!
    TBranch        *b_seg_zHits_timeCali;   //!
@@ -329,6 +338,7 @@ public :
    TBranch        *b_ph2Seg_dirGlb_phi;   //!
    TBranch        *b_ph2Seg_dirGlb_eta;   //!
    TBranch        *b_ph2Seg_hitsExpPos;   //!
+   TBranch        *b_ph2Seg_hitsExpPosCh;   //!
    TBranch        *b_ph2Seg_hitsExpWire;   //!
    TBranch        *b_ph2Seg_phi_t0;   //!
    TBranch        *b_ph2Seg_phi_vDrift;   //!
@@ -339,6 +349,7 @@ public :
    TBranch        *b_ph2Seg_phiHits_posErr;   //!
    TBranch        *b_ph2Seg_phiHits_side;   //!
    TBranch        *b_ph2Seg_phiHits_wire;   //!
+   TBranch        *b_ph2Seg_phiHits_wirePos;   //!
    TBranch        *b_ph2Seg_phiHits_layer;   //!
    TBranch        *b_ph2Seg_phiHits_superLayer;   //!
    TBranch        *b_ph2Seg_phiHits_time;   //!
@@ -350,6 +361,7 @@ public :
    TBranch        *b_ph2Seg_zHits_posErr;   //!
    TBranch        *b_ph2Seg_zHits_side;   //!
    TBranch        *b_ph2Seg_zHits_wire;   //!
+   TBranch        *b_ph2Seg_zHits_wirePos;   //!
    TBranch        *b_ph2Seg_zHits_layer;   //!
    TBranch        *b_ph2Seg_zHits_time;   //!
    TBranch        *b_ph2Seg_zHits_timeCali;   //!

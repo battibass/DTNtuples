@@ -89,6 +89,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    seg_dirGlb_phi = 0;
    seg_dirGlb_eta = 0;
    seg_hitsExpPos = 0;
+   seg_hitsExpPosCh = 0;
    seg_hitsExpWire = 0;
    seg_phi_t0 = 0;
    seg_phi_vDrift = 0;
@@ -99,6 +100,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    seg_phiHits_posErr = 0;
    seg_phiHits_side = 0;
    seg_phiHits_wire = 0;
+   seg_phiHits_wirePos = 0;
    seg_phiHits_layer = 0;
    seg_phiHits_superLayer = 0;
    seg_phiHits_time = 0;
@@ -110,6 +112,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    seg_zHits_posErr = 0;
    seg_zHits_side = 0;
    seg_zHits_wire = 0;
+   seg_zHits_wirePos = 0;
    seg_zHits_layer = 0;
    seg_zHits_time = 0;
    seg_zHits_timeCali = 0;
@@ -129,6 +132,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2Seg_dirGlb_phi = 0;
    ph2Seg_dirGlb_eta = 0;
    ph2Seg_hitsExpPos = 0;
+   ph2Seg_hitsExpPosCh = 0;
    ph2Seg_hitsExpWire = 0;
    ph2Seg_phi_t0 = 0;
    ph2Seg_phi_vDrift = 0;
@@ -139,6 +143,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2Seg_phiHits_posErr = 0;
    ph2Seg_phiHits_side = 0;
    ph2Seg_phiHits_wire = 0;
+   ph2Seg_phiHits_wirePos = 0;
    ph2Seg_phiHits_layer = 0;
    ph2Seg_phiHits_superLayer = 0;
    ph2Seg_phiHits_time = 0;
@@ -150,6 +155,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2Seg_zHits_posErr = 0;
    ph2Seg_zHits_side = 0;
    ph2Seg_zHits_wire = 0;
+   ph2Seg_zHits_wirePos = 0;
    ph2Seg_zHits_layer = 0;
    ph2Seg_zHits_time = 0;
    ph2Seg_zHits_timeCali = 0;
@@ -289,6 +295,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("seg_dirGlb_phi", &seg_dirGlb_phi, &b_seg_dirGlb_phi);
    fChain->SetBranchAddress("seg_dirGlb_eta", &seg_dirGlb_eta, &b_seg_dirGlb_eta);
    fChain->SetBranchAddress("seg_hitsExpPos", &seg_hitsExpPos, &b_seg_hitsExpPos);
+   fChain->SetBranchAddress("seg_hitsExpPosCh", &seg_hitsExpPosCh, &b_seg_hitsExpPosCh);
    fChain->SetBranchAddress("seg_hitsExpWire", &seg_hitsExpWire, &b_seg_hitsExpWire);
    fChain->SetBranchAddress("seg_phi_t0", &seg_phi_t0, &b_seg_phi_t0);
    fChain->SetBranchAddress("seg_phi_vDrift", &seg_phi_vDrift, &b_seg_phi_vDrift);
@@ -299,6 +306,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("seg_phiHits_posErr", &seg_phiHits_posErr, &b_seg_phiHits_posErr);
    fChain->SetBranchAddress("seg_phiHits_side", &seg_phiHits_side, &b_seg_phiHits_side);
    fChain->SetBranchAddress("seg_phiHits_wire", &seg_phiHits_wire, &b_seg_phiHits_wire);
+   fChain->SetBranchAddress("seg_phiHits_wirePos", &seg_phiHits_wirePos, &b_seg_phiHits_wirePos);
    fChain->SetBranchAddress("seg_phiHits_layer", &seg_phiHits_layer, &b_seg_phiHits_layer);
    fChain->SetBranchAddress("seg_phiHits_superLayer", &seg_phiHits_superLayer, &b_seg_phiHits_superLayer);
    fChain->SetBranchAddress("seg_phiHits_time", &seg_phiHits_time, &b_seg_phiHits_time);
@@ -310,6 +318,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("seg_zHits_posErr", &seg_zHits_posErr, &b_seg_zHits_posErr);
    fChain->SetBranchAddress("seg_zHits_side", &seg_zHits_side, &b_seg_zHits_side);
    fChain->SetBranchAddress("seg_zHits_wire", &seg_zHits_wire, &b_seg_zHits_wire);
+   fChain->SetBranchAddress("seg_zHits_wirePos", &seg_zHits_wirePos, &b_seg_zHits_wirePos);
    fChain->SetBranchAddress("seg_zHits_layer", &seg_zHits_layer, &b_seg_zHits_layer);
    fChain->SetBranchAddress("seg_zHits_time", &seg_zHits_time, &b_seg_zHits_time);
    fChain->SetBranchAddress("seg_zHits_timeCali", &seg_zHits_timeCali, &b_seg_zHits_timeCali);
@@ -330,6 +339,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2Seg_dirGlb_phi", &ph2Seg_dirGlb_phi, &b_ph2Seg_dirGlb_phi);
    fChain->SetBranchAddress("ph2Seg_dirGlb_eta", &ph2Seg_dirGlb_eta, &b_ph2Seg_dirGlb_eta);
    fChain->SetBranchAddress("ph2Seg_hitsExpPos", &ph2Seg_hitsExpPos, &b_ph2Seg_hitsExpPos);
+   fChain->SetBranchAddress("ph2Seg_hitsExpPosCh", &ph2Seg_hitsExpPosCh, &b_ph2Seg_hitsExpPosCh);
    fChain->SetBranchAddress("ph2Seg_hitsExpWire", &ph2Seg_hitsExpWire, &b_ph2Seg_hitsExpWire);
    fChain->SetBranchAddress("ph2Seg_phi_t0", &ph2Seg_phi_t0, &b_ph2Seg_phi_t0);
    fChain->SetBranchAddress("ph2Seg_phi_vDrift", &ph2Seg_phi_vDrift, &b_ph2Seg_phi_vDrift);
@@ -340,6 +350,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2Seg_phiHits_posErr", &ph2Seg_phiHits_posErr, &b_ph2Seg_phiHits_posErr);
    fChain->SetBranchAddress("ph2Seg_phiHits_side", &ph2Seg_phiHits_side, &b_ph2Seg_phiHits_side);
    fChain->SetBranchAddress("ph2Seg_phiHits_wire", &ph2Seg_phiHits_wire, &b_ph2Seg_phiHits_wire);
+   fChain->SetBranchAddress("ph2Seg_phiHits_wirePos", &ph2Seg_phiHits_wirePos, &b_ph2Seg_phiHits_wirePos);
    fChain->SetBranchAddress("ph2Seg_phiHits_layer", &ph2Seg_phiHits_layer, &b_ph2Seg_phiHits_layer);
    fChain->SetBranchAddress("ph2Seg_phiHits_superLayer", &ph2Seg_phiHits_superLayer, &b_ph2Seg_phiHits_superLayer);
    fChain->SetBranchAddress("ph2Seg_phiHits_time", &ph2Seg_phiHits_time, &b_ph2Seg_phiHits_time);
@@ -351,6 +362,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2Seg_zHits_posErr", &ph2Seg_zHits_posErr, &b_ph2Seg_zHits_posErr);
    fChain->SetBranchAddress("ph2Seg_zHits_side", &ph2Seg_zHits_side, &b_ph2Seg_zHits_side);
    fChain->SetBranchAddress("ph2Seg_zHits_wire", &ph2Seg_zHits_wire, &b_ph2Seg_zHits_wire);
+   fChain->SetBranchAddress("ph2Seg_zHits_wirePos", &ph2Seg_zHits_wirePos, &b_ph2Seg_zHits_wirePos);
    fChain->SetBranchAddress("ph2Seg_zHits_layer", &ph2Seg_zHits_layer, &b_ph2Seg_zHits_layer);
    fChain->SetBranchAddress("ph2Seg_zHits_time", &ph2Seg_zHits_time, &b_ph2Seg_zHits_time);
    fChain->SetBranchAddress("ph2Seg_zHits_timeCali", &ph2Seg_zHits_timeCali, &b_ph2Seg_zHits_timeCali);
