@@ -109,7 +109,7 @@ void DTNtuplePh2TPGPhiFiller::fill(const edm::Event & ev)
 	{
 
 	  m_lt_wheel.push_back(trig.whNum());
-	  m_lt_sector.push_back(trig.scNum()); 
+	  m_lt_sector.push_back(trig.scNum() + 1); 
 	  m_lt_station.push_back(trig.stNum());
 	  
 	  m_lt_quality.push_back(trig.quality());
