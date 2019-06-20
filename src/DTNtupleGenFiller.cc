@@ -36,12 +36,12 @@ void DTNtupleGenFiller::initialize()
   
   m_tree->Branch((m_label + "_nGenParts").c_str(), &m_nGenParts, (m_label + "_nGenParts/i").c_str());
 
-  m_tree->Branch((m_label + "_gen_pdgId").c_str(), &m_gen_pdgId);
+  m_tree->Branch((m_label + "_pdgId").c_str(), &m_gen_pdgId);
 
-  m_tree->Branch((m_label + "_gen_pt").c_str(),     &m_gen_pt);
-  m_tree->Branch((m_label + "_gen_phi").c_str(),    &m_gen_phi);
-  m_tree->Branch((m_label + "_gen_eta").c_str(),    &m_gen_eta);
-  m_tree->Branch((m_label + "_gen_charge").c_str(), &m_gen_charge);
+  m_tree->Branch((m_label + "_pt").c_str(),     &m_gen_pt);
+  m_tree->Branch((m_label + "_phi").c_str(),    &m_gen_phi);
+  m_tree->Branch((m_label + "_eta").c_str(),    &m_gen_eta);
+  m_tree->Branch((m_label + "_charge").c_str(), &m_gen_charge);
   
 }
 

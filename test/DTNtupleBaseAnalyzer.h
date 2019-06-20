@@ -33,11 +33,11 @@ public :
    Int_t           event_bunchCrossing;
    Long64_t        event_orbitNumber;
    UInt_t          gen_nGenParts;
-   vector<int>     *gen_gen_pdgId;
-   vector<float>   *gen_gen_pt;
-   vector<float>   *gen_gen_phi;
-   vector<float>   *gen_gen_eta;
-   vector<short>   *gen_gen_charge;
+   vector<int>     *gen_pdgId;
+   vector<float>   *gen_pt;
+   vector<float>   *gen_phi;
+   vector<float>   *gen_eta;
+   vector<short>   *gen_charge;
    Short_t         environment_truePileUp;
    Short_t         environment_actualPileUp;
    Int_t           environment_instLumi;
@@ -243,11 +243,11 @@ public :
    TBranch        *b_event_bunchCrossing;   //!
    TBranch        *b_event_orbitNumber;   //!
    TBranch        *b_gen_nGenParts;   //!
-   TBranch        *b_gen_gen_pdgId;   //!
-   TBranch        *b_gen_gen_pt;   //!
-   TBranch        *b_gen_gen_phi;   //!
-   TBranch        *b_gen_gen_eta;   //!
-   TBranch        *b_gen_gen_charge;   //!
+   TBranch        *b_gen_pdgId;   //!
+   TBranch        *b_gen_pt;   //!
+   TBranch        *b_gen_phi;   //!
+   TBranch        *b_gen_eta;   //!
+   TBranch        *b_gen_charge;   //!
    TBranch        *b_environment_truePileUp;   //!
    TBranch        *b_environment_actualPileUp;   //!
    TBranch        *b_environment_instLumi;   //!

@@ -54,11 +54,11 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    // (once per file to be processed).
 
    // Set object pointer
-   gen_gen_pdgId = 0;
-   gen_gen_pt = 0;
-   gen_gen_phi = 0;
-   gen_gen_eta = 0;
-   gen_gen_charge = 0;
+   gen_pdgId = 0;
+   gen_pt = 0;
+   gen_phi = 0;
+   gen_eta = 0;
+   gen_charge = 0;
    digi_wheel = 0;
    digi_sector = 0;
    digi_station = 0;
@@ -244,11 +244,11 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("event_bunchCrossing", &event_bunchCrossing, &b_event_bunchCrossing);
    fChain->SetBranchAddress("event_orbitNumber", &event_orbitNumber, &b_event_orbitNumber);
    fChain->SetBranchAddress("gen_nGenParts", &gen_nGenParts, &b_gen_nGenParts);
-   fChain->SetBranchAddress("gen_gen_pdgId", &gen_gen_pdgId, &b_gen_gen_pdgId);
-   fChain->SetBranchAddress("gen_gen_pt", &gen_gen_pt, &b_gen_gen_pt);
-   fChain->SetBranchAddress("gen_gen_phi", &gen_gen_phi, &b_gen_gen_phi);
-   fChain->SetBranchAddress("gen_gen_eta", &gen_gen_eta, &b_gen_gen_eta);
-   fChain->SetBranchAddress("gen_gen_charge", &gen_gen_charge, &b_gen_gen_charge);
+   fChain->SetBranchAddress("gen_pdgId", &gen_pdgId, &b_gen_pdgId);
+   fChain->SetBranchAddress("gen_pt", &gen_pt, &b_gen_pt);
+   fChain->SetBranchAddress("gen_phi", &gen_phi, &b_gen_phi);
+   fChain->SetBranchAddress("gen_eta", &gen_eta, &b_gen_eta);
+   fChain->SetBranchAddress("gen_charge", &gen_charge, &b_gen_charge);
    fChain->SetBranchAddress("environment_truePileUp", &environment_truePileUp, &b_environment_truePileUp);
    fChain->SetBranchAddress("environment_actualPileUp", &environment_actualPileUp, &b_environment_actualPileUp);
    fChain->SetBranchAddress("environment_instLumi", &environment_instLumi, &b_environment_instLumi);
