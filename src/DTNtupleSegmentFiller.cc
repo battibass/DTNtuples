@@ -84,6 +84,10 @@ void DTNtupleSegmentFiller::initialize()
   m_tree->Branch((m_label + "_dirLoc_y").c_str(), &m_seg4D_dirLoc_y);
   m_tree->Branch((m_label + "_dirLoc_z").c_str(), &m_seg4D_dirLoc_z);
 
+  m_tree->Branch((m_label + "_posLoc_x_SL1").c_str(), &m_seg4D_posLoc_x_SL1);
+  m_tree->Branch((m_label + "_posLoc_x_SL3").c_str(), &m_seg4D_posLoc_x_SL3);
+  m_tree->Branch((m_label + "_posLoc_x_midPlane").c_str(), &m_seg4D_posLoc_x_midPlane);
+
   m_tree->Branch((m_label + "_posGlb_phi").c_str(), &m_seg4D_posGlb_phi);
   m_tree->Branch((m_label + "_posGlb_eta").c_str(), &m_seg4D_posGlb_eta);
 
@@ -146,6 +150,10 @@ void DTNtupleSegmentFiller::clear()
   m_seg4D_dirLoc_y.clear(); 
   m_seg4D_dirLoc_z.clear(); 
                      
+  m_seg4D_posLoc_x_SL1.clear(); 
+  m_seg4D_posLoc_x_SL3.clear();
+  m_seg4D_posLoc_x_midPlane.clear(); 
+
   m_seg4D_posGlb_phi.clear();
   m_seg4D_posGlb_eta.clear();
   m_seg4D_dirGlb_phi.clear();
@@ -237,6 +245,11 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 	      m_seg4D_dirLoc_y.push_back(dir.y());
 	      m_seg4D_dirLoc_z.push_back(dir.z());
 	      
+	      float xPosLocSL[2] = { DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL,
+				     DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL };
+	      bool hasPptSL[2] = { false, false };
+	      float xPosLocMidPlane = DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL;
+
 	      if (hasPhi || hasZed)
 		{
 		  TVectorF hitExpectedPos(12);
@@ -256,11 +269,35 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 		    }
 		
 		  int iWire=0;
-		  auto * chamb = m_config->m_dtGeometry->chamber(*chambIt);
+		  const auto * chamb = m_config->m_dtGeometry->chamber(*chambIt);
  
 		  StraightLinePlaneCrossing segmentPlaneCrossing(chamb->toGlobal(pos).basicVector(),
 								 chamb->toGlobal(dir).basicVector(),
 								 anyDirection);
+
+		  if (hasPhi)
+		    {
+
+		      for (int iSL = 0 ; iSL <= 1; ++iSL)
+			{
+			  const auto * sl = chamb->superLayer(1 + 2 * iSL);
+		      
+			  auto pptSL = segmentPlaneCrossing.position(sl->surface());
+			  hasPptSL[iSL] = pptSL.first;
+		      
+			  if (hasPptSL[iSL])
+			    {
+			      GlobalPoint segExrapolationToSL(pptSL.second);
+			      LocalPoint  segPosAtSLChamber = chamb->toLocal(segExrapolationToSL);
+			      xPosLocSL[iSL] = segPosAtSLChamber.x();
+			    }
+			}
+		      
+		      if (hasPptSL[0] && hasPptSL[1])
+			{
+			  xPosLocMidPlane = (xPosLocSL[0] + xPosLocSL[1]) * 0.5;
+			}
+		    }
  
 		  for(const auto & wire : wireVector)
 		    {
@@ -317,6 +354,10 @@ void DTNtupleSegmentFiller::fill(const edm::Event & ev)
 		  new ((*m_seg4D_hitsExpPosCh)[m_nSegments])   TVectorF(m_nullVecF);
 		  new ((*m_seg4D_hitsExpWire)[m_nSegments])    TVectorF(m_nullVecF);
 		}
+	    
+	      m_seg4D_posLoc_x_SL1.push_back(xPosLocSL[0]);
+	      m_seg4D_posLoc_x_SL3.push_back(xPosLocSL[1]);
+	      m_seg4D_posLoc_x_midPlane.push_back(xPosLocMidPlane);
 
 	      const GeomDet * geomDet = m_config->m_trackingGeometry->idToDet(segment4D->geographicalId());
 	      auto posGlb = geomDet->toGlobal(pos);

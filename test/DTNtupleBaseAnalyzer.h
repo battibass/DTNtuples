@@ -79,6 +79,9 @@ public :
    vector<float>   *seg_dirLoc_x;
    vector<float>   *seg_dirLoc_y;
    vector<float>   *seg_dirLoc_z;
+   vector<float>   *seg_posLoc_x_SL1;
+   vector<float>   *seg_posLoc_x_SL3;
+   vector<float>   *seg_posLoc_x_midPlane;
    vector<float>   *seg_posGlb_phi;
    vector<float>   *seg_posGlb_eta;
    vector<float>   *seg_dirGlb_phi;
@@ -123,6 +126,9 @@ public :
    vector<float>   *ph2Seg_dirLoc_x;
    vector<float>   *ph2Seg_dirLoc_y;
    vector<float>   *ph2Seg_dirLoc_z;
+   vector<float>   *ph2Seg_posLoc_x_SL1;
+   vector<float>   *ph2Seg_posLoc_x_SL3;
+   vector<float>   *ph2Seg_posLoc_x_midPlane;
    vector<float>   *ph2Seg_posGlb_phi;
    vector<float>   *ph2Seg_posGlb_eta;
    vector<float>   *ph2Seg_dirGlb_phi;
@@ -289,6 +295,9 @@ public :
    TBranch        *b_seg_dirLoc_x;   //!
    TBranch        *b_seg_dirLoc_y;   //!
    TBranch        *b_seg_dirLoc_z;   //!
+   TBranch        *b_seg_posLoc_x_SL1;   //!
+   TBranch        *b_seg_posLoc_x_SL3;   //!
+   TBranch        *b_seg_posLoc_x_midPlane;   //!
    TBranch        *b_seg_posGlb_phi;   //!
    TBranch        *b_seg_posGlb_eta;   //!
    TBranch        *b_seg_dirGlb_phi;   //!
@@ -333,6 +342,9 @@ public :
    TBranch        *b_ph2Seg_dirLoc_x;   //!
    TBranch        *b_ph2Seg_dirLoc_y;   //!
    TBranch        *b_ph2Seg_dirLoc_z;   //!
+   TBranch        *b_ph2Seg_posLoc_x_SL1;   //!
+   TBranch        *b_ph2Seg_posLoc_x_SL3;   //!
+   TBranch        *b_ph2Seg_posLoc_x_midPlane;   //!
    TBranch        *b_ph2Seg_posGlb_phi;   //!
    TBranch        *b_ph2Seg_posGlb_eta;   //!
    TBranch        *b_ph2Seg_dirGlb_phi;   //!
