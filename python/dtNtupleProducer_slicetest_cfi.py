@@ -18,8 +18,8 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph1BmtfInThTag  = cms.untracked.InputTag("none"),
 
                                   ph2TPGPhiHwTag  = cms.untracked.InputTag("dtAB7unpacker"),
-                                  ph2TPGPhiHbTag  = cms.untracked.InputTag("none"),
-                                  ph2TPGPhiAmTag  = cms.untracked.InputTag("none"),
+                                  ph2TPGPhiEmuHbTag  = cms.untracked.InputTag("none"),
+                                  ph2TPGPhiEmuAmTag  = cms.untracked.InputTag("none"),
 
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),        
                                   ph2DtSegmentTag = cms.untracked.InputTag("none"),

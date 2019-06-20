@@ -73,10 +73,27 @@ process.TFileService = cms.Service('TFileService',
 process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
+# process.DTGeometryESModule.applyAlignment = False
+# process.DTGeometryESModule.fromDDD = False
+
+process.load("Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi") 
+process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
+
+process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
+process.dtTriggerPhase2AmPrimitiveDigis = process.dtTriggerPhase2PrimitiveDigis.clone()
+
+process.load('L1Trigger.DTHoughTPG.DTTPG_cfi')
+
+process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
+process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
+process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
-process.p = cms.Path(process.dtNtupleProducer)
+process.p = cms.Path(process.CalibratedDigis
+                     + process.dtTriggerPhase2AmPrimitiveDigis
+                     + process.dtTriggerPhase2HbPrimitiveDigis
+                     + process.dtNtupleProducer)
 
 from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation, customiseForFakePhase2Info
 customiseForRunningOnMC(process,"p")

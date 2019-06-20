@@ -38,7 +38,11 @@ def customiseForPhase2Simulation(process) :
 
         process.dtNtupleProducer.ph1DtDigiTag = "simMuonDTDigis"
         process.dtNtupleProducer.ph1TwinMuxInTag = "simDtTriggerPrimitiveDigis"
+        process.dtNtupleProducer.ph1TwinMuxOutTag = "simDtTriggerPrimitiveDigis"
         process.dtNtupleProducer.ph1TwinMuxInThTag = "simDtTriggerPrimitiveDigis"
+
+        process.dtNtupleProducer.ph2TPGPhiEmuAmTag = "dtTriggerPhase2AmPrimitiveDigis"
+        process.dtNtupleProducer.ph2TPGPhiEmuHbTag = "dtTriggerPhase2HbPrimitiveDigis:MMTCHT:"
 
     return process
 
@@ -49,5 +53,7 @@ def customiseForFakePhase2Info(process) :
 
         process.dtNtupleProducer.ph2DtDigiTag = process.dtNtupleProducer.ph1DtDigiTag
         process.dtNtupleProducer.ph2DtSegmentTag = process.dtNtupleProducer.ph1DtSegmentTag
+        process.dtNtupleProducer.ph2TPGPhiHwTag = process.dtNtupleProducer.ph2TPGPhiEmuAmTag
+
 
     return process
