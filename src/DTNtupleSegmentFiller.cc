@@ -526,6 +526,9 @@ void DTNtupleSegmentFiller::fillPhiEmpty()
 {
 		
   m_seg2D_phi_nHits.push_back(0);
+  m_seg2D_phi_t0.push_back(DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL);
+  m_seg2D_phi_vDrift.push_back(DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL);
+  m_seg2D_phi_normChi2.push_back(DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL_POS);
 
   new ((*m_seg2D_phiHits_pos)[m_nSegments])        TVectorF(m_nullVecF);
   new ((*m_seg2D_phiHits_posCh)[m_nSegments])      TVectorF(m_nullVecF);
@@ -544,6 +547,7 @@ void DTNtupleSegmentFiller::fillZEmpty()
 {
 		
   m_seg2D_z_nHits.push_back(0);
+  m_seg2D_z_normChi2.push_back(DTNtupleBaseFiller::DEFAULT_DOUBLE_VAL_POS);
 
   new ((*m_seg2D_zHits_pos)[m_nSegments])        TVectorF(m_nullVecF);
   new ((*m_seg2D_zHits_posCh)[m_nSegments])      TVectorF(m_nullVecF);
