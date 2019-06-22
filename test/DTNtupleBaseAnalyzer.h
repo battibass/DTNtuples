@@ -168,6 +168,8 @@ public :
    vector<short>   *ltTwinMuxIn_quality;
    vector<int>     *ltTwinMuxIn_phi;
    vector<int>     *ltTwinMuxIn_phiB;
+   vector<float>   *ltTwinMuxIn_posLoc_x;
+   vector<float>   *ltTwinMuxIn_dirLoc_phi;
    vector<short>   *ltTwinMuxIn_BX;
    vector<short>   *ltTwinMuxIn_is2nd;
    UInt_t          ltTwinMuxOut_nTrigs;
@@ -178,6 +180,8 @@ public :
    vector<short>   *ltTwinMuxOut_rpcBit;
    vector<int>     *ltTwinMuxOut_phi;
    vector<int>     *ltTwinMuxOut_phiB;
+   vector<float>   *ltTwinMuxOut_posLoc_x;
+   vector<float>   *ltTwinMuxOut_dirLoc_phi;
    vector<short>   *ltTwinMuxOut_BX;
    vector<short>   *ltTwinMuxOut_is2nd;
    UInt_t          ltBmtfIn_nTrigs;
@@ -187,6 +191,8 @@ public :
    vector<short>   *ltBmtfIn_quality;
    vector<int>     *ltBmtfIn_phi;
    vector<int>     *ltBmtfIn_phiB;
+   vector<float>   *ltBmtfIn_posLoc_x;
+   vector<float>   *ltBmtfIn_dirLoc_phi;
    vector<short>   *ltBmtfIn_BX;
    vector<short>   *ltBmtfIn_is2nd;
    UInt_t          ltTwinMuxInTh_nTrigs;
@@ -211,6 +217,8 @@ public :
    vector<int>     *ph2TpgPhiHw_chi2;
    vector<int>     *ph2TpgPhiHw_phi;
    vector<int>     *ph2TpgPhiHw_phiB;
+   vector<float>   *ph2TpgPhiHw_posLoc_x;
+   vector<float>   *ph2TpgPhiHw_dirLoc_phi;
    vector<int>     *ph2TpgPhiHw_BX;
    vector<int>     *ph2TpgPhiHw_t0;
    vector<short>   *ph2TpgPhiHw_index;
@@ -224,6 +232,8 @@ public :
    vector<int>     *ph2TpgPhiEmuHb_chi2;
    vector<int>     *ph2TpgPhiEmuHb_phi;
    vector<int>     *ph2TpgPhiEmuHb_phiB;
+   vector<float>   *ph2TpgPhiEmuHb_posLoc_x;
+   vector<float>   *ph2TpgPhiEmuHb_dirLoc_phi;
    vector<int>     *ph2TpgPhiEmuHb_BX;
    vector<int>     *ph2TpgPhiEmuHb_t0;
    vector<short>   *ph2TpgPhiEmuHb_index;
@@ -237,6 +247,8 @@ public :
    vector<int>     *ph2TpgPhiEmuAm_chi2;
    vector<int>     *ph2TpgPhiEmuAm_phi;
    vector<int>     *ph2TpgPhiEmuAm_phiB;
+   vector<float>   *ph2TpgPhiEmuAm_posLoc_x;
+   vector<float>   *ph2TpgPhiEmuAm_dirLoc_phi;
    vector<int>     *ph2TpgPhiEmuAm_BX;
    vector<int>     *ph2TpgPhiEmuAm_t0;
    vector<short>   *ph2TpgPhiEmuAm_index;
@@ -384,6 +396,8 @@ public :
    TBranch        *b_ltTwinMuxIn_quality;   //!
    TBranch        *b_ltTwinMuxIn_phi;   //!
    TBranch        *b_ltTwinMuxIn_phiB;   //!
+   TBranch        *b_ltTwinMuxIn_posLoc_x;   //!
+   TBranch        *b_ltTwinMuxIn_dirLoc_phi;   //!
    TBranch        *b_ltTwinMuxIn_BX;   //!
    TBranch        *b_ltTwinMuxIn_is2nd;   //!
    TBranch        *b_ltTwinMuxOut_nTrigs;   //!
@@ -394,6 +408,8 @@ public :
    TBranch        *b_ltTwinMuxOut_rpcBit;   //!
    TBranch        *b_ltTwinMuxOut_phi;   //!
    TBranch        *b_ltTwinMuxOut_phiB;   //!
+   TBranch        *b_ltTwinMuxOut_posLoc_x;   //!
+   TBranch        *b_ltTwinMuxOut_dirLoc_phi;   //!
    TBranch        *b_ltTwinMuxOut_BX;   //!
    TBranch        *b_ltTwinMuxOut_is2nd;   //!
    TBranch        *b_ltBmtfIn_nTrigs;   //!
@@ -403,6 +419,8 @@ public :
    TBranch        *b_ltBmtfIn_quality;   //!
    TBranch        *b_ltBmtfIn_phi;   //!
    TBranch        *b_ltBmtfIn_phiB;   //!
+   TBranch        *b_ltBmtfIn_posLoc_x;   //!
+   TBranch        *b_ltBmtfIn_dirLoc_phi;   //!
    TBranch        *b_ltBmtfIn_BX;   //!
    TBranch        *b_ltBmtfIn_is2nd;   //!
    TBranch        *b_ltTwinMuxInTh_nTrigs;   //!
@@ -427,6 +445,8 @@ public :
    TBranch        *b_ph2TpgPhiHw_chi2;   //!
    TBranch        *b_ph2TpgPhiHw_phi;   //!
    TBranch        *b_ph2TpgPhiHw_phiB;   //!
+   TBranch        *b_ph2TpgPhiHw_posLoc_x;   //!
+   TBranch        *b_ph2TpgPhiHw_dirLoc_phi;   //!
    TBranch        *b_ph2TpgPhiHw_BX;   //!
    TBranch        *b_ph2TpgPhiHw_t0;   //!
    TBranch        *b_ph2TpgPhiHw_index;   //!
@@ -440,6 +460,8 @@ public :
    TBranch        *b_ph2TpgPhiEmuHb_chi2;   //!
    TBranch        *b_ph2TpgPhiEmuHb_phi;   //!
    TBranch        *b_ph2TpgPhiEmuHb_phiB;   //!
+   TBranch        *b_ph2TpgPhiEmuHb_posLoc_x;   //!
+   TBranch        *b_ph2TpgPhiEmuHb_dirLoc_phi;   //!
    TBranch        *b_ph2TpgPhiEmuHb_BX;   //!
    TBranch        *b_ph2TpgPhiEmuHb_t0;   //!
    TBranch        *b_ph2TpgPhiEmuHb_index;   //!
@@ -453,6 +475,8 @@ public :
    TBranch        *b_ph2TpgPhiEmuAm_chi2;   //!
    TBranch        *b_ph2TpgPhiEmuAm_phi;   //!
    TBranch        *b_ph2TpgPhiEmuAm_phiB;   //!
+   TBranch        *b_ph2TpgPhiEmuAm_posLoc_x;   //!
+   TBranch        *b_ph2TpgPhiEmuAm_dirLoc_phi;   //!
    TBranch        *b_ph2TpgPhiEmuAm_BX;   //!
    TBranch        *b_ph2TpgPhiEmuAm_t0;   //!
    TBranch        *b_ph2TpgPhiEmuAm_index;   //!

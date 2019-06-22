@@ -23,7 +23,7 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
 
  public:
 
-  enum class TriggerTag { HW = 0, HM, AM }; // CB check naming with Luigi
+  enum class TriggerTag { HW = 0, HB, AM };
 
   /// Constructor
   DTNtuplePh2TPGPhiFiller(edm::ConsumesCollector && collector,
@@ -80,6 +80,9 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
                               // 2048 corresponds to 1.4 rad
                               // 0 is for a segment from a prompt muon 
                               // with infinite pT (straight line)
+
+  std::vector<float> m_lt_posLoc_x; // position x in chamber local coordinates (cm)
+  std::vector<float> m_lt_dirLoc_phi; // direction phi angle in chamber local coordinates (deg)
 
   std::vector<int> m_lt_bx;  // BX : (short with a given range)
                              // ... // CB to be defined

@@ -60,4 +60,10 @@ void DTNtupleConfig::getES(const edm::EventSetup & environment)
   environment.get<MuonGeometryRecord>().get(m_dtGeometry);
   environment.get<GlobalTrackingGeometryRecord>().get(m_trackingGeometry);
 
+  edm::ESHandle<DTGeometry> dtIdealGeom; 
+  environment.get<MuonGeometryRecord>().get("idealForDigi",dtIdealGeom);
+
+  m_trigGeomUtils.reset();
+  m_trigGeomUtils = std::make_unique<DTTrigGeomUtils>(dtIdealGeom);
+
 }

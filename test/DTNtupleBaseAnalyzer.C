@@ -171,6 +171,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ltTwinMuxIn_quality = 0;
    ltTwinMuxIn_phi = 0;
    ltTwinMuxIn_phiB = 0;
+   ltTwinMuxIn_posLoc_x = 0;
+   ltTwinMuxIn_dirLoc_phi = 0;
    ltTwinMuxIn_BX = 0;
    ltTwinMuxIn_is2nd = 0;
    ltTwinMuxOut_wheel = 0;
@@ -180,6 +182,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ltTwinMuxOut_rpcBit = 0;
    ltTwinMuxOut_phi = 0;
    ltTwinMuxOut_phiB = 0;
+   ltTwinMuxOut_posLoc_x = 0;
+   ltTwinMuxOut_dirLoc_phi = 0;
    ltTwinMuxOut_BX = 0;
    ltTwinMuxOut_is2nd = 0;
    ltBmtfIn_wheel = 0;
@@ -188,6 +192,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ltBmtfIn_quality = 0;
    ltBmtfIn_phi = 0;
    ltBmtfIn_phiB = 0;
+   ltBmtfIn_posLoc_x = 0;
+   ltBmtfIn_dirLoc_phi = 0;
    ltBmtfIn_BX = 0;
    ltBmtfIn_is2nd = 0;
    ltTwinMuxInTh_wheel = 0;
@@ -209,6 +215,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiHw_chi2 = 0;
    ph2TpgPhiHw_phi = 0;
    ph2TpgPhiHw_phiB = 0;
+   ph2TpgPhiHw_posLoc_x = 0;
+   ph2TpgPhiHw_dirLoc_phi = 0;
    ph2TpgPhiHw_BX = 0;
    ph2TpgPhiHw_t0 = 0;
    ph2TpgPhiHw_index = 0;
@@ -221,6 +229,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiEmuHb_chi2 = 0;
    ph2TpgPhiEmuHb_phi = 0;
    ph2TpgPhiEmuHb_phiB = 0;
+   ph2TpgPhiEmuHb_posLoc_x = 0;
+   ph2TpgPhiEmuHb_dirLoc_phi = 0;
    ph2TpgPhiEmuHb_BX = 0;
    ph2TpgPhiEmuHb_t0 = 0;
    ph2TpgPhiEmuHb_index = 0;
@@ -233,6 +243,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2TpgPhiEmuAm_chi2 = 0;
    ph2TpgPhiEmuAm_phi = 0;
    ph2TpgPhiEmuAm_phiB = 0;
+   ph2TpgPhiEmuAm_posLoc_x = 0;
+   ph2TpgPhiEmuAm_dirLoc_phi = 0;
    ph2TpgPhiEmuAm_BX = 0;
    ph2TpgPhiEmuAm_t0 = 0;
    ph2TpgPhiEmuAm_index = 0;
@@ -385,6 +397,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ltTwinMuxIn_quality", &ltTwinMuxIn_quality, &b_ltTwinMuxIn_quality);
    fChain->SetBranchAddress("ltTwinMuxIn_phi", &ltTwinMuxIn_phi, &b_ltTwinMuxIn_phi);
    fChain->SetBranchAddress("ltTwinMuxIn_phiB", &ltTwinMuxIn_phiB, &b_ltTwinMuxIn_phiB);
+   fChain->SetBranchAddress("ltTwinMuxIn_posLoc_x", &ltTwinMuxIn_posLoc_x, &b_ltTwinMuxIn_posLoc_x);
+   fChain->SetBranchAddress("ltTwinMuxIn_dirLoc_phi", &ltTwinMuxIn_dirLoc_phi, &b_ltTwinMuxIn_dirLoc_phi);
    fChain->SetBranchAddress("ltTwinMuxIn_BX", &ltTwinMuxIn_BX, &b_ltTwinMuxIn_BX);
    fChain->SetBranchAddress("ltTwinMuxIn_is2nd", &ltTwinMuxIn_is2nd, &b_ltTwinMuxIn_is2nd);
    fChain->SetBranchAddress("ltTwinMuxOut_nTrigs", &ltTwinMuxOut_nTrigs, &b_ltTwinMuxOut_nTrigs);
@@ -395,6 +409,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ltTwinMuxOut_rpcBit", &ltTwinMuxOut_rpcBit, &b_ltTwinMuxOut_rpcBit);
    fChain->SetBranchAddress("ltTwinMuxOut_phi", &ltTwinMuxOut_phi, &b_ltTwinMuxOut_phi);
    fChain->SetBranchAddress("ltTwinMuxOut_phiB", &ltTwinMuxOut_phiB, &b_ltTwinMuxOut_phiB);
+   fChain->SetBranchAddress("ltTwinMuxOut_posLoc_x", &ltTwinMuxOut_posLoc_x, &b_ltTwinMuxOut_posLoc_x);
+   fChain->SetBranchAddress("ltTwinMuxOut_dirLoc_phi", &ltTwinMuxOut_dirLoc_phi, &b_ltTwinMuxOut_dirLoc_phi);
    fChain->SetBranchAddress("ltTwinMuxOut_BX", &ltTwinMuxOut_BX, &b_ltTwinMuxOut_BX);
    fChain->SetBranchAddress("ltTwinMuxOut_is2nd", &ltTwinMuxOut_is2nd, &b_ltTwinMuxOut_is2nd);
    fChain->SetBranchAddress("ltBmtfIn_nTrigs", &ltBmtfIn_nTrigs, &b_ltBmtfIn_nTrigs);
@@ -404,6 +420,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ltBmtfIn_quality", &ltBmtfIn_quality, &b_ltBmtfIn_quality);
    fChain->SetBranchAddress("ltBmtfIn_phi", &ltBmtfIn_phi, &b_ltBmtfIn_phi);
    fChain->SetBranchAddress("ltBmtfIn_phiB", &ltBmtfIn_phiB, &b_ltBmtfIn_phiB);
+   fChain->SetBranchAddress("ltBmtfIn_posLoc_x", &ltBmtfIn_posLoc_x, &b_ltBmtfIn_posLoc_x);
+   fChain->SetBranchAddress("ltBmtfIn_dirLoc_phi", &ltBmtfIn_dirLoc_phi, &b_ltBmtfIn_dirLoc_phi);
    fChain->SetBranchAddress("ltBmtfIn_BX", &ltBmtfIn_BX, &b_ltBmtfIn_BX);
    fChain->SetBranchAddress("ltBmtfIn_is2nd", &ltBmtfIn_is2nd, &b_ltBmtfIn_is2nd);
    fChain->SetBranchAddress("ltTwinMuxInTh_nTrigs", &ltTwinMuxInTh_nTrigs, &b_ltTwinMuxInTh_nTrigs);
@@ -428,6 +446,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiHw_chi2", &ph2TpgPhiHw_chi2, &b_ph2TpgPhiHw_chi2);
    fChain->SetBranchAddress("ph2TpgPhiHw_phi", &ph2TpgPhiHw_phi, &b_ph2TpgPhiHw_phi);
    fChain->SetBranchAddress("ph2TpgPhiHw_phiB", &ph2TpgPhiHw_phiB, &b_ph2TpgPhiHw_phiB);
+   fChain->SetBranchAddress("ph2TpgPhiHw_posLoc_x", &ph2TpgPhiHw_posLoc_x, &b_ph2TpgPhiHw_posLoc_x);
+   fChain->SetBranchAddress("ph2TpgPhiHw_dirLoc_phi", &ph2TpgPhiHw_dirLoc_phi, &b_ph2TpgPhiHw_dirLoc_phi);
    fChain->SetBranchAddress("ph2TpgPhiHw_BX", &ph2TpgPhiHw_BX, &b_ph2TpgPhiHw_BX);
    fChain->SetBranchAddress("ph2TpgPhiHw_t0", &ph2TpgPhiHw_t0, &b_ph2TpgPhiHw_t0);
    fChain->SetBranchAddress("ph2TpgPhiHw_index", &ph2TpgPhiHw_index, &b_ph2TpgPhiHw_index);
@@ -441,6 +461,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_chi2", &ph2TpgPhiEmuHb_chi2, &b_ph2TpgPhiEmuHb_chi2);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_phi", &ph2TpgPhiEmuHb_phi, &b_ph2TpgPhiEmuHb_phi);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_phiB", &ph2TpgPhiEmuHb_phiB, &b_ph2TpgPhiEmuHb_phiB);
+   fChain->SetBranchAddress("ph2TpgPhiEmuHb_posLoc_x", &ph2TpgPhiEmuHb_posLoc_x, &b_ph2TpgPhiEmuHb_posLoc_x);
+   fChain->SetBranchAddress("ph2TpgPhiEmuHb_dirLoc_phi", &ph2TpgPhiEmuHb_dirLoc_phi, &b_ph2TpgPhiEmuHb_dirLoc_phi);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_BX", &ph2TpgPhiEmuHb_BX, &b_ph2TpgPhiEmuHb_BX);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_t0", &ph2TpgPhiEmuHb_t0, &b_ph2TpgPhiEmuHb_t0);
    fChain->SetBranchAddress("ph2TpgPhiEmuHb_index", &ph2TpgPhiEmuHb_index, &b_ph2TpgPhiEmuHb_index);
@@ -454,6 +476,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_chi2", &ph2TpgPhiEmuAm_chi2, &b_ph2TpgPhiEmuAm_chi2);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_phi", &ph2TpgPhiEmuAm_phi, &b_ph2TpgPhiEmuAm_phi);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_phiB", &ph2TpgPhiEmuAm_phiB, &b_ph2TpgPhiEmuAm_phiB);
+   fChain->SetBranchAddress("ph2TpgPhiEmuAm_posLoc_x", &ph2TpgPhiEmuAm_posLoc_x, &b_ph2TpgPhiEmuAm_posLoc_x);
+   fChain->SetBranchAddress("ph2TpgPhiEmuAm_dirLoc_phi", &ph2TpgPhiEmuAm_dirLoc_phi, &b_ph2TpgPhiEmuAm_dirLoc_phi);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_BX", &ph2TpgPhiEmuAm_BX, &b_ph2TpgPhiEmuAm_BX);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_t0", &ph2TpgPhiEmuAm_t0, &b_ph2TpgPhiEmuAm_t0);
    fChain->SetBranchAddress("ph2TpgPhiEmuAm_index", &ph2TpgPhiEmuAm_index, &b_ph2TpgPhiEmuAm_index);

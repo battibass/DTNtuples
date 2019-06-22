@@ -29,7 +29,7 @@ DTNtuplePh2TPGPhiFiller::DTNtuplePh2TPGPhiFiller(edm::ConsumesCollector && colle
     case TriggerTag::HW :
       iTag = m_config->m_inputTags["ph2TPGPhiHwTag"];
       break;
-    case TriggerTag::HM :
+    case TriggerTag::HB :
       iTag = m_config->m_inputTags["ph2TPGPhiEmuHbTag"];
       break;
     case TriggerTag::AM :
@@ -63,6 +63,9 @@ void DTNtuplePh2TPGPhiFiller::initialize()
   m_tree->Branch((m_label + "_phi").c_str(),  &m_lt_phi);
   m_tree->Branch((m_label + "_phiB").c_str(), &m_lt_phiB);
 
+  m_tree->Branch((m_label + "_posLoc_x").c_str(),  &m_lt_posLoc_x);
+  m_tree->Branch((m_label + "_dirLoc_phi").c_str(), &m_lt_dirLoc_phi);
+
   m_tree->Branch((m_label + "_BX").c_str(),    &m_lt_bx);
   m_tree->Branch((m_label + "_t0").c_str(),    &m_lt_t0);
 
@@ -87,6 +90,9 @@ void DTNtuplePh2TPGPhiFiller::clear()
 
   m_lt_phi.clear();
   m_lt_phiB.clear();
+
+  m_lt_posLoc_x.clear();
+  m_lt_dirLoc_phi.clear();
 
   m_lt_bx.clear();
   m_lt_t0.clear();
@@ -121,6 +127,13 @@ void DTNtuplePh2TPGPhiFiller::fill(const edm::Event & ev)
 	  m_lt_phi.push_back(trig.phi());
 	  m_lt_phiB.push_back(trig.phiBend());
 	  
+	  m_lt_posLoc_x.push_back(m_tag == TriggerTag::HB ? 
+				  m_config->m_trigGeomUtils->trigPosCHT(&trig) :
+				  m_config->m_trigGeomUtils->trigPosAM(&trig)  );
+	  m_lt_dirLoc_phi.push_back(m_tag == TriggerTag::HB ? 
+				    m_config->m_trigGeomUtils->trigDirCHT(&trig) :
+				    m_config->m_trigGeomUtils->trigDirAM(&trig)  );
+
 	  m_lt_bx.push_back(trig.bxNum());
 	  m_lt_t0.push_back(trig.t0());
 	  
