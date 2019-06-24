@@ -10,7 +10,9 @@ In the present days this code is evolving fast, hence the installation recipe ma
 cmsrel CMSSW_10_6_0
 cd CMSSW_10_6_0/src/
 cmsenv
-git cms-merge-topic battibass:phase2UnpackerFromOscar_10_6_X
+git cms-merge-topic battibass:phase2UnpackerFromOscar_10_6_X # phase-2 primitives data format and phase-2 unpacker
+git cms-merge-topic -u pozzobon:DTHough_NP_20190619_106X_noL1T # MTT-CHT emulator
+git cms-merge-topic -u dtp2-tpg-am:AM_106X_dev # AM emulator
 git clone https://github.com/battibass/DTNtuples.git -b simulation_workflows DTDPGAnalysis/DTNtuples
 scramv1 b -j 5
 ```
