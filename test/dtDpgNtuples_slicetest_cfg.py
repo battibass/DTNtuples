@@ -19,10 +19,16 @@ options.register('nEvents',
                  VarParsing.VarParsing.varType.int,
                  "Maximum number of processed events")
 
-options.register('inputFolder',
-                 '/eos/cms/store/data/Commissioning2019/MiniDaq/RAW/v1/000/328/798/00000/', #default value
+options.register('inputFile',
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/run329614_streamDQM_fu-c2f13-09-03.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
+                 "The input file to be processed")
+
+options.register('inputFolder',
+                 '', #default value
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
 
 options.register('tTrigFile',
@@ -65,13 +71,23 @@ if options.tTrigFile != '' :
 
 process.source = cms.Source("PoolSource",
                             
-        fileNames = cms.untracked.vstring(),
+        fileNames = cms.untracked.vstring(""),
         secondaryFileNames = cms.untracked.vstring()
 
 )
 
-files = subprocess.check_output(["ls", options.inputFolder])
-process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
+if (options.inputFile == '' and options.inputFolder == '') or \
+   (options.inputFile != '' and options.inputFolder != '') :
+
+    print "[dtDpgNtuples_slicetest_cfg.py]: inputFile and inputFolder can be non-null only one at a time. quitting."
+    sys.exit(999)
+    
+if options.inputFile != "" :
+    process.source.fileNames = cms.untracked.vstring("file://" + options.inputFile)
+
+if options.inputFolder != "" :
+    files = subprocess.check_output(["ls", options.inputFolder])
+    process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
 
 process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
