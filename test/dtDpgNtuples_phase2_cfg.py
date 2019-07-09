@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '103X_dataRun2_Prompt_v3', #default value
+                 '106X_upgrade2018_realistic_v4', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -20,7 +20,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('inputFolder',
-                 '/eos/cms/store/data/Run2018D/SingleMuon/RAW-RECO/ZMu-PromptReco-v2/000/321/475/00000/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
@@ -32,19 +32,10 @@ options.register('secondaryInputFolder',
                  "EOS folder with input files for secondary files")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_3_3_ZMuSkim_2018D.root', #default value
+                 './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
-
-options.register('runOnMC',
-                 False, #default value
-                 VarParsing.VarParsing.multiplicity.singleton,
-                 VarParsing.VarParsing.varType.bool,
-                 "Apply customizations to run on MC")
-
-
-
 
 options.parseArguments()
 
@@ -82,17 +73,33 @@ process.TFileService = cms.Service('TFileService',
 process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
+# process.DTGeometryESModule.applyAlignment = False
+# process.DTGeometryESModule.fromDDD = False
+
+process.load("Phase2L1Trigger.CalibratedDigis.CalibratedDigis_cfi") 
+process.load("L1Trigger.DTPhase2Trigger.dtTriggerPhase2PrimitiveDigis_cfi")
+
+process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
+process.dtTriggerPhase2AmPrimitiveDigis = process.dtTriggerPhase2PrimitiveDigis.clone()
+
+process.load('L1Trigger.DTHoughTPG.DTTPG_cfi')
+
+process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
+process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
+process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
-process.p = cms.Path(process.muonDTDigis 
-                     + process.bmtfDigis
-                     + process.twinMuxStage2Digis
-                     + process.scalersRawToDigi
+process.p = cms.Path(process.CalibratedDigis
+                     + process.dtTriggerPhase2AmPrimitiveDigis
+                     + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
-if options.runOnMC :
-    from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC
-    customiseForRunningOnMC(process,"p")
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation, customiseForFakePhase2Info
+customiseForRunningOnMC(process,"p")
+customiseForPhase2Simulation(process)
+customiseForFakePhase2Info(process)
+
+
 
 

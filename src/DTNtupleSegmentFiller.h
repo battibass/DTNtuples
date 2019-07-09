@@ -92,16 +92,24 @@ class DTNtupleSegmentFiller : public DTNtupleBaseFiller
   std::vector<float> m_seg4D_dirLoc_y; // direction y in local coordinates (float)
   std::vector<float> m_seg4D_dirLoc_z; // direction z in local coordinates (float)
 
+  std::vector<float> m_seg4D_posLoc_x_SL1; // position x at SL1 in local coordinates (float in cm)
+  std::vector<float> m_seg4D_posLoc_x_SL3; // position x at SL3 in local coordinates (float in cm)
+  std::vector<float> m_seg4D_posLoc_x_midPlane; // position x at SL1 - SL3 mid plane in local coordinates (float in cm)
+
   std::vector<float> m_seg4D_posGlb_phi; // position phi in global coordinates (float in radians [-pi:pi])
   std::vector<float> m_seg4D_posGlb_eta; // position eta in global coordinates (float)
   std::vector<float> m_seg4D_dirGlb_phi; // position phi in global coordinates (float in radians [-pi:pi])
   std::vector<float> m_seg4D_dirGlb_eta; // position eta in global coordinates (float)
 
   // TClones arrays index is layer [0:3] = SL phi 1 [4:7] = SL theta [8:11] = SL phi 2
-  TClonesArray *m_seg4D_hitsExpPos;  // expected position of segment extrapolated 
-                                     // to a given layer (float, local layer x coordinates, cm)
-  TClonesArray *m_seg4D_hitsExpWire; // expected wire crossed by segment extrapolated
-                                     // to a given layer (int, range depends on chamber size)
+  TClonesArray *m_seg4D_hitsExpPos;     // expected position of segment extrapolated 
+                                        // to a given layer in layer local coordinates
+                                        // (float, local layer x coordinates, cm)
+  TClonesArray *m_seg4D_hitsExpPosCh;   // expected position of segment extrapolated 
+                                        // to a given layer in chamber local coordinates
+                                        // (float, local chamber x/y coordinates, cm)
+  TClonesArray *m_seg4D_hitsExpWire;    // expected wire crossed by segment extrapolated
+                                        // to a given layer (int, range depends on chamber size)
 
   std::vector<float> m_seg2D_phi_t0;       // t0 from segments with phi view (float in ns)
   std::vector<float> m_seg2D_phi_vDrift;   // v_drift from segments with phi view (float CB relativa a DB?)
@@ -114,7 +122,8 @@ class DTNtupleSegmentFiller : public DTNtupleBaseFiller
   TClonesArray *m_seg2D_phiHits_posCh;      // local position of a hit in chamber local coordinates (float, x coordinate)
   TClonesArray *m_seg2D_phiHits_posErr;     // local position error of a hit in layer local coordinates (float, xx component of error matrix)
   TClonesArray *m_seg2D_phiHits_side;       // is hit on L/R side of a cell wire (float, 1/2 is R/L) 
-  TClonesArray *m_seg2D_phiHits_wire;       // hit wire number (float, [1:X] X as for digi)
+  TClonesArray *m_seg2D_phiHits_wire;       // hit wire number (int, [1:X] X as for digi)
+  TClonesArray *m_seg2D_phiHits_wirePos;    // hit wire position (float, x coordinate in layer RF)
   TClonesArray *m_seg2D_phiHits_layer;      // hit layer number (float, [1:4] as for digi)
   TClonesArray *m_seg2D_phiHits_superLayer; // hit SL number (float, [1 or 3] the two phi SLs)
   TClonesArray *m_seg2D_phiHits_time;       // digi time (float in ns, pedestal not subtracted) 
@@ -128,7 +137,8 @@ class DTNtupleSegmentFiller : public DTNtupleBaseFiller
   TClonesArray *m_seg2D_zHits_posCh;     // local position of a hit in chamber local coordinates (float, y coordinate)
   TClonesArray *m_seg2D_zHits_posErr;    // local position error of a hit in layer local coordinates (float, xx component of error matrix)
   TClonesArray *m_seg2D_zHits_side;      // is hit on L/R side of a cell wire (float, 1/2 is R/L)
-  TClonesArray *m_seg2D_zHits_wire;      // hit wire number (float, [1:X] X as for digi) 
+  TClonesArray *m_seg2D_zHits_wire;      // hit wire number (int, [1:X] X as for digi) 
+  TClonesArray *m_seg2D_zHits_wirePos;   // hit wire position (float, x coordinate in layer RF)
   TClonesArray *m_seg2D_zHits_layer;     // hit layer number (float, [1:4] as for digi)
   TClonesArray *m_seg2D_zHits_time;      // digi time (float in ns, pedestal not subtracted)
   TClonesArray *m_seg2D_zHits_timeCali;  // digi time (float in ns, pedestal subtracted) 

@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '103X_dataRun2_Prompt_v3', #default value
+                 '106X_dataRun2_v10', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -19,14 +19,26 @@ options.register('nEvents',
                  VarParsing.VarParsing.varType.int,
                  "Maximum number of processed events")
 
-options.register('inputFolder',
-                 '/eos/cms/store/data/Commissioning2019/MiniDaq/RAW/v1/000/328/798/00000/', #default value
+options.register('inputFile',
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/root/run329614_streamDQM_fu-c2f13-09-03.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
+                 "The input file to be processed")
+
+options.register('inputFolder',
+                 '', #default value
+                  VarParsing.VarParsing.multiplicity.singleton,
+                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
 
+options.register('tTrigFile',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "File with customised DT tTrigs, used only if non ''")
+
 options.register('ntupleName',
-                 './DTDPGNtuple_10_3_3_SX5.root', #default value
+                 './DTDPGNtuple_10_6_0_SX5.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -47,15 +59,35 @@ process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condD
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
+if options.tTrigFile != '' :
+
+    process.GlobalTag.toGet = cms.VPSet(
+        cms.PSet(record = cms.string("DTTtrigRcd"),
+                 tag = cms.string("ttrig"),
+                 connect = cms.string("sqlite_file:" + options.tTrigFile),
+                 label = cms.untracked.string("cosmics")
+                 )
+        )
+
 process.source = cms.Source("PoolSource",
                             
-        fileNames = cms.untracked.vstring(),
+        fileNames = cms.untracked.vstring(""),
         secondaryFileNames = cms.untracked.vstring()
 
 )
 
-files = subprocess.check_output(["ls", options.inputFolder])
-process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
+if (options.inputFile == '' and options.inputFolder == '') or \
+   (options.inputFile != '' and options.inputFolder != '') :
+
+    print "[dtDpgNtuples_slicetest_cfg.py]: inputFile and inputFolder can be non-null only one at a time. quitting."
+    sys.exit(999)
+    
+if options.inputFile != "" :
+    process.source.fileNames = cms.untracked.vstring("file://" + options.inputFile)
+
+if options.inputFolder != "" :
+    files = subprocess.check_output(["ls", options.inputFolder])
+    process.source.fileNames = ["file://" + options.inputFolder + "/" + f for f in files.split()]
 
 process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
@@ -66,10 +98,14 @@ process.load("Configuration.StandardSequences.MagneticField_cff")
 
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
 process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
+
+process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
+                     + process.dtlocalrecoT0Seg
                      + process.dtNtupleProducer)
 
 

@@ -12,7 +12,6 @@
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBaseFiller.h"
 
-// #include "DataFormats/DTDigi/interface/DTDigi.h" CB
 #include "DataFormats/DTDigi/interface/DTDigiCollection.h"
 
 #include "FWCore/Framework/interface/ConsumesCollector.h"

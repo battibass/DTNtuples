@@ -62,6 +62,9 @@ void DTNtupleTPGPhiFiller::initialize()
   m_tree->Branch((m_label + "_phi").c_str(),  &m_lt_phi);
   m_tree->Branch((m_label + "_phiB").c_str(), &m_lt_phiB);
 
+  m_tree->Branch((m_label + "_posLoc_x").c_str(),  &m_lt_posLoc_x);
+  m_tree->Branch((m_label + "_dirLoc_phi").c_str(), &m_lt_dirLoc_phi);
+
   m_tree->Branch((m_label + "_BX").c_str(),    &m_lt_bx);
   m_tree->Branch((m_label + "_is2nd").c_str(), &m_lt_is2nd);
   
@@ -83,6 +86,9 @@ void DTNtupleTPGPhiFiller::clear()
 
   m_lt_phi.clear();
   m_lt_phiB.clear();
+
+  m_lt_posLoc_x.clear();
+  m_lt_dirLoc_phi.clear();
 
   m_lt_bx.clear();
   m_lt_is2nd.clear();
@@ -114,6 +120,9 @@ void DTNtupleTPGPhiFiller::fill(const edm::Event & ev)
 
 	      m_lt_phi.push_back(trig.phi());
 	      m_lt_phiB.push_back(trig.phiB());
+
+	      m_lt_posLoc_x.push_back(m_config->m_trigGeomUtils->trigPos(&trig));
+	      m_lt_dirLoc_phi.push_back(m_config->m_trigGeomUtils->trigDir(&trig));
 	  
 	      m_lt_bx.push_back(trig.bxNum() - (m_tag == TriggerTag::TM_IN && trig.Ts2Tag() ? 1 : 0));
 	      m_lt_is2nd.push_back(trig.Ts2Tag());

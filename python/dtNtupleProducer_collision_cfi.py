@@ -1,6 +1,12 @@
 import FWCore.ParameterSet.Config as cms
 
 dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
+                                  genPartTag = cms.untracked.InputTag("none"),
+
+                                  puInfoTag = cms.untracked.InputTag("none"),
+                                  lumiScalerTag = cms.untracked.InputTag("scalersRawToDigi"),
+                                  primaryVerticesTag = cms.untracked.InputTag("offlinePrimaryVertices"),
+
                                   ph1DtDigiTag = cms.untracked.InputTag("muonDTDigis"),
                                   ph2DtDigiTag = cms.untracked.InputTag("none"),
 
@@ -12,8 +18,8 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph1BmtfInThTag  = cms.untracked.InputTag("bmtfDigis"),
 
                                   ph2TPGPhiHwTag  = cms.untracked.InputTag("none"),
-                                  ph2TPGPhiHbTag  = cms.untracked.InputTag("none"),
-                                  ph2TPGPhiAmTag  = cms.untracked.InputTag("none"),
+                                  ph2TPGPhiEmuHbTag  = cms.untracked.InputTag("none"),
+                                  ph2TPGPhiEmuAmTag  = cms.untracked.InputTag("none"),
 
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),        
                                   ph2DtSegmentTag = cms.untracked.InputTag("none"),

@@ -82,6 +82,9 @@ class DTNtupleTPGPhiFiller : public DTNtupleBaseFiller
                               // 512 correstpond to 1 rad
                               // 0 is a muon with infinite pT (straight line)
 
+  std::vector<float> m_lt_posLoc_x; // position x in chamber local coordinates (cm)
+  std::vector<float> m_lt_dirLoc_phi; // direction phi angle in chamber local coordinates (deg)
+
   std::vector<short> m_lt_bx;    // BX : (short with a given range)
                                  // BX = 0 is the one where the event is collected
                                  // TwinMux range [X:Y] // CB ask Luigi

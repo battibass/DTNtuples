@@ -19,6 +19,7 @@
 #include "Geometry/CommonDetUnit/interface/GlobalTrackingGeometry.h"
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
 
+#include "DTDPGAnalysis/DTNtuples/src/DTTrigGeomUtils.h"
 
 #include <map>
 #include <string>
@@ -46,6 +47,9 @@ class DTNtupleConfig
 
   /// The class to handle DT trigger time pedestals
   DTTTrigBaseSync * m_dtSync; // CB find a way to handle this with a smart pointer
+
+  /// The class to perform DT local trigger coordinate conversions
+  std::unique_ptr<DTTrigGeomUtils> m_trigGeomUtils;
 
   /// Handle to the tracking geometry
   edm::ESHandle<GlobalTrackingGeometry> m_trackingGeometry;

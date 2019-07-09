@@ -23,7 +23,7 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
 
  public:
 
-  enum class TriggerTag { HW = 0, HM, AM }; // CB check naming with Luigi
+  enum class TriggerTag { HW = 0, HB, AM };
 
   /// Constructor
   DTNtuplePh2TPGPhiFiller(edm::ConsumesCollector && collector,
@@ -58,11 +58,14 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
   unsigned int m_nTrigs; // the # of digis (size of all following vectors)
 
   std::vector<short> m_lt_wheel;   // wheel (short in [-2:2] range)
-  std::vector<short> m_lt_sector;  // sector (short in [1:12] range) // CB to be defined
+  std::vector<short> m_lt_sector;  // sector (short in [1:12] range)
   std::vector<short> m_lt_station; // station (short in [1:4] range)
 
   std::vector<short> m_lt_quality; // quality (short in [X:Y] range)
                                    // ... // CB to be defined
+
+  std::vector<short> m_lt_superLayer; // superlayer (short in [X:Y] range)
+                                      // ... // CB to be defined
 
   std::vector<int> m_lt_chi2; // chi2 (int in [X:Y] range)
                               // ... // CB to be defined
@@ -71,11 +74,15 @@ class DTNtuplePh2TPGPhiFiller : public DTNtupleBaseFiller
                                    // ... // CB to be defined
 
   std::vector<int> m_lt_phi;  // phi : (int with a given scale)
-                              // 4096 correstpond to 1 rad // CB ask Luigi
-                              // 0 is @ (sector - 1) * 30 deg in global CMS phi (TwinMux)
+                              // 65536 corresponds to 0.8 rad
+                              // 0 is @ (sector - 1) * 30 deg in global CMS phi
   std::vector<int> m_lt_phiB; // phi bending : (int with a given scale)
-                              // 512 correstpond to 1 rad // CB ask Luigi
-                              // 0 is a muon with infinite pT (straight line)
+                              // 2048 corresponds to 1.4 rad
+                              // 0 is for a segment from a prompt muon 
+                              // with infinite pT (straight line)
+
+  std::vector<float> m_lt_posLoc_x; // position x in chamber local coordinates (cm)
+  std::vector<float> m_lt_dirLoc_phi; // direction phi angle in chamber local coordinates (deg)
 
   std::vector<int> m_lt_bx;  // BX : (short with a given range)
                              // ... // CB to be defined
