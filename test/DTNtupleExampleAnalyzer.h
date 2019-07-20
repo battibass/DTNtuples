@@ -26,9 +26,9 @@ class DTNtupleExampleAnalyzer : public DTNtupleBaseAnalyzer
 
  protected:
 
-  void book();
-  void fill();
-  void endJob();
+  void virtual book() override;
+  void virtual fill() override;
+  void virtual endJob() override;
   
   TFile m_outFile;
   

@@ -488,6 +488,12 @@ public :
    virtual void     Init(TTree *tree);
    virtual void     Loop();
    virtual Bool_t   Notify();
+
+ protected:
+
+   virtual void book() { };
+   virtual void fill() { };
+   virtual void endJob() { };
   
    template<typename T> T getXY(TClonesArray * arr, int x, int y) 
    { 

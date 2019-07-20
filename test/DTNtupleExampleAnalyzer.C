@@ -50,7 +50,7 @@ void DTNtupleExampleAnalyzer::book()
 
   m_plots["hTimeBox"] = new TH1F("hTimeBox",
 				 "Example time box; time (ns); entries/5 ns",
-				 250,0.,1250.); 
+				 1000,0.,5000.); 
 }
 
 void DTNtupleExampleAnalyzer::fill()
