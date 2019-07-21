@@ -88,16 +88,15 @@ process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
 process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
 process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
 
-process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
+process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
 process.p = cms.Path(process.CalibratedDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
-from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForPhase2Simulation, customiseForFakePhase2Info
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForFakePhase2Info
 customiseForRunningOnMC(process,"p")
-customiseForPhase2Simulation(process)
 customiseForFakePhase2Info(process)
 
 
