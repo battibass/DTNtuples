@@ -42,7 +42,7 @@ DTTrigGeomUtils::DTTrigGeomUtils(ESHandle<DTGeometry> muonGeom, bool dirInDeg) :
       const DTSuperLayer *sl3 = chamb->superLayer(DTSuperLayerId(chId,3));
       zsl1_[ist-1]=chamb->surface().toLocal(sl1->position()).z();
       zsl3_[ist-1]=chamb->surface().toLocal(sl3->position()).z();
-      zcn_[ist-1] = -.5*(zsl1_[ist-1] + zsl3_[ist-1]);
+      zcn_[ist-1] = 0.5*(zsl1_[ist-1] + zsl3_[ist-1]);
       //std::cout<<"Station "<<ist<<" zsl1="<<zsl1_[ist-1]<<" zsl3="<<zsl3_[ist-1]<<" zmid="<<zcn_[ist-1]<<std::endl;
   }
 
