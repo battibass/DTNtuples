@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '106X_upgrade2018_realistic_v4', #default value
+                 '106X_upgrade2023_realistic_v3', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -20,7 +20,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('inputFolder',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/TriggerSimulation/SamplesReco/SingleMu_FlatPt-2to100/Version_10_5_0/', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/L1T_TDR/', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files")
@@ -70,7 +70,8 @@ process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
     )
 
-process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
+process.load('Configuration.Geometry.GeometryExtended2023D41Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2023D41_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 # process.DTGeometryESModule.applyAlignment = False
@@ -88,9 +89,14 @@ process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
 process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
 process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
 
+process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
+process.dt1DRecHits.dtDigiLabel = "simMuonDTDigis"
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
-process.p = cms.Path(process.CalibratedDigis
+process.p = cms.Path(process.dt1DRecHits
+                     + process.dt4DSegments
+                     + process.CalibratedDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
