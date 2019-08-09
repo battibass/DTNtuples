@@ -31,6 +31,18 @@ options.register('secondaryInputFolder',
                  VarParsing.VarParsing.varType.string,
                  "EOS folder with input files for secondary files")
 
+options.register('applySegmentAgeing',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If True applies ageing to RECO segments")
+
+options.register('applyTriggerAgeing',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If True applies ageing to trigger emulators")
+
 options.register('ntupleName',
                  './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -101,7 +113,8 @@ process.p = cms.Path(process.dt1DRecHits
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
-from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForFakePhase2Info
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForFakePhase2Info, customiseForAgeing
+customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing)
 customiseForRunningOnMC(process,"p")
 customiseForFakePhase2Info(process)
 

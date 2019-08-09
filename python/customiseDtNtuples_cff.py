@@ -57,3 +57,37 @@ def customiseForFakePhase2Info(process) :
 
 
     return process
+
+def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing) :
+
+    if segmentAgeing or triggerAgeing :
+
+        if hasattr(process,"dt1DRecHits") :
+            print "[customiseForAgeing]: prepending ageing before dt1DRecHits and adding ageing to RandomNumberGeneratorService"
+
+            from SimMuon.DTDigitizer.dtChamberMasker_cfi import dtChamberMasker as _dtChamberMasker
+
+            process.agedDtDigis = _dtChamberMasker.clone()
+
+            getattr(process,pathName).replace(process.dt1DRecHits,
+                                              process.agedDtDigis + process.dt1DRecHits)
+
+            if hasattr(process,"RandomNumberGeneratorService") :
+                process.RandomNumberGeneratorService.agedDtDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                             engineName = cms.untracked.string('TRandom3') )
+            else :
+                process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                                    agedDtDigiss = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                                             engineName = cms.untracked.string('TRandom3') )
+                )
+
+    if segmentAgeing :
+        print "[customiseForAgeing]: switching dt1DRecHits input to agedDtDigis"
+        process.dt1DRecHits.dtDigiLabel = "agedDtDigis"
+
+    if triggerAgeing :
+        print "[customiseForAgeing]: switching emulatros input to agedDtDigis"
+        process.CalibratedDigis.dtDigiTag = "agedDtDigis"
+        
+
+    return process
