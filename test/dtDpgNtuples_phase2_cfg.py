@@ -43,6 +43,12 @@ options.register('applyTriggerAgeing',
                  VarParsing.VarParsing.varType.bool,
                  "If True applies ageing to trigger emulators")
 
+options.register('ageingInput',
+                 '', #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.string,
+                 "Input with customised ageing, used only if non ''")
+
 options.register('ntupleName',
                  './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -63,6 +69,14 @@ process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(options.nEven
 process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
+
+if options.ageingInput != "" :
+    process.GlobalTag.toGet = cms.VPSet()
+    process.GlobalTag.toGet.append(cms.PSet(record  = cms.string("MuonSystemAgingRcd"),
+                                            connect = cms.string(options.ageingInput),
+                                            tag     = cms.string("MuonSystemAging")
+                                        )
+                               )
 
 process.source = cms.Source("PoolSource",
                             
