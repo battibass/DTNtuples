@@ -13,7 +13,7 @@ cmsenv
 git cms-merge-topic oglez:Phase2_CMSSW_10_6_0_pre4_Summer2019 # phase-2 unpacker
 git cms-merge-topic -u pozzobon:DTHough_NP_20190619_106X_noL1T # MTT-CHT emulator
 git cms-merge-topic -u dtp2-tpg-am:AM_106X_dev # AM emulator
-git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
+git clone --single-branch --branch addL1A https://github.com/jaimeleonh/DTNtuples.git DTDPGAnalysis/DTNtuples
 scramv1 b -j 5
 ```
 
