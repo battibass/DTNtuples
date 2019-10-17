@@ -58,7 +58,7 @@ def customiseForFakePhase2Info(process) :
 
     return process
 
-def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing) :
+def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgeing) :
 
     if segmentAgeing or triggerAgeing :
 
@@ -77,8 +77,8 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing) :
                                                                              engineName = cms.untracked.string('TRandom3') )
             else :
                 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                                    agedDtDigiss = cms.PSet( initialSeed = cms.untracked.uint32(789342),
-                                                                                             engineName = cms.untracked.string('TRandom3') )
+                                                                   agedDtDigiss = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                                            engineName = cms.untracked.string('TRandom3') )
                 )
 
     if segmentAgeing :
@@ -88,6 +88,30 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing) :
     if triggerAgeing :
         print "[customiseForAgeing]: switching emulatros input to agedDtDigis"
         process.CalibratedDigis.dtDigiTag = "agedDtDigis"
+
+    if rpcAgeing :
+
+        if hasattr(process,"rpcRecHits") :
+            print "[customiseForAgeing]: prepending ageing before rpcRecHits and adding ageing to RandomNumberGeneratorService"
+
+            from SimMuon.RPCDigitizer.rpcChamberMasker_cfi import rpcChamberMasker as _rpcChamberMasker
+
+            process.agedRpcDigis = _rpcChamberMasker.clone()
+
+            getattr(process,pathName).replace(process.rpcRecHits,
+                                              process.agedRpcDigis + process.rpcRecHits)
+
+            if hasattr(process,"RandomNumberGeneratorService") :
+                process.RandomNumberGeneratorService.agedRpcDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                              engineName = cms.untracked.string('TRandom3') )
+            else :
+                process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                                   agedRpcDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                                            engineName = cms.untracked.string('TRandom3') )
+                )
+
+            print "[customiseForAgeing]: switching rpcRecHits input to agedRpcDigis"
+            process.rpcRecHits.rpcDigiLabel = "agedRpcDigis"
         
 
     return process
