@@ -97,6 +97,7 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
             from SimMuon.RPCDigitizer.rpcChamberMasker_cfi import rpcChamberMasker as _rpcChamberMasker
 
             process.agedRpcDigis = _rpcChamberMasker.clone()
+            process.agedRpcDigis.digiTag = "simMuonRPCDigis"
 
             getattr(process,pathName).replace(process.rpcRecHits,
                                               process.agedRpcDigis + process.rpcRecHits)
