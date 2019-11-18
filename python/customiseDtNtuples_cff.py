@@ -7,7 +7,7 @@ def customiseForRunningOnMC(process, pathName) :
         print "[customiseForRunningOnMC]: updating ntuple input tags"
 
         process.dtNtupleProducer.genPartTag = "prunedGenParticles"
-        # process.dtNtupleProducer.puInfoTag = "addPileupInfo"
+        process.dtNtupleProducer.puInfoTag = "addPileupInfo"
 
         process.dtNtupleProducer.lumiScalerTag = "none"
 
