@@ -21,7 +21,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '329806', #default value
+                 '333369', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -57,13 +57,13 @@ options.register('t0File',
                  "File with customised DT legacy t0is, used only if non ''")
 
 options.register('tTrigFilePh2',
-                 '', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/ttrig_phase2_Run333369.db', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 tTrigs, used only if non ''")
 
 options.register('t0FilePh2',
-                 '', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/t0_phase2_Run333364.db', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 t0is, used only if non ''")
@@ -75,6 +75,12 @@ options.register('vDriftFile',
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT vDrifts, used only if non ''")
 
+options.register('runOnDat',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If set to True switches source from 'PoolSource' to 'NewEventStreamFileReader'")
+
 options.register('ntupleName',
                  '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -83,6 +89,11 @@ options.register('ntupleName',
 
 
 options.parseArguments()
+
+if options.runOnDat :
+    inputSourceType = "NewEventStreamFileReader"
+else:
+    inputSourceType = "PoolSource"
 
 process = cms.Process("DTNTUPLES",eras.Run2_2018)
 
@@ -142,11 +153,9 @@ if options.vDriftFile != '' :
                                         )
                                    )
 
-process.source = cms.Source("PoolSource",
+process.source = cms.Source(inputSourceType,
                             
-        fileNames = cms.untracked.vstring(),
-        secondaryFileNames = cms.untracked.vstring()
-
+        fileNames = cms.untracked.vstring()
 )
 
 if options.inputFile != '' :
@@ -157,8 +166,10 @@ if options.inputFile != '' :
 else :
 
     runStr = str(options.runNumber).zfill(9)
-    runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] + "/00000"
-
+    runFolder = options.inputFolderCentral + "/" + runStr[0:3] + "/" + runStr[3:6] + "/" + runStr[6:] 
+    if not options.runOnDat:
+        runFolder = runFolder + "/00000"
+    
     print "[dtDpgNtuples_slicetest_cfg.py]: looking for files under:\n\t\t\t" + runFolder
     
     if os.path.exists(runFolder) :
