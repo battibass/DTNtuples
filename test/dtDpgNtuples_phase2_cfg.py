@@ -61,6 +61,12 @@ options.register('ageingTag',
                  VarParsing.VarParsing.varType.string,
                  "Tag for customised ageing")
 
+options.register('applyRandomBkg',
+                 False, #default value
+                 VarParsing.VarParsing.multiplicity.singleton,
+                 VarParsing.VarParsing.varType.bool,
+                 "If True applies random background to phase-2 digis and emulator")
+
 options.register('ntupleName',
                  './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -142,7 +148,14 @@ process.p = cms.Path(process.rpcRecHits
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
-from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC, customiseForFakePhase2Info, customiseForAgeing
-customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing,options.applyRpcAgeing)
+from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRandomBkg, customiseForRunningOnMC, customiseForFakePhase2Info, customiseForAgeing
+
 customiseForRunningOnMC(process,"p")
 customiseForFakePhase2Info(process)
+
+if options.applyRandomBkg : 
+    customiseForRandomBkg(process,"p")
+
+customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing,options.applyRpcAgeing)
+
+ 

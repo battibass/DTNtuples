@@ -1,5 +1,6 @@
 import FWCore.ParameterSet.Config as cms
 
+import sys
 
 def customiseForRunningOnMC(process, pathName) :
 
@@ -55,7 +56,6 @@ def customiseForFakePhase2Info(process) :
         process.dtNtupleProducer.ph2DtSegmentTag = process.dtNtupleProducer.ph1DtSegmentTag
         process.dtNtupleProducer.ph2TPGPhiHwTag = process.dtNtupleProducer.ph2TPGPhiEmuAmTag
 
-
     return process
 
 def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgeing) :
@@ -72,13 +72,21 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
             getattr(process,pathName).replace(process.dt1DRecHits,
                                               process.agedDtDigis + process.dt1DRecHits)
 
+            if hasattr(process,"bkgDtDigis") :
+                print "[customiseForAgeing]: configuring agedDtDigis to use bkgDtDigis"
+                process.agedDtDigis.digiTag = "bkgDtDigis"
+
+                if segmentAgeing :
+                    print "[customiseForAgeing]: trying to age segments and generate random digi noise, option non supported. quitting."
+                    sys.exit(999)
+
             if hasattr(process,"RandomNumberGeneratorService") :
                 process.RandomNumberGeneratorService.agedDtDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
                                                                              engineName = cms.untracked.string('TRandom3') )
             else :
                 process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
-                                                                   agedDtDigiss = cms.PSet( initialSeed = cms.untracked.uint32(789342),
-                                                                                            engineName = cms.untracked.string('TRandom3') )
+                                                                   agedDtDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                                           engineName = cms.untracked.string('TRandom3') )
                 )
 
     if segmentAgeing :
@@ -116,3 +124,33 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
         
 
     return process
+
+def customiseForRandomBkg(process, pathName) :
+
+    if hasattr(process,"dt1DRecHits") :
+        print "[customiseForRandomBkg]: prepending random digi generation before dt1DRecHits and adding random digi generator to RandomNumberGeneratorService"
+        
+        from DTDPGAnalysis.DTNtuples.dtRandomDigiGenerator_cfi import dtRandomDigiGenerator as _dtRandomDigiGenerator
+
+        process.bkgDtDigis = _dtRandomDigiGenerator.clone()
+
+        getattr(process,pathName).replace(process.dt1DRecHits,
+                                          process.bkgDtDigis + process.dt1DRecHits)
+
+        if hasattr(process,"RandomNumberGeneratorService") :
+            process.RandomNumberGeneratorService.bkgDtDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                        engineName = cms.untracked.string('TRandom3') )
+        else :
+            process.RandomNumberGeneratorService = cms.Service("RandomNumberGeneratorService",
+                                                               bkgDtDigis = cms.PSet( initialSeed = cms.untracked.uint32(789342),
+                                                                                      engineName = cms.untracked.string('TRandom3') )
+            )
+
+        print "[customiseForRandomBkg]: switching emulator and phase-2 digis in ntuple to use random digi generation"
+        process.dtNtupleProducer.ph2DtDigiTag = cms.untracked.InputTag("bkgDtDigis")
+        process.CalibratedDigis.dtDigiTag = "bkgDtDigis"
+
+    return process
+
+
+
