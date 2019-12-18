@@ -194,8 +194,8 @@ void DTRandomDigiGenerator::produce(edm::Event &event, const edm::EventSetup &co
       auto probPerWire = m_chRates[chId.rawId()] * wireArea * timeRange;
       CLHEP::RandPoissonQ randPoissonQ(randGen, probPerWire);
 
-      // std::cout << layId << std::endl;
-      // std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
+      std::cout << layId << std::endl;
+      std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
 
       for (int wire = topology.firstChannel(); wire <= topology.lastChannel(); ++wire)
 	{

@@ -140,7 +140,12 @@ process.rpcRecHits.rpcDigiLabel = "simMuonRPCDigis"
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
-process.p = cms.Path(process.rpcRecHits
+process.load('DTDPGAnalysis.DTNtuples.dtGeometryDumper_cfi')
+
+process.DTGeometryESModule.applyAlignment = False
+
+process.p = cms.Path(process.dtGeometryDumper
+                     + process.rpcRecHits
                      + process.dt1DRecHits
                      + process.dt4DSegments
                      + process.CalibratedDigis
