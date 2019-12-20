@@ -21,7 +21,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '333369', #default value
+                 '333510', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -57,13 +57,13 @@ options.register('t0File',
                  "File with customised DT legacy t0is, used only if non ''")
 
 options.register('tTrigFilePh2',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/ttrig_phase2_Run333369.db', #default value
+                 '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 tTrigs, used only if non ''")
 
 options.register('t0FilePh2',
-                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2019_data/calib/t0_phase2_Run333364.db', #default value
+                 '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 t0is, used only if non ''")
@@ -212,12 +212,15 @@ process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
 
 process.dtAB7unpacker.channelMapping = cms.untracked.string("july2019")
 
+process.load('DTDPGAnalysis.DTNtuples.dtUpgradeFedL1AProducer_cfi')
+
 process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
+                     + process.dtUpgradeFedL1AProducer
                      + process.twinMuxStage2Digis
                      + process.bmtfDigis
                      + process.dtlocalrecoT0Seg

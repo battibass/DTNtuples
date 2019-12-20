@@ -12,6 +12,8 @@
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBaseFiller.h"
 
+#include "FWCore/Framework/interface/ConsumesCollector.h"
+
 #include <vector>
 #include <cstdint>
 
@@ -21,7 +23,8 @@ class DTNtupleEventFiller : public DTNtupleBaseFiller
  public:
 
   /// Constructor
-  DTNtupleEventFiller(const std::shared_ptr<DTNtupleConfig> config, 
+  DTNtupleEventFiller(edm::ConsumesCollector && collector,
+		      const std::shared_ptr<DTNtupleConfig> config, 
 		      std::shared_ptr<TTree> tree, const std::string & label);
 
   ///Destructor
@@ -38,7 +41,10 @@ class DTNtupleEventFiller : public DTNtupleBaseFiller
 
  private :
 
-  int  m_runNumber;
+  /// The DT FEB BX token
+  edm::EDGetTokenT<int> m_dtFedBxToken;
+
+  int m_runNumber;
   int  m_lumiBlock;
   int64_t m_eventNumber;
 

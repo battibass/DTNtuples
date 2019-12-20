@@ -50,9 +50,6 @@
 #include "DataFormats/MuonDetId/interface/DTLayerId.h"
 #include "DataFormats/MuonDetId/interface/DTWireId.h"
 
-#include "CondFormats/DataRecord/interface/MuonSystemAgingRcd.h"
-#include "CondFormats/RecoMuonObjects/interface/MuonSystemAging.h"
-
 #include "CLHEP/Random/RandomEngine.h"
 #include "CLHEP/Random/RandPoissonQ.h"
 #include "CLHEP/Random/RandFlat.h"
@@ -75,8 +72,6 @@ private:
   void produce(edm::Event &, const edm::EventSetup &) override;
 
   void beginRun(edm::Run const &, edm::EventSetup const &) override;
-
-  void createMaskedChamberCollection(edm::ESHandle<DTGeometry> &);
 
   // ----------member data ---------------------------
 
@@ -194,8 +189,8 @@ void DTRandomDigiGenerator::produce(edm::Event &event, const edm::EventSetup &co
       auto probPerWire = m_chRates[chId.rawId()] * wireArea * timeRange;
       CLHEP::RandPoissonQ randPoissonQ(randGen, probPerWire);
 
-      std::cout << layId << std::endl;
-      std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
+      // std::cout << layId << std::endl;
+      // std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
 
       for (int wire = topology.firstChannel(); wire <= topology.lastChannel(); ++wire)
 	{
