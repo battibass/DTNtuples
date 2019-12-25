@@ -43,9 +43,6 @@ options.register('runOnMC',
                  VarParsing.VarParsing.varType.bool,
                  "Apply customizations to run on MC")
 
-
-
-
 options.parseArguments()
 
 process = cms.Process("DTNTUPLES",eras.Run2_2018)

@@ -17,13 +17,13 @@ def customiseForPhase2Reco(process, pathName, tTrigFile, t0File) :
 
 
 
-    if tTrigFile != '' :
+    if tTrigFile :
         process.dt1DRecHitsPh2.recAlgoConfig.tTrigModeConfig.tTrigLabel  = cms.string('cosmics_ph2')
         process.dt4DSegmentsPh2.Reco4DAlgoConfig.Reco2DAlgoConfig.recAlgoConfig.tTrigModeConfig.tTrigLabel  = cms.string('cosmics_ph2')
         process.dt4DSegmentsPh2.Reco4DAlgoConfig.recAlgoConfig.tTrigModeConfig.tTrigLabel  = cms.string('cosmics_ph2')
         process.dt4DSegmentsT0SegPh2.recAlgoConfig.tTrigModeConfig.tTrigLabel  = cms.string('cosmics_ph2')
 
-    if t0File != '' :
+    if t0File :
         process.dt1DRecHitsPh2.recAlgoConfig.tTrigModeConfig.t0Label  = cms.string('ph2')
         process.dt4DSegmentsPh2.Reco4DAlgoConfig.Reco2DAlgoConfig.recAlgoConfig.tTrigModeConfig.t0Label  = cms.string('ph2')
         process.dt4DSegmentsPh2.Reco4DAlgoConfig.recAlgoConfig.tTrigModeConfig.t0Label  = cms.string('ph2')
@@ -31,7 +31,7 @@ def customiseForPhase2Reco(process, pathName, tTrigFile, t0File) :
 
     if hasattr(process,"dtNtupleProducer") and hasattr(process,pathName) :
 
-        print "[customiseForPhase2Reco]: including phase-2 local reco in ntuples"
+        print("[customiseForPhase2Reco]: including phase-2 local reco in ntuples")
 
         process.dtNtupleProducer.ph2DtSegmentTag = cms.untracked.InputTag("dt4DSegmentsPh2")
 

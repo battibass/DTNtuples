@@ -5,7 +5,7 @@ import sys
 def customiseForRunningOnMC(process, pathName) :
 
     if hasattr(process,"dtNtupleProducer") :
-        print "[customiseForRunningOnMC]: updating ntuple input tags"
+        print("[customiseForRunningOnMC]: updating ntuple input tags")
 
         process.dtNtupleProducer.genPartTag = "prunedGenParticles"
         process.dtNtupleProducer.puInfoTag = "addPileupInfo"
@@ -17,7 +17,7 @@ def customiseForRunningOnMC(process, pathName) :
         # process.dtNtupleProducer.ph1TwinMuxInThTag = "none"
 
         if hasattr(process,pathName) :
-            print "[customiseForRunningOnMC]: adding prunedGenParitcles"
+            print("[customiseForRunningOnMC]: adding prunedGenParitcles")
 
             process.load('DTDPGAnalysis.DTNtuples.prunedGenParticles_cfi')
 
@@ -30,7 +30,7 @@ def customiseForRunningOnMC(process, pathName) :
 def customiseForPhase2Simulation(process) :
 
     if hasattr(process,"dtNtupleProducer") :
-        print "[customiseForPhase2Simulation]: updating ntuple input tags"
+        print("[customiseForPhase2Simulation]: updating ntuple input tags")
 
         process.dtNtupleProducer.puInfoTag = "none"
         process.dtNtupleProducer.ph1BmtfInTag = "none"
@@ -50,7 +50,7 @@ def customiseForPhase2Simulation(process) :
 def customiseForFakePhase2Info(process) :
 
     if hasattr(process,"dtNtupleProducer") :
-        print "[customiseForFakePhase2Info]: updating ntuple input tags"
+        print("[customiseForFakePhase2Info]: updating ntuple input tags")
 
         process.dtNtupleProducer.ph2DtDigiTag = process.dtNtupleProducer.ph1DtDigiTag
         process.dtNtupleProducer.ph2DtSegmentTag = process.dtNtupleProducer.ph1DtSegmentTag
@@ -63,7 +63,7 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
     if segmentAgeing or triggerAgeing :
 
         if hasattr(process,"dt1DRecHits") :
-            print "[customiseForAgeing]: prepending ageing before dt1DRecHits and adding ageing to RandomNumberGeneratorService"
+            print("[customiseForAgeing]: prepending ageing before dt1DRecHits and adding ageing to RandomNumberGeneratorService")
 
             from SimMuon.DTDigitizer.dtChamberMasker_cfi import dtChamberMasker as _dtChamberMasker
 
@@ -73,11 +73,11 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
                                               process.agedDtDigis + process.dt1DRecHits)
 
             if hasattr(process,"bkgDtDigis") :
-                print "[customiseForAgeing]: configuring agedDtDigis to use bkgDtDigis"
+                print("[customiseForAgeing]: configuring agedDtDigis to use bkgDtDigis")
                 process.agedDtDigis.digiTag = "bkgDtDigis"
 
                 if segmentAgeing :
-                    print "[customiseForAgeing]: trying to age segments and generate random digi noise, option non supported. quitting."
+                    print("[customiseForAgeing]: trying to age segments and generate random digi noise, option non supported. quitting.")
                     sys.exit(999)
 
             if hasattr(process,"RandomNumberGeneratorService") :
@@ -90,17 +90,16 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
                 )
 
     if segmentAgeing :
-        print "[customiseForAgeing]: switching dt1DRecHits input to agedDtDigis"
+        print("[customiseForAgeing]: switching dt1DRecHits input to agedDtDigis")
         process.dt1DRecHits.dtDigiLabel = "agedDtDigis"
 
     if triggerAgeing :
-        print "[customiseForAgeing]: switching emulatros input to agedDtDigis"
+        print("[customiseForAgeing]: switching emulatros input to agedDtDigis")
         process.CalibratedDigis.dtDigiTag = "agedDtDigis"
 
     if rpcAgeing :
-
         if hasattr(process,"rpcRecHits") :
-            print "[customiseForAgeing]: prepending ageing before rpcRecHits and adding ageing to RandomNumberGeneratorService"
+            print("[customiseForAgeing]: prepending ageing before rpcRecHits and adding ageing to RandomNumberGeneratorService")
 
             from SimMuon.RPCDigitizer.rpcChamberMasker_cfi import rpcChamberMasker as _rpcChamberMasker
 
@@ -119,7 +118,7 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
                                                                                             engineName = cms.untracked.string('TRandom3') )
                 )
 
-            print "[customiseForAgeing]: switching rpcRecHits input to agedRpcDigis"
+            print("[customiseForAgeing]: switching rpcRecHits input to agedRpcDigis")
             process.rpcRecHits.rpcDigiLabel = "agedRpcDigis"
         
 
@@ -128,7 +127,7 @@ def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgein
 def customiseForRandomBkg(process, pathName) :
 
     if hasattr(process,"dt1DRecHits") :
-        print "[customiseForRandomBkg]: prepending random digi generation before dt1DRecHits and adding random digi generator to RandomNumberGeneratorService"
+        print("[customiseForRandomBkg]: prepending random digi generation before dt1DRecHits and adding random digi generator to RandomNumberGeneratorService")
         
         from DTDPGAnalysis.DTNtuples.dtRandomDigiGenerator_cfi import dtRandomDigiGenerator as _dtRandomDigiGenerator
 
@@ -146,11 +145,8 @@ def customiseForRandomBkg(process, pathName) :
                                                                                       engineName = cms.untracked.string('TRandom3') )
             )
 
-        print "[customiseForRandomBkg]: switching emulator and phase-2 digis in ntuple to use random digi generation"
+        print("[customiseForRandomBkg]: switching emulator and phase-2 digis in ntuple to use random digi generation")
         process.dtNtupleProducer.ph2DtDigiTag = cms.untracked.InputTag("bkgDtDigis")
         process.CalibratedDigis.dtDigiTag = "bkgDtDigis"
 
     return process
-
-
-
