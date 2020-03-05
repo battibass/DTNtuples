@@ -3,6 +3,8 @@ import FWCore.ParameterSet.Config as cms
 dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   genPartTag = cms.untracked.InputTag("none"),
 
+                                  dtFedBxTag = cms.untracked.InputTag("dtUpgradeFedL1AProducer"),
+
                                   puInfoTag = cms.untracked.InputTag("none"),
                                   lumiScalerTag = cms.untracked.InputTag("none"),
                                   primaryVerticesTag = cms.untracked.InputTag("none"),

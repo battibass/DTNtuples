@@ -15,10 +15,15 @@
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
-DTNtupleEventFiller::DTNtupleEventFiller(const std::shared_ptr<DTNtupleConfig> config, 
+DTNtupleEventFiller::DTNtupleEventFiller(edm::ConsumesCollector && collector,
+					 const std::shared_ptr<DTNtupleConfig> config, 
 					 std::shared_ptr<TTree> tree, const std::string & label) : 
   DTNtupleBaseFiller(config, tree, label)
 {
+
+  edm::InputTag iTag = m_config->m_inputTags["dtFedBxTag"];
+  if (iTag.label() != "none") 
+    m_dtFedBxToken = collector.consumes<int>(iTag);
 
 }
 
@@ -66,7 +71,11 @@ void DTNtupleEventFiller::fill(const edm::Event & ev)
 
   m_timeStamp = ev.eventAuxiliary().time().value();
 
-  m_bunchCrossing = ev.eventAuxiliary().bunchCrossing();
+
+  auto dtFedBx = conditionalGet<int>(ev, m_dtFedBxToken, "int");
+
+  m_bunchCrossing = dtFedBx.isValid() ? (*dtFedBx) : ev.eventAuxiliary().bunchCrossing();;
+
   m_orbitNumber   = ev.eventAuxiliary().orbitNumber();
   
   return;
