@@ -39,6 +39,7 @@
 DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 {
 
+  usesResource("TFileService");
   edm::Service<TFileService> fileService;
   m_tree = std::shared_ptr<TTree>(fileService->make<TTree>("DTTREE","DT Tree"));
 
@@ -91,7 +92,7 @@ void DTNtupleProducer::beginRun(const edm::Run & run, const edm::EventSetup & en
 void DTNtupleProducer::endJob() 
 {
 
-  m_tree->Write();
+  m_tree->GetCurrentFile()->Write();
 
 }
 
