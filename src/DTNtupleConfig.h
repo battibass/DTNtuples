@@ -46,7 +46,7 @@ class DTNtupleConfig
   std::map<std::string, edm::InputTag> m_inputTags;
 
   /// The class to handle DT trigger time pedestals
-  DTTTrigBaseSync * m_dtSync; // CB find a way to handle this with a smart pointer
+  std::unique_ptr<DTTTrigBaseSync> m_dtSync;
 
   /// The class to perform DT local trigger coordinate conversions
   std::unique_ptr<DTTrigGeomUtils> m_trigGeomUtils;
