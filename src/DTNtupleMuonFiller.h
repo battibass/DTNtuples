@@ -56,7 +56,7 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
   short   m_mu_nMuons; 
 
   std::vector<float> m_mu_pt;     // muon pT (float)
-  std::vector<float> m_mu_phi;    // muon phi (float in [-pi:pi] range) // CB check range
+  std::vector<float> m_mu_phi;    // muon phi (float in [-pi:pi] range) 
   std::vector<float> m_mu_eta;    // muon eta
   std::vector<short> m_mu_charge; // muon charge
 

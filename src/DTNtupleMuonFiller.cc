@@ -49,9 +49,10 @@ DTNtupleMuonFiller::~DTNtupleMuonFiller()
 
 void DTNtupleMuonFiller::initialize()
 {
-  // In DTDPGAnalysis/src/TTreeGenerator.cc vengono inizializzati
-  // con una dimensione == recoMuSize_, che in 
+  // In DTDPGAnalysis/src/TTreeGenerator.cc questi TClonesArray
+  // vengono inizializzati con una dimensione == recoMuSize_, che in 
   // DTDPGAnalysis/python/DTTTreGenerator_cfi.py è esattamente 20
+
   m_mu_matches_wh    = new TClonesArray("TVectorF",20);  
   m_mu_matches_sec   = new TClonesArray("TVectorF",20);
   m_mu_matches_st    = new TClonesArray("TVectorF",20);
