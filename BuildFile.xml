@@ -6,6 +6,7 @@
 <use name="CalibMuon/DTDigiSync"/>
 <use name="Geometry/Records"/>
 <use name="TrackingTools/GeomPropagators"/>
+<use name="DataFormats/MuonReco"/>
 <use name="DataFormats/DTDigi"/>
 <use name="DataFormats/DTRecHit"/>
 <use name="DataFormats/L1DTTrackFinder"/>

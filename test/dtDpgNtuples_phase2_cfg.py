@@ -157,5 +157,3 @@ if options.applyRandomBkg :
     customiseForRandomBkg(process,"p")
 
 customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing,options.applyRpcAgeing)
-
- 
