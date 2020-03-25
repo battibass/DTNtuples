@@ -2,6 +2,8 @@ import FWCore.ParameterSet.Config as cms
 
 dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   genPartTag = cms.untracked.InputTag("prunedGenParticles"),
+                                  muonTag = cms.untracked.InputTag("muons"),
+                                  primaryVertexTag = cms.untracked.InputTag("offlinePrimaryVertices"),
 
                                   dtFedBxTag = cms.untracked.InputTag("none"),
 

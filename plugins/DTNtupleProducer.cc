@@ -27,6 +27,7 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleEventFiller.h"
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleGenFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleMuonFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleDigiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
@@ -46,6 +47,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   m_config = std::make_shared<DTNtupleConfig>(DTNtupleConfig(config));
 
   m_fillers.push_back(std::make_unique<DTNtupleGenFiller>(consumesCollector(), m_config, m_tree, "gen"));
+
+  m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
 
   m_fillers.push_back(std::make_unique<DTNtupleEventFiller>(consumesCollector(), m_config, m_tree, "event"));
   
