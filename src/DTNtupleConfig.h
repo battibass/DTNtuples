@@ -57,6 +57,12 @@ class DTNtupleConfig
   /// Handle to the DT geometry
   edm::ESHandle<DTGeometry> m_dtGeometry;
 
+  /// Name of the isolated trigger used by muon filler for trigger matching
+  std::string m_isoTrigName;
+
+  /// Name of the non isolated trigger used by muon filler for trigger matching
+  std::string m_trigName;
+
 };
 
 #endif

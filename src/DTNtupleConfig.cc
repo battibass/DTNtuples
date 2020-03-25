@@ -25,9 +25,6 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
   edm::InputTag none = edm::InputTag("none");
 
   m_inputTags["genPartTag"] = config.getUntrackedParameter<edm::InputTag>("genPartTag", none);
-  m_inputTags["muonTag"] = config.getUntrackedParameter<edm::InputTag>("muonTag", none);
-
-  m_inputTags["primaryVertexTag"] = config.getUntrackedParameter<edm::InputTag>("primaryVertexTag", none);
 
   m_inputTags["dtFedBxTag"] = config.getUntrackedParameter<edm::InputTag>("dtFedBxTag", none);
 
@@ -40,6 +37,8 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   m_inputTags["ph1DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph1DtSegmentTag", none);
   m_inputTags["ph2DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph2DtSegmentTag", none);
+
+  m_inputTags["muonTag"] = config.getUntrackedParameter<edm::InputTag>("muonTag", none);
 
   m_inputTags["ph1TwinMuxInTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxInTag", none);
   m_inputTags["ph1TwinMuxOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxOutTag", none);
@@ -54,6 +53,10 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   m_dtSync = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("tTrigMode"),
 					       config.getUntrackedParameter<edm::ParameterSet>("tTrigModeConfig"));
+
+  m_isoTrigName = config.getUntrackedParameter<std::string>("isoTrigName", "HLT_IsoMu24_v*");
+  m_trigName = config.getUntrackedParameter<std::string>("trigName", "HLT_Mu50_v*");
+
 }
 
 void DTNtupleConfig::getES(const edm::EventSetup & environment) 

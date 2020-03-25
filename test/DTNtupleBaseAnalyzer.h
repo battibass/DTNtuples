@@ -19,6 +19,9 @@
 
 class DTNtupleBaseAnalyzer {
 public :
+
+   static constexpr bool USE_MUONS = false;
+ 
    TTree          *fChain;   //!pointer to the analyzed TTree or TChain
    Int_t           fCurrent; //!current Tree number in a TChain
    TFile m_inFile;
@@ -161,6 +164,45 @@ public :
    TClonesArray    *ph2Seg_zHits_layer;
    TClonesArray    *ph2Seg_zHits_time;
    TClonesArray    *ph2Seg_zHits_timeCali;
+   UInt_t         mu_nMuons;
+   vector<float>   *mu_pt;
+   vector<float>   *mu_phi;
+   vector<float>   *mu_eta;
+   vector<short>   *mu_charge;
+   vector<bool>    *mu_isGlobal;
+   vector<bool>    *mu_isStandalone;
+   vector<bool>    *mu_isTracker;
+   vector<bool>    *mu_isTrackerArb;
+   vector<bool>    *mu_isRPC;
+   vector<bool>    *mu_isLoose;
+   vector<bool>    *mu_isMedium;
+   vector<bool>    *mu_isTight;
+   vector<float>   *mu_trkIso03;
+   vector<float>   *mu_pfIso04;
+   vector<float>   *mu_trk_dxy;
+   vector<float>   *mu_trk_dz;
+   vector<int>     *mu_trk_algo;
+   vector<int>     *mu_trk_origAlgo;
+   vector<int>     *mu_trk_numberOfValidPixelHits;
+   vector<int>     *mu_trk_numberOfValidTrackerLayers;
+   vector<int>     *mu_trkMu_numberOfMatchedStations;
+   vector<int>     *mu_trkMu_numberOfMatchedRPCLayers;
+   vector<int>     *mu_staMu_numberOfValidMuonHits;
+   vector<float>   *mu_staMu_normChi2;
+   vector<float>   *mu_glbMu_normChi2;
+   vector<UInt_t>  *mu_nMatches;
+   TClonesArray    *mu_matches_wheel;
+   TClonesArray    *mu_matches_sector;
+   TClonesArray    *mu_matches_station;
+   TClonesArray    *mu_matches_x;
+   TClonesArray    *mu_matches_y;
+   TClonesArray    *mu_matches_phi;
+   TClonesArray    *mu_matches_eta;
+   TClonesArray    *mu_matches_edgeX;
+   TClonesArray    *mu_matches_edgeY;
+   TClonesArray    *mu_matches_dXdZ;
+   TClonesArray    *mu_matches_dYdZ;
+   TClonesArray    *mu_matchSegIdx;
    UInt_t          ltTwinMuxIn_nTrigs;
    vector<short>   *ltTwinMuxIn_wheel;
    vector<short>   *ltTwinMuxIn_sector;
@@ -389,6 +431,45 @@ public :
    TBranch        *b_ph2Seg_zHits_layer;   //!
    TBranch        *b_ph2Seg_zHits_time;   //!
    TBranch        *b_ph2Seg_zHits_timeCali;   //!
+   TBranch        *b_mu_nMuons;   //!
+   TBranch        *b_mu_pt;   //!
+   TBranch        *b_mu_phi;   //!
+   TBranch        *b_mu_eta;   //!
+   TBranch        *b_mu_charge;   //!
+   TBranch        *b_mu_isGlobal;   //!
+   TBranch        *b_mu_isStandalone;   //!
+   TBranch        *b_mu_isTracker;   //!
+   TBranch        *b_mu_isTrackerArb;   //!
+   TBranch        *b_mu_isRPC;   //!
+   TBranch        *b_mu_isLoose;   //!
+   TBranch        *b_mu_isMedium;   //!
+   TBranch        *b_mu_isTight;   //!
+   TBranch        *b_mu_trkIso03;   //!
+   TBranch        *b_mu_pfIso04;   //!
+   TBranch        *b_mu_trk_dxy;   //!
+   TBranch        *b_mu_trk_dz;   //!
+   TBranch        *b_mu_trk_algo;   //!
+   TBranch        *b_mu_trk_origAlgo;   //!
+   TBranch        *b_mu_trk_numberOfValidPixelHits;   //!
+   TBranch        *b_mu_trk_numberOfValidTrackerLayers;   //!
+   TBranch        *b_mu_trkMu_numberOfMatchedStations;   //!
+   TBranch        *b_mu_trkMu_numberOfMatchedRPCLayers;   //!
+   TBranch        *b_mu_staMu_numberOfValidMuonHits;   //!
+   TBranch        *b_mu_staMu_normChi2;   //!
+   TBranch        *b_mu_glbMu_normChi2;   //!
+   TBranch        *b_mu_nMatches;   //!
+   TBranch        *b_mu_matches_wheel;   //!
+   TBranch        *b_mu_matches_sector;   //!
+   TBranch        *b_mu_matches_station;   //!
+   TBranch        *b_mu_matches_x;   //!
+   TBranch        *b_mu_matches_y;   //!
+   TBranch        *b_mu_matches_phi;   //!
+   TBranch        *b_mu_matches_eta;   //!
+   TBranch        *b_mu_matches_edgeX;   //!
+   TBranch        *b_mu_matches_edgeY;   //!
+   TBranch        *b_mu_matches_dXdZ;   //!
+   TBranch        *b_mu_matches_dYdZ;   //!
+   TBranch        *b_mu_matchSegIdx;   //!
    TBranch        *b_ltTwinMuxIn_nTrigs;   //!
    TBranch        *b_ltTwinMuxIn_wheel;   //!
    TBranch        *b_ltTwinMuxIn_sector;   //!

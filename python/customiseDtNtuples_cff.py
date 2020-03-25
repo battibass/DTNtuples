@@ -58,6 +58,18 @@ def customiseForFakePhase2Info(process) :
 
     return process
 
+def customiseForRecoMuons(process, pathName) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print("[customiseForRecoMuons]: updating ntuple input tags")
+
+        process.dtNtupleProducer.muonTag = "muons"
+        process.dtNtupleProducer.primaryVerticesTag = "offlinePrimaryVertices"
+        process.dtNtupleProducer.ph1DtSegmentTag = "dt4DSegments"
+
+    return process
+
+
 def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgeing) :
 
     if segmentAgeing or triggerAgeing :

@@ -48,8 +48,6 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 
   m_fillers.push_back(std::make_unique<DTNtupleGenFiller>(consumesCollector(), m_config, m_tree, "gen"));
 
-  m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
-
   m_fillers.push_back(std::make_unique<DTNtupleEventFiller>(consumesCollector(), m_config, m_tree, "event"));
   
   m_fillers.push_back(std::make_unique<DTNtupleEnvironmentFiller>(consumesCollector(), m_config, m_tree, "environment"));
@@ -59,6 +57,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
+
+  // m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
 
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
