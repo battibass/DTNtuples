@@ -63,10 +63,18 @@ def customiseForRecoMuons(process, pathName) :
     if hasattr(process,"dtNtupleProducer") :
         print("[customiseForRecoMuons]: updating ntuple input tags")
 
-        process.dtNtupleProducer.muonTag = "muons"
+        process.dtNtupleProducer.muonTag = "muonsForNtuples"
         process.dtNtupleProducer.primaryVerticesTag = "offlinePrimaryVertices"
         process.dtNtupleProducer.ph1DtSegmentTag = "dt4DSegments"
 
+        if hasattr(process,pathName) :
+            print("[customiseForRecoMuons]: adding muonsForNtuples")
+
+            process.load('DTDPGAnalysis.DTNtuples.muon_selectors_cff')
+
+            getattr(process,pathName).replace(process.dtNtupleProducer,
+                                              process.muonsForNtuples
+                                              + process.dtNtupleProducer)
     return process
 
 
