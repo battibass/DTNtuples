@@ -27,6 +27,7 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleEventFiller.h"
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleGenFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleMuonFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleDigiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
@@ -56,6 +57,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
 
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
+
+  // m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
 
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
