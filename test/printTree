@@ -1,0 +1,72 @@
+#!/usr/bin/env python
+
+import argparse
+import math
+import sys
+
+"""
+Setup argument parser
+"""
+
+parser = argparse.ArgumentParser(description = "This program can be used to print DTNtuples size for each of the \
+                                                tree branches.")
+
+parser.add_argument("fileNameInput", help = "Path to the input DTNtuple ROOT files")
+
+parser.add_argument("-d", "--directory", default = "dtNtupleProducer", help = "Directory in the input ROOT file which \
+                                                                               contains the DTNtuple")
+
+parser.add_argument("-t", "--tree", default = "DTTREE", help = "Name of the tree holding the variables")
+
+args = parser.parse_args()
+
+"""
+Print the size of a given tree
+"""
+
+from ROOT import * # import this here, otherwise it overwrites the argparse stuff
+
+# Get input tree as TChain
+treePath = args.directory + "/" + args.tree
+print("Used path to tree in file :")
+print("---------------------------")
+print(treePath)
+print("")
+
+print("Input file :")
+print("------------")
+print(args.fileNameInput)
+print("")
+
+treeInput = TChain(treePath)
+treeInput.AddFile(args.fileNameInput)
+
+print("Number of entries in tree : {}".format(treeInput.GetEntries()))
+print("")
+
+fillerSizes = {}
+totalSize = 0.
+
+print("Branches and size (kB) :")
+print("------------------------")
+for branch in treeInput.GetListOfBranches() :
+    branchName = branch.GetName()
+    branchSize = branch.GetZipBytes()/math.pow(2,10)
+    print("\tName : {:40.40} - size : {:12.2f}".format(branchName, branchSize)) # there is some additional memory from the key
+                                                                                # which is not considered
+    totalSize += branchSize
+    fillerName = branchName.split("_")[0]
+    if fillerSizes.has_key(fillerName) :
+        fillerSizes[fillerName] += branchSize
+    else :
+        fillerSizes[fillerName] = branchSize
+print("")
+
+print("Fillerss and size (kB) :")
+print("------------------------")
+for filler, size in fillerSizes.iteritems() :
+    print("\tName : {:20.20} - size : {:12.2f}".format(filler, size))
+print("")
+    
+print("TOTAL size (kB) : {:12.2f}".format(totalSize))
+print("")
