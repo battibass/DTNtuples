@@ -22,9 +22,9 @@ cmsRun dtDpgNtuples_[collision,slicetest,phase2]_cfg.py [command line parameters
 cmsRun dtDpgNtuples_slicetest_cfg.py runNumber=333510
 ```
 
-## Running ntuple production
+## Scripts working on ntuples
 
-A few tools are also provided to manipulate existinn DTNtuples :
+A few tools are also provided to manipulate existing DTNtuples :
 
 1. `skimTree` : allwos to apply cut-based skimming of a tree (as the one a person would use to make a cut in Tree::Draw()) and potentially drop a few of the three branches;
 2. `printTree` : prints the size of each of the tree branches, of the fillers and of the whole tree;
