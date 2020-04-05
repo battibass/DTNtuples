@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+
+import argparse
+import sys
+import json
+
+"""
+Setup argument parser
+"""
+
+parser = argparse.ArgumentParser(description = "This script generates a valid cut string from a JSON file, \
+                                                which specifies a list of runs and luminosity sections. The \
+                                                output can be fed into other scripts as cut string. Note, that \
+                                                you can write the output of this script either to a file with \
+                                                './jsonToCut cut.json > outputFile' or to a shell variable with \
+                                                'CUT=$(./jsonToCut cut.json)'.")
+
+parser.add_argument("fileNameInput", help = "Path to the input JSON file")
+args = parser.parse_args()
+
+"""
+Read JSON file
+"""
+
+with open(args.fileNameInput, 'r') as f:
+    json = json.loads(f.read())
+
+"""
+Get cut string
+"""
+
+cutString = ""
+isFirstRun = True
+for run, lumiRanges in json.iteritems() :
+    # Process run
+    if not isFirstRun :
+        cutString += " || "
+    isFirstRun = False
+    cutString += "( run==" + str(run)  + " && ( " 
+
+    # process lumi
+    isFirstRange = True
+    for lumiRange in lumiRanges :
+        if not isFirstRange :
+            cutString += " || "
+        isFirstRange = False
+        cutString += "( lumi>=" + str(lumiRange[0])  + " && lumi<=" + str(lumiRange[1]) + ")"
+
+    cutString += " ) ) "
+
+"""
+Print string to stdout
+"""
+
+print(cutString)
