@@ -11,47 +11,47 @@ a shell variable with 'CUT=$(./jsonToCut cut.json)'.
 import argparse
 import json
 
-"""
-Setup argument parser
-"""
+#----------------------
+# Setup argument parser
+#----------------------
 
 PARSER = argparse.ArgumentParser(description=__doc__)
 
 PARSER.add_argument("fileNameInput", help="Path to the input JSON file")
 ARGS = PARSER.parse_args()
 
-"""
-Read JSON file
-"""
+#---------------
+# Read JSON file
+#---------------
 
 with open(ARGS.fileNameInput, 'r') as f:
     JSON = json.loads(f.read())
 
-"""
-Get cut string
-"""
+#---------------
+# Get cut string
+#---------------
 
-cutString = ""
-isFirstRun = True
+CUT_STRING = ""
+IS_FIRST_RUN = True
 for run, lumiRanges in JSON.iteritems():
     # Process run
-    if not isFirstRun:
-        cutString += " || "
-    isFirstRun = False
-    cutString += "( run==" + str(run)  + " && ( "
+    if not IS_FIRST_RUN:
+        CUT_STRING += " || "
+    IS_FIRST_RUN = False
+    CUT_STRING += "( run==" + str(run)  + " && ( "
 
     # process lumi
     isFirstRange = True
     for lumiRange in lumiRanges:
         if not isFirstRange:
-            cutString += " || "
+            CUT_STRING += " || "
         isFirstRange = False
-        cutString += "( lumi>=" + str(lumiRange[0])  + " && lumi<=" + str(lumiRange[1]) + ")"
+        CUT_STRING += "( lumi>=" + str(lumiRange[0])  + " && lumi<=" + str(lumiRange[1]) + ")"
 
-    cutString += " ) ) "
+    CUT_STRING += " ) ) "
 
-"""
-Print string to stdout
-"""
+#-----------------------
+# Print string to stdout
+#-----------------------
 
-print(cutString)
+print(CUT_STRING)

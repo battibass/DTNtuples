@@ -10,9 +10,9 @@ locale storage device and EOS."
 
 import argparse
 
-"""
-Setup argument parser
-"""
+#----------------------
+# Setup argument parser
+#----------------------
 
 PARSER = argparse.ArgumentParser(description=__doc__)
 
@@ -55,9 +55,9 @@ PARSER.add_argument("-v", "--verbosity",
 
 ARGS = PARSER.parse_args()
 
-"""
-Generate subtree by applying cut within the CopyTree ROOT function
-"""
+#-------------------------------------------------------------------
+# Generate subtree by applying cut within the CopyTree ROOT function
+#-------------------------------------------------------------------
 
 import ROOT # import this here, otherwise it overwrites the argparse stuff
 
@@ -86,15 +86,15 @@ if ARGS.remove == "all":
         if not branch.GetName() in ARGS.cut:
             TREE_INPUT.SetBranchStatus(branch.GetName(), 0)
 else:
-    branchesRemove = ARGS.remove.split(" ")
-    if branchesRemove != [""]:
-        for branch in branchesRemove:
+    BRANCHES_REMOVE = ARGS.remove.split(" ")
+    if BRANCHES_REMOVE != [""]:
+        for branch in BRANCHES_REMOVE:
             TREE_INPUT.SetBranchStatus(branch, 0)
 
 
-branchesKeep = ARGS.keep.split(" ")
-if branchesKeep != [""]:
-    for branch in branchesKeep:
+BRANCHES_KEEP = ARGS.keep.split(" ")
+if BRANCHES_KEEP != [""]:
+    for branch in BRANCHES_KEEP:
         TREE_INPUT.SetBranchStatus(branch, 1)
 
 # Make output directory and copy input tree

@@ -7,9 +7,9 @@ of the tree branches and fillers.
 import argparse
 import math
 
-"""
-Setup argument parser
-"""
+#-----------------------
+#  Setup argument parser
+#-----------------------
 
 PARSER = argparse.ArgumentParser(description=__doc__)
 
@@ -27,9 +27,9 @@ PARSER.add_argument("-t", "--tree",
 
 ARGS = PARSER.parse_args()
 
-"""
-Print the size of a given tree
-"""
+#-------------------------------
+# Print the size of a given tree
+#-------------------------------
 
 import ROOT # import this here, otherwise it overwrites the argparse stuff
 
@@ -51,8 +51,8 @@ TREE_INPUT.AddFile(ARGS.fileNameInput)
 print("Number of entries in tree : {}".format(TREE_INPUT.GetEntries()))
 print("")
 
-fillerSizes = {}
-totalSize = 0.
+FILLER_SIZES = {}
+TOTAL_SIZE = 0.
 
 print("Branches and size (kB) :")
 print("------------------------")
@@ -62,19 +62,19 @@ for branch in TREE_INPUT.GetListOfBranches():
     # CB there is some additional memory from the key
     # which is not considered
     print("    Name : {:40.40} - size : {:12.2f}".format(branchName, branchSize))
-    totalSize += branchSize
+    TOTAL_SIZE += branchSize
     fillerName = branchName.split("_")[0]
-    if fillerSizes.has_key(fillerName):
-        fillerSizes[fillerName] += branchSize
+    if FILLER_SIZES.has_key(fillerName):
+        FILLER_SIZES[fillerName] += branchSize
     else:
-        fillerSizes[fillerName] = branchSize
+        FILLER_SIZES[fillerName] = branchSize
 print("")
 
 print("Fillers and size (kB) :")
 print("-----------------------")
-for filler, size in fillerSizes.iteritems():
+for filler, size in FILLER_SIZES.iteritems():
     print("    Name : {:20.20} - size : {:12.2f}".format(filler, size))
 print("")
 
-print("TOTAL size (kB) : {:12.2f}".format(totalSize))
+print("TOTAL size (kB) : {:12.2f}".format(TOTAL_SIZE))
 print("")
