@@ -28,6 +28,12 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   muonTag = cms.untracked.InputTag("none"),
 
+                                  trigEventTag = cms.untracked.InputTag("none"),
+                                  trigResultsTag = cms.untracked.InputTag("none"),
+
+                                  trigName = cms.untracked.string('none'),
+                                  isoTrigName = cms.untracked.string('none'),
+
                                   tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),
                                                                        doTOFCorrection = cms.bool(False),

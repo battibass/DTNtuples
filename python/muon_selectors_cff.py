@@ -25,8 +25,10 @@ promptMuons = cms.EDFilter("MuonSelector",
 
 ##### The selector for the DT ZMu skim ##############################################
 
+looseMuonsForSkim = muonsForNtuples.clone()
+
 tightMuonsForSkim = cms.EDFilter("MuonSelector",
-                                 src = cms.InputTag("muons"),
+                                 src = cms.InputTag("looseMuonsForSkim"),
                                  cut = cms.string('isTight && pt > 25 && abs(eta) < 2.4)'),
                                  filter = cms.bool(True)                                
                                 )
@@ -34,7 +36,7 @@ tightMuonsForSkim = cms.EDFilter("MuonSelector",
 dimuonsForSkim = cms.EDProducer("CandViewShallowCloneCombiner",
                                 checkCharge = cms.bool(False),
                                 cut = cms.string('mass > 60 &&  (charge=0) && (abs(daughter(0).vz - daughter(1).vz) < 0.1)'),
-                                decay = cms.string("tightMuonsForSkim muonsForNtuples")
+                                decay = cms.string("tightMuonsForSkim looseMuonsForSkim")
                                )
 
 dimuonsFilterForSkim = cms.EDFilter("CandViewCountFilter",
@@ -42,7 +44,7 @@ dimuonsFilterForSkim = cms.EDFilter("CandViewCountFilter",
                                     minNumber = cms.uint32(1)
                                    )
 
-zMuSkimSeq = cms.Sequence(muonsForNtuples
+zMuSkimSeq = cms.Sequence(looseMuonsForSkim
                           * tightMuonsForSkim 
                           * dimuonsForSkim 
                           * dimuonsFilterForSkim

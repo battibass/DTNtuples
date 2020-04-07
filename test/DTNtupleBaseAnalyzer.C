@@ -165,7 +165,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ph2Seg_zHits_layer = 0;
    ph2Seg_zHits_time = 0;
    ph2Seg_zHits_timeCali = 0;
-      mu_pt = 0;
+   mu_pt = 0;
    mu_phi = 0;
    mu_eta = 0;
    mu_charge = 0;
@@ -174,6 +174,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    mu_isTracker = 0;
    mu_isTrackerArb = 0;
    mu_isRPC = 0;
+   mu_firesIsoTrig = 0;
+   mu_firesTrig = 0;
    mu_isLoose = 0;
    mu_isMedium = 0;
    mu_isTight = 0;
@@ -445,6 +447,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
        fChain->SetBranchAddress("mu_isLoose", &mu_isLoose, &b_mu_isLoose);
        fChain->SetBranchAddress("mu_isMedium", &mu_isMedium, &b_mu_isMedium);
        fChain->SetBranchAddress("mu_isTight", &mu_isTight, &b_mu_isTight);
+       fChain->SetBranchAddress("mu_firesTrig", &mu_firesTrig, &b_mu_firesTrig);
+       fChain->SetBranchAddress("mu_firesIsoTrig", &mu_firesIsoTrig, &b_mu_firesIsoTrig);
        fChain->SetBranchAddress("mu_trkIso03", &mu_trkIso03, &b_mu_trkIso03);
        fChain->SetBranchAddress("mu_pfIso04", &mu_pfIso04, &b_mu_pfIso04);
        fChain->SetBranchAddress("mu_trk_dxy", &mu_trk_dxy, &b_mu_trk_dxy);

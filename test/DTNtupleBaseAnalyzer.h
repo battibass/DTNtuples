@@ -174,6 +174,8 @@ public :
    vector<bool>    *mu_isTracker;
    vector<bool>    *mu_isTrackerArb;
    vector<bool>    *mu_isRPC;
+   vector<bool>    *mu_firesIsoTrig;
+   vector<bool>    *mu_firesTrig;
    vector<bool>    *mu_isLoose;
    vector<bool>    *mu_isMedium;
    vector<bool>    *mu_isTight;
@@ -441,6 +443,8 @@ public :
    TBranch        *b_mu_isTracker;   //!
    TBranch        *b_mu_isTrackerArb;   //!
    TBranch        *b_mu_isRPC;   //!
+   TBranch        *b_mu_firesIsoTrig;   //!
+   TBranch        *b_mu_firesTrig;   //!
    TBranch        *b_mu_isLoose;   //!
    TBranch        *b_mu_isMedium;   //!
    TBranch        *b_mu_isTight;   //!

@@ -20,6 +20,10 @@
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "DataFormats/DTRecHit/interface/DTRecSegment4D.h"
 
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "DataFormats/HLTReco/interface/TriggerObject.h"
+
 #include <vector>
 #include "TClonesArray.h"
 #include "TVectorF.h"
@@ -48,11 +52,22 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
   virtual void fill(const edm::Event & ev) final;    
   
  private :
-  
+
+  float computeTrkIso(const reco::MuonIsolation& isolation, float muonPt);
+  float computePFIso(const reco::MuonPFIsolation& PFisolation, float muonPt);
+
+  bool hasTrigger(std::vector<int> & trigIndices, 
+		  const trigger::TriggerObjectCollection & trigObjs, 
+		  edm::Handle<trigger::TriggerEvent>  & trigEvent, 
+		  const reco::Muon & muon); 
+
   /// Tokens
   edm::EDGetTokenT<reco::MuonCollection>      m_muToken;
   edm::EDGetTokenT<DTRecSegment4DCollection>  m_dtSegmentToken;
   edm::EDGetTokenT<std::vector<reco::Vertex>> m_primaryVerticesToken;
+
+  edm::EDGetTokenT<edm::TriggerResults>   m_trigResultsToken;
+  edm::EDGetTokenT<trigger::TriggerEvent> m_trigEventToken;
 
   /// The default TVercorF for empty TClonesArray vectors
   TVectorF m_nullVecF;
@@ -70,12 +85,10 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
   std::vector<bool>  m_isTrackerArb;
   std::vector<bool>  m_isRPC;
 
-  // CB need to write code for this
-
-  // std::vector<bool>  m_firesIsoTrig; // True if the muon is matched to an isolated trigger
-                                        // specified in the ntuple config file
-  // std::vector<bool>  m_firesTrig;    // True if the muon is matched to a (non isolated) trigger
-                                        // specified in the ntuple config file
+  std::vector<bool>  m_firesIsoTrig; // True if the muon is matched to an isolated trigger
+                                     // specified in the ntuple config file
+  std::vector<bool>  m_firesTrig;    // True if the muon is matched to a (non isolated) trigger
+                                     // specified in the ntuple config file
 
   std::vector<bool>  m_isLoose;  // Loose muon ID
   std::vector<bool>  m_isMedium; // Medium muon ID
@@ -122,8 +135,6 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
 
   TClonesArray *m_matchSegIdx; // Index of segments used in the standalone track
 
-  float computeTrkIso(const reco::MuonIsolation& isolation, float muonPt);
-  float computePFIso(const reco::MuonPFIsolation& PFisolation, float muonPt);
 };
   
 #endif

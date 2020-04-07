@@ -88,7 +88,7 @@ void DTNtupleProducer::beginJob()
 void DTNtupleProducer::beginRun(const edm::Run & run, const edm::EventSetup & environment )
 {
 
-  m_config->getES(environment);
+  m_config->getES(run, environment);
 
 }
 

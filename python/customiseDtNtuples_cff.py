@@ -67,6 +67,12 @@ def customiseForRecoMuons(process, pathName) :
         process.dtNtupleProducer.primaryVerticesTag = "offlinePrimaryVertices"
         process.dtNtupleProducer.ph1DtSegmentTag = "dt4DSegments"
 
+        process.dtNtupleProducer.trigEventTag = "hltTriggerSummaryAOD::HLT"
+        process.dtNtupleProducer.trigResultsTag = "TriggerResults::HLT"
+
+        process.dtNtupleProducer.isoTrigName = "HLT_IsoMu24_v*"
+        process.dtNtupleProducer.trigName = "HLT_Mu50_v*"
+
         if hasattr(process,pathName) :
             print("[customiseForRecoMuons]: adding muonsForNtuples")
 

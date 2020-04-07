@@ -28,6 +28,12 @@
 #include "DataFormats/TrackingRecHit/interface/TrackingRecHitFwd.h"
 #include "DataFormats/MuonDetId/interface/DTChamberId.h"
 
+#include "DataFormats/Math/interface/deltaR.h"
+#include "HLTrigger/HLTcore/interface/HLTConfigProvider.h"
+#include "DataFormats/Common/interface/TriggerResults.h"
+#include "DataFormats/HLTReco/interface/TriggerEvent.h"
+#include "DataFormats/HLTReco/interface/TriggerObject.h"
+
 #include "TVectorF.h"
 
 DTNtupleMuonFiller::DTNtupleMuonFiller(edm::ConsumesCollector && collector,
@@ -44,6 +50,12 @@ DTNtupleMuonFiller::DTNtupleMuonFiller(edm::ConsumesCollector && collector,
 
   edm::InputTag & dtSegmentTag = m_config->m_inputTags["ph1DtSegmentTag"];
   if (dtSegmentTag.label() != "none") m_dtSegmentToken = collector.consumes<DTRecSegment4DCollection>(dtSegmentTag);
+
+  edm::InputTag & trigResultsTag = m_config->m_inputTags["trigResultsTag"];
+  if (trigResultsTag.label() != "none") m_trigResultsToken = collector.consumes<edm::TriggerResults>(trigResultsTag);
+
+  edm::InputTag & trigEventTag = m_config->m_inputTags["trigEventTag"];
+  if (trigEventTag.label() != "none") m_trigEventToken = collector.consumes<trigger::TriggerEvent>(trigEventTag);
 
 }
 
@@ -82,8 +94,8 @@ void DTNtupleMuonFiller::initialize()
   m_tree->Branch((m_label + "_isTrackerArb").c_str(), &m_isTrackerArb);
   m_tree->Branch((m_label + "_isRPC").c_str(), &m_isRPC);
 
-  // m_tree->Branch((m_label + "_firesIsoTrig").c_str(), &m_firesIsoTrig);
-  // m_tree->Branch((m_label + "_firesTrig").c_str(), &m_firesTrig);
+  m_tree->Branch((m_label + "_firesIsoTrig").c_str(), &m_firesIsoTrig);
+  m_tree->Branch((m_label + "_firesTrig").c_str(), &m_firesTrig);
 
   m_tree->Branch((m_label + "_isLoose").c_str(), &m_isLoose);
   m_tree->Branch((m_label + "_isMedium").c_str(), &m_isMedium);
@@ -138,8 +150,8 @@ void DTNtupleMuonFiller::clear()
   m_isTrackerArb.clear();
   m_isRPC.clear();
 
-  // m_firesIsoTrig.clear();
-  // m_firesTrig.clear();
+  m_firesIsoTrig.clear();
+  m_firesTrig.clear();
 
   m_isLoose.clear();
   m_isMedium.clear();
@@ -187,6 +199,9 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
   auto segments = conditionalGet<DTRecSegment4DCollection>(ev,m_dtSegmentToken, "DTRecSegment4DCollection");
   auto vtxs = conditionalGet<std::vector<reco::Vertex>>(ev, m_primaryVerticesToken, "std::vector<reco::Vertex>");
 
+  auto triggerResults = conditionalGet<edm::TriggerResults>(ev, m_trigResultsToken, "TriggerResults");
+  auto triggerEvent = conditionalGet<trigger::TriggerEvent>(ev, m_trigEventToken, "TriggerEvent");
+
   if (muons.isValid() && segments.isValid() && vtxs.isValid()) 
     {
 
@@ -206,8 +221,25 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	  m_isTrackerArb.push_back(isTrackerArb);
 	  m_isRPC.push_back(muon.isRPCMuon());
 
-	  // m_firesIsoTrig.push_back(muon.triggered(m_config->m_isoTrigName));
-	  // m_firesTrig.push_back(muon.triggered(m_config->m_trigName));
+	  if (triggerResults.isValid() && triggerEvent.isValid())
+	    {
+
+	      const auto & triggerObjects = triggerEvent->getObjects();
+
+	      bool hasIsoTrig = hasTrigger(m_config->m_isoTrigIndices, triggerObjects, triggerEvent, muon);
+	      bool hasTrig = hasTrigger(m_config->m_trigIndices, triggerObjects, triggerEvent, muon);
+
+	      m_firesIsoTrig.push_back(hasIsoTrig);
+	      m_firesTrig.push_back(hasTrig);
+
+	    }
+	  else 
+	    {
+
+	      m_firesIsoTrig.push_back(false);
+              m_firesTrig.push_back(false);
+
+	    }
 
 	  m_isLoose.push_back(muon.passed(reco::Muon::CutBasedIdLoose));
 	  m_isMedium.push_back(muon.passed(reco::Muon::CutBasedIdMedium));
@@ -445,16 +477,64 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
   
 }
 
-float DTNtupleMuonFiller::computeTrkIso(const reco::MuonIsolation& isolation, float muonPt)
+float DTNtupleMuonFiller::computeTrkIso(const reco::MuonIsolation & isolation, float muonPt)
 {
 
   return isolation.sumPt / muonPt;
 
 }
 
-float DTNtupleMuonFiller::computePFIso (const reco::MuonPFIsolation& pfIsolation, float muonPt)
+float DTNtupleMuonFiller::computePFIso(const reco::MuonPFIsolation & pfIsolation, float muonPt)
 {
 
   return (pfIsolation.sumChargedHadronPt + std::max(0., pfIsolation.sumNeutralHadronEt + pfIsolation.sumPhotonEt - 0.5*pfIsolation.sumPUPt))/muonPt;
+
+}
+
+bool DTNtupleMuonFiller::hasTrigger(std::vector<int> & trigIndices, 
+				    const trigger::TriggerObjectCollection & trigObjs, 
+				    edm::Handle<trigger::TriggerEvent>  & trigEvent, 
+				    const reco::Muon & muon) 
+{
+
+  double matchDeltaR = 999.;
+
+  for(const auto & trigIndex : trigIndices) 
+    {
+
+    const std::vector<std::string> moduleLabels(m_config->m_hltConfig.moduleLabels(trigIndex));
+
+    // find index of the last module:
+    const unsigned moduleIndex = m_config->m_hltConfig.size(trigIndex) - 2;
+
+    // find index of HLT trigger name:
+    const unsigned hltFilterIndex = trigEvent->filterIndex(edm::InputTag(moduleLabels[moduleIndex], "", "HLT"));
+
+    if (hltFilterIndex < trigEvent->sizeFilters()) 
+      {
+	
+	const trigger::Keys triggerKeys(trigEvent->filterKeys(hltFilterIndex));
+	const trigger::Vids triggerVids(trigEvent->filterIds(hltFilterIndex));
+
+	const unsigned nTriggers = triggerVids.size();
+
+	for (size_t iTrig = 0; iTrig < nTriggers; ++iTrig) 
+	  {
+
+	    // loop over all trigger objects:
+	    const trigger::TriggerObject trigObject = trigObjs[triggerKeys[iTrig]];
+
+	    double dR = deltaR(muon, trigObject);
+
+	    if ( dR < matchDeltaR ) 
+		matchDeltaR = dR;
+	    
+	  } // loop over different trigger objects
+
+      } // if trigger is in event (should apply hltFilter with used trigger...)
+
+    } // loop over muon candidates
+
+  return matchDeltaR < 0.1; //CB should get it programmable
 
 }
