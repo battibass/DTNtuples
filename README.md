@@ -17,7 +17,7 @@ git clone --single-branch --branch addL1A https://github.com/jaimeleonh/DTNtuple
 scramv1 b -j 5
 ```
 
-### Ntuple prduction:
+### Ntuple production:
 ```
 cd DTDPGAnalysis/DTNtuples/test/
 cmsRun dtDpgNtuples_slicetest_cfg.py nEvents=10000
