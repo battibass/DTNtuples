@@ -38,7 +38,7 @@ for run, lumiRanges in JSON.iteritems():
     if not IS_FIRST_RUN:
         CUT_STRING += " || "
     IS_FIRST_RUN = False
-    CUT_STRING += "( run==" + str(run)  + " && ( "
+    CUT_STRING += "( event_runNumber==" + str(run)  + " && ( "
 
     # process lumi
     isFirstRange = True
@@ -46,7 +46,7 @@ for run, lumiRanges in JSON.iteritems():
         if not isFirstRange:
             CUT_STRING += " || "
         isFirstRange = False
-        CUT_STRING += "( lumi>=" + str(lumiRange[0])  + " && lumi<=" + str(lumiRange[1]) + ")"
+        CUT_STRING += "( event_lumiBlock>=" + str(lumiRange[0])  + " && event_lumiBlock<=" + str(lumiRange[1]) + " )"
 
     CUT_STRING += " ) ) "
 

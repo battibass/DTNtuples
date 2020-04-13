@@ -2,7 +2,7 @@
  *  
  * Helper class : the muon filler
  *
- * \author C. Battilana (INFN BO)
+ * \author L. Lunerti (INFN BO)
  *
  *
  */
@@ -79,7 +79,7 @@ void DTNtupleMuonFiller::initialize()
   m_matches_dXdZ  = new TClonesArray("TVectorF", 24);
   m_matches_dYdZ  = new TClonesArray("TVectorF", 24);
 
-  m_matchSegIdx = new TClonesArray("TVectorF", 10);
+  m_staMu_matchSegIdx = new TClonesArray("TVectorF", 10);
 
   m_tree->Branch((m_label + "_nMuons").c_str(), &m_nMuons);
   
@@ -110,6 +110,7 @@ void DTNtupleMuonFiller::initialize()
   m_tree->Branch((m_label + "_trk_origAlgo").c_str(), &m_trk_origAlgo);
   m_tree->Branch((m_label + "_trk_numberOfValidPixelHits").c_str(), &m_trk_numberOfValidPixelHits);
   m_tree->Branch((m_label + "_trk_numberOfValidTrackerLayers").c_str(), &m_trk_numberOfValidTrackerLayers);
+  m_tree->Branch((m_label + "_trkMu_stationMask").c_str(), &m_trkMu_stationMask);
   m_tree->Branch((m_label + "_trkMu_numberOfMatchedStations").c_str(), &m_trkMu_numberOfMatchedStations);
   m_tree->Branch((m_label + "_trkMu_numberOfMatchedRPCLayers").c_str(), &m_trkMu_numberOfMatchedRPCLayers);
   m_tree->Branch((m_label + "_staMu_numberOfValidMuonHits").c_str(), &m_staMu_numberOfValidMuonHits);
@@ -130,7 +131,8 @@ void DTNtupleMuonFiller::initialize()
   m_tree->Branch((m_label + "_matches_dXdZ").c_str()    , &m_matches_dXdZ    , 2048000, 0);
   m_tree->Branch((m_label + "_matches_dYdZ").c_str()    , &m_matches_dXdZ    , 2048000, 0);
 
-  m_tree->Branch((m_label + "_matchSegIdx").c_str(), &m_matchSegIdx, 2048000, 0);
+  m_tree->Branch((m_label + "_staMu_nMatchSeg").c_str(), &m_staMu_nMatchSeg);
+  m_tree->Branch((m_label + "_staMu_matchSegIdx").c_str(), &m_staMu_matchSegIdx, 2048000, 0);
 
 }
 
@@ -162,10 +164,12 @@ void DTNtupleMuonFiller::clear()
 
   m_trk_dxy.clear();
   m_trk_dz.clear();
+  m_trk_algo.clear();
   m_trk_origAlgo.clear();
   m_trk_numberOfValidPixelHits.clear();
   m_trk_numberOfValidTrackerLayers.clear();
   
+  m_trkMu_stationMask.clear();
   m_trkMu_numberOfMatchedStations.clear();
   m_trkMu_numberOfMatchedRPCLayers.clear();
   m_staMu_numberOfValidMuonHits.clear();
@@ -186,7 +190,8 @@ void DTNtupleMuonFiller::clear()
   m_matches_dXdZ->Clear();      
   m_matches_dYdZ->Clear();      
 
-  m_matchSegIdx->Clear();  
+  m_staMu_nMatchSeg.clear();  
+  m_staMu_matchSegIdx->Clear();  
 
 }
 
@@ -276,6 +281,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	    }
 
 	  //TRACKER / RPC MUON VARIABLES
+	  m_trkMu_stationMask.push_back(muon.stationMask());
 	  m_trkMu_numberOfMatchedStations.push_back(muon.numberOfMatchedStations());
 	  m_trkMu_numberOfMatchedRPCLayers.push_back(muon.numberOfMatchedRPCLayers());
 
@@ -418,15 +424,18 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 
 	      reco::TrackRef outerTrackRef = muon.outerTrack();
 	      
-	      for(auto& recHit : outerTrackRef->recHits())
+	      auto recHitIt  = outerTrackRef->recHitsBegin();
+	      auto recHitEnd = outerTrackRef->recHitsEnd();
+ 
+	      for(; recHitIt != recHitEnd; ++recHitIt)
 		{
 		  
-		  DetId detId = recHit->geographicalId();
+		  DetId detId = (*recHitIt)->geographicalId();
 		  
 		  if (detId.det() == DetId::Muon && detId.subdetId() == MuonSubdetId::DT)
 		    {
 		    
-		      const auto dtSegmentSta = dynamic_cast<const DTRecSegment4D*>(recHit);
+		      const auto dtSegmentSta = dynamic_cast<const DTRecSegment4D*>((*recHitIt));
 		      int iSeg = 0;
 
 		      for(const auto& segment : (*segments))
@@ -454,18 +463,22 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 		}//loop over recHits
 	    }
 
+
+          m_staMu_nMatchSeg.push_back(iSegMatches);
+
 	  if (iSegMatches > 0)
 	    {
 
-	    new ((*m_matchSegIdx)[m_nMuons]) TVectorF(segmentMatches);
+	    new ((*m_staMu_matchSegIdx)[m_nMuons]) TVectorF(segmentMatches);
 
 	    }
 	  else
 	    {
 
-	    new ((*m_matchSegIdx)[m_nMuons]) TVectorF(m_nullVecF);
+	    new ((*m_staMu_matchSegIdx)[m_nMuons]) TVectorF(m_nullVecF);
 
 	    }
+
 
           m_nMuons++;
 

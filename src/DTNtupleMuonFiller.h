@@ -109,7 +109,10 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
   std::vector<int>   m_trk_numberOfValidPixelHits;     // Number of valid pixel hits
   std::vector<int>   m_trk_numberOfValidTrackerLayers; // Number of valid tracker layers
   
-  std::vector<int>   m_trkMu_numberOfMatchedStations;  // Number of matched stations
+  std::vector<unsigned int>  m_trkMu_stationMask;  // Bit map of stations with tracks within
+                                                   // given distance (in cm) of chamber edges
+
+  std::vector<int>   m_trkMu_numberOfMatchedStations;  // Number of matched DT/CSC stations
   std::vector<int>   m_trkMu_numberOfMatchedRPCLayers; // Number of matched RPC layers
 
   std::vector<int>   m_staMu_numberOfValidMuonHits;   // Number of valid muon hits
@@ -133,7 +136,9 @@ class DTNtupleMuonFiller : public DTNtupleBaseFiller
   TClonesArray *m_matches_dXdZ; // dXdZ of the extrapolated track on the matched chamber
   TClonesArray *m_matches_dYdZ; // dYdZ of the extrapolated track on the matched chamber
 
-  TClonesArray *m_matchSegIdx; // Index of segments used in the standalone track
+  std::vector<unsigned int> m_staMu_nMatchSeg;// Number of segments used in the standalone track (DT only)
+  TClonesArray *m_staMu_matchSegIdx; // Index of DT segments used in the standalone track it corresponds 
+                                     // to the index of a given segment in the ntuple seg_* collection
 
 };
   
