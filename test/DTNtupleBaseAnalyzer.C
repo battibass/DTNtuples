@@ -187,6 +187,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    mu_trk_origAlgo = 0;
    mu_trk_numberOfValidPixelHits = 0;
    mu_trk_numberOfValidTrackerLayers = 0;
+   mu_trkMu_stationMask = 0;
    mu_trkMu_numberOfMatchedStations = 0;
    mu_trkMu_numberOfMatchedRPCLayers = 0;
    mu_staMu_numberOfValidMuonHits = 0;
@@ -204,7 +205,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    mu_matches_edgeY = 0;
    mu_matches_dXdZ = 0;
    mu_matches_dYdZ = 0;
-   mu_matchSegIdx = 0;
+   mu_staMu_nMatchSeg = 0;
+   mu_staMu_matchSegIdx = 0;
    ltTwinMuxIn_wheel = 0;
    ltTwinMuxIn_sector = 0;
    ltTwinMuxIn_station = 0;
@@ -457,6 +459,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
        fChain->SetBranchAddress("mu_trk_origAlgo", &mu_trk_origAlgo, &b_mu_trk_origAlgo);
        fChain->SetBranchAddress("mu_trk_numberOfValidPixelHits", &mu_trk_numberOfValidPixelHits, &b_mu_trk_numberOfValidPixelHits);
        fChain->SetBranchAddress("mu_trk_numberOfValidTrackerLayers", &mu_trk_numberOfValidTrackerLayers, &b_mu_trk_numberOfValidTrackerLayers);
+       fChain->SetBranchAddress("mu_trkMu_stationMask", &mu_trkMu_stationMask, &b_mu_trkMu_stationMask);
        fChain->SetBranchAddress("mu_trkMu_numberOfMatchedStations", &mu_trkMu_numberOfMatchedStations, &b_mu_trkMu_numberOfMatchedStations);
        fChain->SetBranchAddress("mu_trkMu_numberOfMatchedRPCLayers", &mu_trkMu_numberOfMatchedRPCLayers, &b_mu_trkMu_numberOfMatchedRPCLayers);
        fChain->SetBranchAddress("mu_staMu_numberOfValidMuonHits", &mu_staMu_numberOfValidMuonHits, &b_mu_staMu_numberOfValidMuonHits);
@@ -474,7 +477,8 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
        fChain->SetBranchAddress("mu_matches_edgeY", &mu_matches_edgeY, &b_mu_matches_edgeY);
        fChain->SetBranchAddress("mu_matches_dXdZ", &mu_matches_dXdZ, &b_mu_matches_dXdZ);
        fChain->SetBranchAddress("mu_matches_dYdZ", &mu_matches_dYdZ, &b_mu_matches_dYdZ);
-       fChain->SetBranchAddress("mu_matchSegIdx", &mu_matchSegIdx, &b_mu_matchSegIdx);
+       fChain->SetBranchAddress("mu_staMu_nMatchSeg", &mu_staMu_nMatchSeg, &b_mu_staMu_nMatchSeg);
+       fChain->SetBranchAddress("mu_staMu_matchSegIdx", &mu_staMu_matchSegIdx, &b_mu_staMu_matchSegIdx);
 
      }
 

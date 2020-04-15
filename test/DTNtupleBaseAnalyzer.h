@@ -187,6 +187,7 @@ public :
    vector<int>     *mu_trk_origAlgo;
    vector<int>     *mu_trk_numberOfValidPixelHits;
    vector<int>     *mu_trk_numberOfValidTrackerLayers;
+   vector<unsigned int> *mu_trkMu_stationMask;
    vector<int>     *mu_trkMu_numberOfMatchedStations;
    vector<int>     *mu_trkMu_numberOfMatchedRPCLayers;
    vector<int>     *mu_staMu_numberOfValidMuonHits;
@@ -204,7 +205,8 @@ public :
    TClonesArray    *mu_matches_edgeY;
    TClonesArray    *mu_matches_dXdZ;
    TClonesArray    *mu_matches_dYdZ;
-   TClonesArray    *mu_matchSegIdx;
+   vector<unsigned int> *mu_staMu_nMatchSeg;
+   TClonesArray    *mu_staMu_matchSegIdx;
    UInt_t          ltTwinMuxIn_nTrigs;
    vector<short>   *ltTwinMuxIn_wheel;
    vector<short>   *ltTwinMuxIn_sector;
@@ -456,6 +458,7 @@ public :
    TBranch        *b_mu_trk_origAlgo;   //!
    TBranch        *b_mu_trk_numberOfValidPixelHits;   //!
    TBranch        *b_mu_trk_numberOfValidTrackerLayers;   //!
+   TBranch        *b_mu_trkMu_stationMask;   //!
    TBranch        *b_mu_trkMu_numberOfMatchedStations;   //!
    TBranch        *b_mu_trkMu_numberOfMatchedRPCLayers;   //!
    TBranch        *b_mu_staMu_numberOfValidMuonHits;   //!
@@ -473,7 +476,8 @@ public :
    TBranch        *b_mu_matches_edgeY;   //!
    TBranch        *b_mu_matches_dXdZ;   //!
    TBranch        *b_mu_matches_dYdZ;   //!
-   TBranch        *b_mu_matchSegIdx;   //!
+   TBranch        *b_mu_staMu_nMatchSeg;   //!
+   TBranch        *b_mu_staMu_matchSegIdx;   //!
    TBranch        *b_ltTwinMuxIn_nTrigs;   //!
    TBranch        *b_ltTwinMuxIn_wheel;   //!
    TBranch        *b_ltTwinMuxIn_sector;   //!
