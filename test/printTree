@@ -48,7 +48,9 @@ print("")
 TREE_INPUT = ROOT.TChain(TREE_PATH)
 TREE_INPUT.AddFile(ARGS.fileNameInput)
 
-print("Number of entries in tree : {}".format(TREE_INPUT.GetEntries()))
+N_ENTRIES = TREE_INPUT.GetEntries()
+
+print("Number of entries in tree : {}".format(N_ENTRIES))
 print("")
 
 FILLER_SIZES = {}
@@ -73,8 +75,9 @@ print("")
 print("Fillers and size (kB) :")
 print("-----------------------")
 for filler, size in FILLER_SIZES.iteritems():
-    print("    Name : {:20.20} - size : {:12.2f}".format(filler, size))
+    print("    Name : {:20.20} - size : {:12.2f} \t - % of total : {:12.2f}".format(filler, size, size / TOTAL_SIZE * 100))
 print("")
 
 print("TOTAL size (kB) : {:12.2f}".format(TOTAL_SIZE))
+print("Size/event (kB) : {:12.2f}".format(TOTAL_SIZE / N_ENTRIES))
 print("")
