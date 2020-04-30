@@ -138,12 +138,17 @@ process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
 process.dt1DRecHits.dtDigiLabel = "simMuonDTDigis"
 process.rpcRecHits.rpcDigiLabel = "simMuonRPCDigis"
 
+process.load('Configuration.StandardSequences.SimL1Emulator_cff')
+process.simBmtfDigis.DTDigi_Source = "simDtTriggerPrimitiveDigis"
+process.simBmtfDigis.DTDigi_Theta_Source = "simDtTriggerPrimitiveDigis"
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
 process.p = cms.Path(process.rpcRecHits
                      + process.dt1DRecHits
                      + process.dt4DSegments
                      + process.CalibratedDigis
+                     + process.simBmtfDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)

@@ -14,7 +14,7 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   ph1TwinMuxInTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
                                   ph1TwinMuxOutTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
-                                  ph1BmtfInTag = cms.untracked.InputTag("none"),
+                                  ph1BmtfInTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
 
                                   ph1TwinMuxInThTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
                                   ph1BmtfInThTag = cms.untracked.InputTag("none"),
@@ -25,6 +25,8 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),
                                   ph2DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),
+
+                                  ph1BmtfOutTag  = cms.untracked.InputTag("simBmtfDigis", "BMTF"),
 
                                   tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   tTrigModeConfig = cms.untracked.PSet(

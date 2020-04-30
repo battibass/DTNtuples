@@ -9,6 +9,7 @@
 <use name="DataFormats/DTDigi"/>
 <use name="DataFormats/DTRecHit"/>
 <use name="DataFormats/L1DTTrackFinder"/>
+<use name="DataFormats/L1TMuon"/>
 
 <export>
    <lib name="1"/>
