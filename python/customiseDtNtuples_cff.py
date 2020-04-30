@@ -33,7 +33,7 @@ def customiseForPhase2Simulation(process) :
         print("[customiseForPhase2Simulation]: updating ntuple input tags")
 
         process.dtNtupleProducer.puInfoTag = "none"
-        process.dtNtupleProducer.ph1BmtfInTag = "none"
+        process.dtNtupleProducer.ph1BmtfInTag = "simDtTriggerPrimitiveDigis"
         process.dtNtupleProducer.ph1BmtfInThTag = "none"
         process.dtNtupleProducer.primaryVerticesTag = "none"
 
