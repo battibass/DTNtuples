@@ -1,6 +1,6 @@
 /** \class DTNtupleBmtfFiller DTNtupleBmtfFiller.cc DTDPGAnalysis/DTNtuples/src/DTNtupleBmtfFiller.cc
  *  
- * Helper class : the bmtf filler
+ * Helper class : the BMTF filler
  *
  * \author L. Borgonovi (INFN BO)
  *
@@ -26,8 +26,8 @@ DTNtupleBmtfFiller::DTNtupleBmtfFiller(edm::ConsumesCollector && collector,
   edm::InputTag & iTag = m_config->m_inputTags["ph1BmtfOutTag"];
   if (iTag.label() != "none") m_dtBmtfToken = collector.consumes<l1t::RegionalMuonCandBxCollection>(iTag);
 
-  edm::InputTag & iTag2 = m_config->m_inputTags["ph1BmtfInTag"];
-  if (iTag2.label() != "none") m_dtTpgPhiToken = collector.consumes<L1MuDTChambPhContainer>(iTag2);
+  iTag = m_config->m_inputTags["ph1BmtfInTag"];
+  if (iTag.label() != "none") m_dtTpgPhiToken = collector.consumes<L1MuDTChambPhContainer>(iTag);
 
 }
 
@@ -38,31 +38,33 @@ DTNtupleBmtfFiller::~DTNtupleBmtfFiller()
 
 void DTNtupleBmtfFiller::initialize()
 {
-  m_muCandStubs = new TClonesArray("TVectorF", 50);  
 
-  m_tree->Branch((m_label + "_nMuCands").c_str(), &m_nMuCands, (m_label + "_nMuCands/i").c_str());
+  m_matchedTpIdx = new TClonesArray("TVectorF", 4);  
 
-  m_tree->Branch((m_label + "_Pt").c_str(),     &m_tf_pt);
-  m_tree->Branch((m_label + "_Phi").c_str(),    &m_tf_phi);
-  m_tree->Branch((m_label + "_Eta").c_str(),    &m_tf_eta);
-  m_tree->Branch((m_label + "_DXY").c_str(),    &m_tf_dxy);
-  m_tree->Branch((m_label + "_Qual").c_str(),   &m_tf_qual);
-  m_tree->Branch((m_label + "_HF").c_str(),     &m_tf_hf);
-  m_tree->Branch((m_label + "_TriggerStub").c_str(), &m_muCandStubs,  2048000,0);
+  m_tree->Branch((m_label + "_nBmtfCands").c_str(), &m_nBmtfCands, (m_label + "_nBmtfCands/i").c_str());
+
+  m_tree->Branch((m_label + "_pt").c_str(),     &m_tf_pt);
+  m_tree->Branch((m_label + "_phi").c_str(),    &m_tf_phi);
+  m_tree->Branch((m_label + "_eta").c_str(),    &m_tf_eta);
+  m_tree->Branch((m_label + "_dxy").c_str(),    &m_tf_dxy);
+  m_tree->Branch((m_label + "_qual").c_str(),   &m_tf_qual);
+  m_tree->Branch((m_label + "_etaFine").c_str(),     &m_tf_etaFine);
+  m_tree->Branch((m_label + "_matchedTpIdx").c_str(), &m_matchedTpIdx,  2048000,0);
+
 }
 
 void DTNtupleBmtfFiller::clear()
 {
 
-  m_nMuCands = 0;
+  m_nBmtfCands = 0;
 
   m_tf_pt.clear();
   m_tf_phi.clear();
   m_tf_eta.clear();
   m_tf_dxy.clear();
   m_tf_qual.clear();
-  m_tf_hf.clear();
-  m_muCandStubs->Clear();
+  m_tf_etaFine.clear();
+  m_matchedTpIdx->Clear();
 
 }
 
@@ -70,7 +72,7 @@ void DTNtupleBmtfFiller::fill(const edm::Event & ev)
 {
 
   clear();
-  int nTrigs = 0;
+
   TVectorF triggerIndex(4);
 
   auto bmtfColl = conditionalGet<l1t::RegionalMuonCandBxCollection>(ev, m_dtBmtfToken,"RegionalMuonCandBxCollection");
@@ -79,92 +81,106 @@ void DTNtupleBmtfFiller::fill(const edm::Event & ev)
   if (bmtfColl.isValid()) 
     {
 
-      auto muCandBX  = bmtfColl->getFirstBX();
-      auto muCandLastBX = bmtfColl->getLastBX();
+      auto bmtfCandBX  = bmtfColl->getFirstBX();
+      auto bmtfCandLastBX = bmtfColl->getLastBX();
 
-      for (; muCandBX <= muCandLastBX; ++muCandBX)
+      for (; bmtfCandBX <= bmtfCandLastBX; ++bmtfCandBX)
 	{
-	  auto muCand = bmtfColl->begin(muCandBX);
-	  auto muCandLast = bmtfColl->end(muCandBX);
 
-	  for (;  muCand != muCandLast; ++muCand)
+	  auto bmtfCand = bmtfColl->begin(bmtfCandBX);
+	  auto bmtfCandLast = bmtfColl->end(bmtfCandBX);
+
+	  for (;  bmtfCand != bmtfCandLast; ++bmtfCand)
 	    {
-	      std::map<int, int> mapTA = muCand->trackAddress();
+
+	      std::map<int, int> mapTA = bmtfCand->trackAddress();
 	     
-	      int wsign = mapTA[0] == 0 ? +1 : -1 ;
+	      int wsign = mapTA[0] == 0 ? 1 : -1;
 	      int wheel = wsign * mapTA[1];
-	      int sector = muCand->processor();
+	      int sector = bmtfCand->processor();
 
-	      int ts_mb[4];
-	      int w_mb[4];
-	      int s_mb[4];
+	      int ts_mb[4] = {DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL};
+	      int w_mb[4]  = {DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL};
+	      int s_mb[4]  = {DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL, DEFAULT_INT_VAL};
 
-	      for(int i = 0; i < 4; i++)
+	      for(int iSt = 0; iSt < N_STAT; ++iSt)
                 {
-		  w_mb[i] = -10;
-                  s_mb[i] = -1;
-                  ts_mb[i] = -1;
-		  triggerIndex[i] = -1;
+		  triggerIndex[iSt] = DEFAULT_INT_VAL; // CB can this be assigned with {}
 		}
 	      
 	      if (mapTA[2] != 3)
 		{
 		  w_mb[0] = wheel;
 		  s_mb[0] = sector;
-		  ts_mb[0] = ( mapTA[2] & 1 ) ? 1 : 0;
+		  ts_mb[0] = (mapTA[2] & 1) ? 1 : 0;
 		}
 	      
-	      for(int i = 1; i < 4; i++)
+	      for(int iSt = 1; iSt < N_STAT; ++iSt)
 		{
-		  if (mapTA[i+2] != 15)
+
+		  if (mapTA[iSt+2] != 15)
 		    {
-		      ts_mb[i] = ( mapTA[i+2] & 1 ) ? 1 : 0;   // 0 for ts1 , 1 for ts2 
-		      w_mb[i]  = ( mapTA[i+2] & 8 ) ? wheel : wheel+wsign;  // own wheel if true, nex wheel if false (depends on sign of the wheel -> case 0+, +1: +1, case 0-, -1: -1)
-		      int temp_mapValue = mapTA[i+2] >> 1;  // temp value to remove less significant bit
-		      if (temp_mapValue & 1) s_mb[i] = sector != 0 ? sector-1 : 11  ; // if last two remained bit == 01 -> sector-1 (N+1 column of ref table)
-		      else if (temp_mapValue & 2) s_mb[i] = sector != 11 ? sector+1 : 0; //  if last two remained bit == 10 -> sector+1 (N-1 column of ref table)
-		      else s_mb[i] = sector;  // if last two remained bit == 00 -> sector (N column of ref table)
+		      ts_mb[iSt] = (mapTA[iSt+2] & 1) ? 1 : 0;   // 0 for ts1 , 1 for ts2 
+		      w_mb[iSt]  = (mapTA[iSt+2] & 8) ? wheel : wheel + wsign;  // own wheel if true, nex wheel if false (depends on sign of the wheel -> case 0+, +1: +1, case 0-, -1: -1)
+		      int tmpMapValue = mapTA[iSt+2] >> 1;  // temp value to remove less significant bit
+		      if (tmpMapValue & 1) s_mb[iSt] = sector != 0 ? sector - 1 : 11  ; // if last two remained bit == 01 -> sector-1 (N+1 column of ref table)
+		      else if (tmpMapValue & 2) s_mb[iSt] = sector != 11 ? sector + 1 : 0; //  if last two remained bit == 10 -> sector+1 (N-1 column of ref table)
+		      else s_mb[iSt] = sector;  // if last two remained bit == 00 -> sector (N column of ref table)
 		    }
+
 		}
 
-	      int temp_index = 0;		      	      	      
-	      for(int i = 0; i < 4; i++)
+	      int tmpIdx = 0;		      	      	      
+
+	      for(int iSt = 0; iSt < N_STAT; ++iSt)
 		{
-		  nTrigs = 0;
+
+		  int iTP = 0;
+
 		  if (trigColl.isValid())
 		    {
+
 		      const auto trigs = trigColl->getContainer();
+
 		      for(const auto & trig : (*trigs))
 			{
 			  if (trig.code() != 7)
 			    {
-			      if (muCandBX == trig.bxNum())
+			      if (bmtfCandBX == trig.bxNum())
 				{
-				  if ( (w_mb[i] == trig.whNum()) && (ts_mb[i] == trig.Ts2Tag()) && (s_mb[i] == trig.scNum()) && (i+1 == trig.stNum() ) )
+				  if ((w_mb[iSt]  == trig.whNum())  && 
+				      (ts_mb[iSt] == trig.Ts2Tag()) && 
+				      (s_mb[iSt]  == trig.scNum())  && 
+				      (iSt + 1    == trig.stNum()))
 				    {
-				      triggerIndex[temp_index] = nTrigs;
-				      temp_index++;
+				      triggerIndex[tmpIdx] = iTP;
+				      tmpIdx++;
 				    }
 				}
 			    }
-                          nTrigs++;
+
+                          iTP++;
+
                         }
                     }
                 }
 	      
-	      m_tf_pt.push_back((muCand->hwPt())*0.5);
-              m_tf_phi.push_back(muCand->hwPhi()); //no conversion yet
-              m_tf_eta.push_back((muCand->hwEta())*0.010875);
-	      m_tf_dxy.push_back(muCand->hwDXY()); 
-	      m_tf_qual.push_back(muCand->hwQual());
-	      m_tf_hf.push_back(muCand->hwHF());
-	      new ((*m_muCandStubs)[m_nMuCands]) TVectorF(triggerIndex);
+	      m_tf_pt.push_back((bmtfCand->hwPt()) * PT_SCALE);
+              m_tf_phi.push_back(bmtfCand->hwPhi() * PHI_SCALE); //no conversion yet
+              m_tf_eta.push_back((bmtfCand->hwEta()) * ETA_SCALE);
+	      m_tf_dxy.push_back(bmtfCand->hwDXY()); 
+	      m_tf_qual.push_back(bmtfCand->hwQual());
+	      m_tf_etaFine.push_back(bmtfCand->hwHF());
 
-	      m_nMuCands++;
+	      new ((*m_matchedTpIdx)[m_nBmtfCands]) TVectorF(triggerIndex);
+
+	      m_nBmtfCands++;
 	    }
 	}
     }
+
   return;
+
 }
 
 

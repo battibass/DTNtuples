@@ -3,7 +3,7 @@
 
 /** \class DTNtupleBmtfFiller DTNtupleBmtfFiller.h DTDPGAnalysis/DTNtuples/src/DTNtupleBmtfFiller.h
  *  
- * Helper class : the bmtf filler
+ * Helper class : the BMTF filler
  *
  * \author L. Borgonovi (INFN BO)
  *
@@ -24,8 +24,8 @@ class DTNtupleBmtfFiller : public DTNtupleBaseFiller
 
   /// Constructor
   DTNtupleBmtfFiller(edm::ConsumesCollector && collector,
-		    const std::shared_ptr<DTNtupleConfig> config, 
-		    std::shared_ptr<TTree> tree, const std::string & label);
+		     const std::shared_ptr<DTNtupleConfig> config, 
+		     std::shared_ptr<TTree> tree, const std::string & label);
 
   ///Destructor
   virtual ~DTNtupleBmtfFiller();
@@ -41,19 +41,31 @@ class DTNtupleBmtfFiller : public DTNtupleBaseFiller
 
  private :
 
+  /// Scale to convert HW pt to GeV
+  static constexpr double PT_SCALE = 0.5;
+
+  /// Scale to convert HW eta to phisical value
+  static constexpr double ETA_SCALE = 0.010875;
+
+  /// Scale to convert HW eta to deg??? CB fix this
+  static constexpr double PHI_SCALE = 1.;
+
+  /// Number of DT stations
+  static constexpr int N_STAT= 0.5;
+
   /// The gen particles token
   edm::EDGetTokenT<l1t::RegionalMuonCandBxCollection> m_dtBmtfToken;
   edm::EDGetTokenT<L1MuDTChambPhContainer> m_dtTpgPhiToken;
 
-  unsigned int m_nMuCands; // the # of digis (size of all following vectors)    
+  unsigned int m_nBmtfCands; // the # of BMTF candidates (size of all following vectors)    
 
-  std::vector<float> m_tf_pt;       // pt
-  std::vector<int> m_tf_phi;        // phi
-  std::vector<float> m_tf_eta;      // eta
-  std::vector<int> m_tf_dxy;        // dxy
-  std::vector<int> m_tf_qual;       // trigger quality
-  std::vector<int> m_tf_hf;         // HF (halo / fine) eta
-  TClonesArray *m_muCandStubs;      // index of trigger stubs
+  std::vector<float> m_tf_pt;       // BMTF cand pt  [GeV/c]
+  std::vector<int> m_tf_phi;        // BMTF cand phi [rad??] CB check this
+  std::vector<float> m_tf_eta;      // BMTF cand eta 
+  std::vector<int> m_tf_dxy;        // BMTF cand dxy [cm??] CB check this
+  std::vector<int> m_tf_qual;       // BMTF cand quality
+  std::vector<int> m_tf_etaFine;    // fine eta bit
+  TClonesArray *m_matchedTpIdx;      // index of BMTF input TPs
 };
   
 #endif

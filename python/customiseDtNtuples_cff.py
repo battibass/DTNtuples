@@ -34,7 +34,7 @@ def customiseForPhase2Simulation(process) :
 
         process.dtNtupleProducer.puInfoTag = "none"
         process.dtNtupleProducer.ph1BmtfInTag = "simDtTriggerPrimitiveDigis"
-        process.dtNtupleProducer.ph1BmtfInThTag = "none"
+        process.dtNtupleProducer.ph1BmtfInThTag = "simDtTriggerPrimitiveDigis"
         process.dtNtupleProducer.primaryVerticesTag = "none"
 
         process.dtNtupleProducer.ph1DtDigiTag = "simMuonDTDigis"

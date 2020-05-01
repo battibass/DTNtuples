@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '106X_upgrade2023_realistic_v3', #default value
+                 '110X_mcRun4_realistic_v3', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -68,14 +68,14 @@ options.register('applyRandomBkg',
                  "If True applies random background to phase-2 digis and emulator")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_11_0_1_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
 
 options.parseArguments()
 
-process = cms.Process("DTNTUPLES",eras.Phase2C8_timing_layer_bar)
+process = cms.Process("DTNTUPLES",eras.Phase2C9)
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -114,9 +114,11 @@ process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
     )
 
-process.load('Configuration.Geometry.GeometryExtended2023D41Reco_cff')
-process.load('Configuration.Geometry.GeometryExtended2023D41_cff')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
+process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load('Configuration.Geometry.GeometryExtended2026D41Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2026D41_cff')
 
 # process.DTGeometryESModule.applyAlignment = False
 # process.DTGeometryESModule.fromDDD = False
@@ -162,3 +164,4 @@ if options.applyRandomBkg :
     customiseForRandomBkg(process,"p")
 
 customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing,options.applyRpcAgeing)
+

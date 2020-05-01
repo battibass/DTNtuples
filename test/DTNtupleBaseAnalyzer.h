@@ -253,6 +253,14 @@ public :
    vector<short>   *ltBmtfInTh_station;
    vector<short>   *ltBmtfInTh_BX;
    vector<unsigned short> *ltBmtfInTh_hitMap;
+   UInt_t          tfBmtfOut_nBmtfCands;
+   vector<float>   *tfBmtfOut_pt;
+   vector<int>     *tfBmtfOut_phi;
+   vector<float>   *tfBmtfOut_eta;
+   vector<int>     *tfBmtfOut_dxy;
+   vector<int>     *tfBmtfOut_qual;
+   vector<int>     *tfBmtfOut_etaFine;
+   TClonesArray    *tfBmtfOut_matchedTpIdx;
    UInt_t          ph2TpgPhiHw_nTrigs;
    vector<short>   *ph2TpgPhiHw_wheel;
    vector<short>   *ph2TpgPhiHw_sector;
@@ -524,6 +532,14 @@ public :
    TBranch        *b_ltBmtfInTh_station;   //!
    TBranch        *b_ltBmtfInTh_BX;   //!
    TBranch        *b_ltBmtfInTh_hitMap;   //!
+   TBranch        *b_tfBmtfOut_nBmtfCands;   //!
+   TBranch        *b_tfBmtfOut_pt;   //!
+   TBranch        *b_tfBmtfOut_phi;   //!
+   TBranch        *b_tfBmtfOut_eta;   //!
+   TBranch        *b_tfBmtfOut_dxy;   //!
+   TBranch        *b_tfBmtfOut_qual;   //!
+   TBranch        *b_tfBmtfOut_etaFine;   //!
+   TBranch        *b_tfBmtfOut_matchedTpIdx;   //!
    TBranch        *b_ph2TpgPhiHw_nTrigs;   //!
    TBranch        *b_ph2TpgPhiHw_wheel;   //!
    TBranch        *b_ph2TpgPhiHw_sector;   //!

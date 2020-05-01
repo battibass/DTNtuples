@@ -111,6 +111,7 @@ void DTNtupleProducer::analyze(const edm::Event & ev, const edm::EventSetup & en
     }
 
  m_tree->Fill();
+
 }
 
 // define this as a plug-in
