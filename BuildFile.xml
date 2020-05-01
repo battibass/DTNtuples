@@ -13,6 +13,7 @@
 <use name="DataFormats/DTRecHit"/>
 <use name="DataFormats/MuonReco"/>
 <use name="DataFormats/L1DTTrackFinder"/>
+<use name="DataFormats/L1TMuon"/>
 
 <export>
    <lib name="1"/>

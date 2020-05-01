@@ -248,6 +248,13 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    ltBmtfInTh_station = 0;
    ltBmtfInTh_BX = 0;
    ltBmtfInTh_hitMap = 0;
+   tfBmtfOut_pt = 0;
+   tfBmtfOut_phi = 0;
+   tfBmtfOut_eta = 0;
+   tfBmtfOut_dxy = 0;
+   tfBmtfOut_qual = 0;
+   tfBmtfOut_etaFine = 0;
+   tfBmtfOut_matchedTpIdx = 0;
    ph2TpgPhiHw_wheel = 0;
    ph2TpgPhiHw_sector = 0;
    ph2TpgPhiHw_station = 0;
@@ -528,6 +535,14 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("ltBmtfInTh_station", &ltBmtfInTh_station, &b_ltBmtfInTh_station);
    fChain->SetBranchAddress("ltBmtfInTh_BX", &ltBmtfInTh_BX, &b_ltBmtfInTh_BX);
    fChain->SetBranchAddress("ltBmtfInTh_hitMap", &ltBmtfInTh_hitMap, &b_ltBmtfInTh_hitMap);
+   fChain->SetBranchAddress("tfBmtfOut_nBmtfCands", &tfBmtfOut_nBmtfCands, &b_tfBmtfOut_nBmtfCands);
+   fChain->SetBranchAddress("tfBmtfOut_pt", &tfBmtfOut_pt, &b_tfBmtfOut_pt);
+   fChain->SetBranchAddress("tfBmtfOut_phi", &tfBmtfOut_phi, &b_tfBmtfOut_phi);
+   fChain->SetBranchAddress("tfBmtfOut_eta", &tfBmtfOut_eta, &b_tfBmtfOut_eta);
+   fChain->SetBranchAddress("tfBmtfOut_dxy", &tfBmtfOut_dxy, &b_tfBmtfOut_dxy);
+   fChain->SetBranchAddress("tfBmtfOut_qual", &tfBmtfOut_qual, &b_tfBmtfOut_qual);
+   fChain->SetBranchAddress("tfBmtfOut_etaFine", &tfBmtfOut_etaFine, &b_tfBmtfOut_etaFine);
+   fChain->SetBranchAddress("tfBmtfOut_matchedTpIdx", &tfBmtfOut_matchedTpIdx, &b_tfBmtfOut_matchedTpIdx);
    fChain->SetBranchAddress("ph2TpgPhiHw_nTrigs", &ph2TpgPhiHw_nTrigs, &b_ph2TpgPhiHw_nTrigs);
    fChain->SetBranchAddress("ph2TpgPhiHw_wheel", &ph2TpgPhiHw_wheel, &b_ph2TpgPhiHw_wheel);
    fChain->SetBranchAddress("ph2TpgPhiHw_sector", &ph2TpgPhiHw_sector, &b_ph2TpgPhiHw_sector);
