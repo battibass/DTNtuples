@@ -16,7 +16,7 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph1TwinMuxOutTag = cms.untracked.InputTag("twinMuxStage2Digis","PhOut"),
                                   ph1BmtfInTag  = cms.untracked.InputTag("bmtfDigis"),
 
-                                  ph1BmtfOutTag  = cms.untracked.InputTag("simBmtfDigis", "BMTF"),
+                                  ph1BmtfOutTag  = cms.untracked.InputTag("none"),
 
                                   ph1TwinMuxInThTag = cms.untracked.InputTag("twinMuxStage2Digis","ThIn"),
                                   ph1BmtfInThTag  = cms.untracked.InputTag("bmtfDigis"),
