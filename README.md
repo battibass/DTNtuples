@@ -15,7 +15,7 @@ git cms-merge-topic battibass:Phase2_DTReco_110X
 git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_0_X_v2 
 git cms-merge-topic -u battibass:HB_From106X_for110X # MTT-CHT emulator (brute force copy from Nicola)
 git cms-merge-topic -u dtp2-tpg-am:AM_106X_11_0_1_noDF # AM emulator
-git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples -b 110X_preparation
+git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
 scramv1 b -j 5
 ```
 
