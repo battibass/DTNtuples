@@ -13,11 +13,15 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/Run.h"
 
 #include "Geometry/Records/interface/GlobalTrackingGeometryRecord.h"
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
 
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
+
+#include "TString.h"
+#include "TRegexp.h"
 
 DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config) 
 { 
@@ -38,6 +42,11 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
   m_inputTags["ph1DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph1DtSegmentTag", none);
   m_inputTags["ph2DtSegmentTag"] = config.getUntrackedParameter<edm::InputTag>("ph2DtSegmentTag", none);
 
+  m_inputTags["muonTag"] = config.getUntrackedParameter<edm::InputTag>("muonTag", none);
+
+  m_inputTags["trigResultsTag"] = config.getUntrackedParameter<edm::InputTag>("trigResultsTag", none);
+  m_inputTags["trigEventTag"] = config.getUntrackedParameter<edm::InputTag>("trigEventTag", none);
+
   m_inputTags["ph1TwinMuxInTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxInTag", none);
   m_inputTags["ph1TwinMuxOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1TwinMuxOutTag", none);
   m_inputTags["ph1BmtfInTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfInTag", none);
@@ -49,8 +58,13 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
   m_inputTags["ph2TPGPhiEmuHbTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuHbTag", none);
   m_inputTags["ph2TPGPhiEmuAmTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuAmTag", none);
 
+  m_inputTags["ph1BmtfOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfOutTag", none);
+
   m_dtSync = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("tTrigMode"),
 					       config.getUntrackedParameter<edm::ParameterSet>("tTrigModeConfig"));
+
+  m_isoTrigName = config.getUntrackedParameter<std::string>("isoTrigName", "HLT_IsoMu24_v*");
+  m_trigName = config.getUntrackedParameter<std::string>("trigName", "HLT_Mu50_v*");
 
 }
 
@@ -67,5 +81,41 @@ void DTNtupleConfig::getES(const edm::EventSetup & environment)
 
   m_trigGeomUtils.reset();
   m_trigGeomUtils = std::make_unique<DTTrigGeomUtils>(dtIdealGeom);
+
+}
+
+void DTNtupleConfig::getES(const edm::Run &run, const edm::EventSetup & environment) 
+{
+ 
+  getES(environment);
+
+  bool changed = true;
+  m_hltConfig.init(run, environment, "HLT", changed);
+
+  bool enableWildcard = true;
+
+  TString tName = TString(m_trigName);
+  TRegexp tNamePattern = TRegexp(tName, enableWildcard);
+
+  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) 
+    {
+
+      TString pathName = TString(m_hltConfig.triggerName(iPath));
+      if (pathName.Contains(tNamePattern)) 
+          m_trigIndices.push_back(static_cast<int>(iPath));
+
+    }
+  
+  tName = TString(m_isoTrigName);
+  tNamePattern = TRegexp(tName, enableWildcard);
+ 
+  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) 
+    {
+
+      TString pathName = TString(m_hltConfig.triggerName(iPath));
+      if (pathName.Contains(tNamePattern)) 
+	m_isoTrigIndices.push_back(static_cast<int>(iPath));
+
+    }
 
 }

@@ -33,8 +33,8 @@ def customiseForPhase2Simulation(process) :
         print("[customiseForPhase2Simulation]: updating ntuple input tags")
 
         process.dtNtupleProducer.puInfoTag = "none"
-        process.dtNtupleProducer.ph1BmtfInTag = "none"
-        process.dtNtupleProducer.ph1BmtfInThTag = "none"
+        process.dtNtupleProducer.ph1BmtfInTag = "simDtTriggerPrimitiveDigis"
+        process.dtNtupleProducer.ph1BmtfInThTag = "simDtTriggerPrimitiveDigis"
         process.dtNtupleProducer.primaryVerticesTag = "none"
 
         process.dtNtupleProducer.ph1DtDigiTag = "simMuonDTDigis"
@@ -57,6 +57,32 @@ def customiseForFakePhase2Info(process) :
         process.dtNtupleProducer.ph2TPGPhiHwTag = process.dtNtupleProducer.ph2TPGPhiEmuAmTag
 
     return process
+
+def customiseForRecoMuons(process, pathName) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print("[customiseForRecoMuons]: updating ntuple input tags")
+
+        process.dtNtupleProducer.muonTag = "muonsForNtuples"
+        process.dtNtupleProducer.primaryVerticesTag = "offlinePrimaryVertices"
+        process.dtNtupleProducer.ph1DtSegmentTag = "dt4DSegments"
+
+        process.dtNtupleProducer.trigEventTag = "hltTriggerSummaryAOD::HLT"
+        process.dtNtupleProducer.trigResultsTag = "TriggerResults::HLT"
+
+        process.dtNtupleProducer.isoTrigName = "HLT_IsoMu24_v*"
+        process.dtNtupleProducer.trigName = "HLT_Mu50_v*"
+
+        if hasattr(process,pathName) :
+            print("[customiseForRecoMuons]: adding muonsForNtuples")
+
+            process.load('DTDPGAnalysis.DTNtuples.muon_selectors_cff')
+
+            getattr(process,pathName).replace(process.dtNtupleProducer,
+                                              process.muonsForNtuples
+                                              + process.dtNtupleProducer)
+    return process
+
 
 def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgeing) :
 

@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '106X_upgrade2023_realistic_v3', #default value
+                 '110X_mcRun4_realistic_v3', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -68,14 +68,14 @@ options.register('applyRandomBkg',
                  "If True applies random background to phase-2 digis and emulator")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_10_6_0_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_11_0_1_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
 
 options.parseArguments()
 
-process = cms.Process("DTNTUPLES",eras.Phase2C8_timing_layer_bar)
+process = cms.Process("DTNTUPLES",eras.Phase2C9)
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -114,9 +114,11 @@ process.TFileService = cms.Service('TFileService',
         fileName = cms.string(options.ntupleName)
     )
 
-process.load('Configuration.Geometry.GeometryExtended2023D41Reco_cff')
-process.load('Configuration.Geometry.GeometryExtended2023D41_cff')
+process.load('SimGeneral.MixingModule.mixNoPU_cfi')
+process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
+process.load('Configuration.Geometry.GeometryExtended2026D41Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2026D41_cff')
 
 # process.DTGeometryESModule.applyAlignment = False
 # process.DTGeometryESModule.fromDDD = False
@@ -138,12 +140,17 @@ process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
 process.dt1DRecHits.dtDigiLabel = "simMuonDTDigis"
 process.rpcRecHits.rpcDigiLabel = "simMuonRPCDigis"
 
+process.load('Configuration.StandardSequences.SimL1Emulator_cff')
+process.simBmtfDigis.DTDigi_Source = "simDtTriggerPrimitiveDigis"
+process.simBmtfDigis.DTDigi_Theta_Source = "simDtTriggerPrimitiveDigis"
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_phase2_cfi')
 
 process.p = cms.Path(process.rpcRecHits
                      + process.dt1DRecHits
                      + process.dt4DSegments
                      + process.CalibratedDigis
+                     + process.simBmtfDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
                      + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
@@ -158,4 +165,3 @@ if options.applyRandomBkg :
 
 customiseForAgeing(process,"p",options.applySegmentAgeing,options.applyTriggerAgeing,options.applyRpcAgeing)
 
- 

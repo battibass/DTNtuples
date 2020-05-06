@@ -27,12 +27,14 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleEventFiller.h"
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleGenFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleMuonFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleDigiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGThetaFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGPhiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleEnvironmentFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtupleBmtfFiller.h"
 
 #include <iostream>
 
@@ -57,6 +59,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
   m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
 
+  // m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
+
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
   m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltBmtfIn",     DTNtupleTPGPhiFiller::TriggerTag::BMTF_IN));
@@ -67,6 +71,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiHw",    DTNtuplePh2TPGPhiFiller::TriggerTag::HW));
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuHb", DTNtuplePh2TPGPhiFiller::TriggerTag::HB));
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuAm", DTNtuplePh2TPGPhiFiller::TriggerTag::AM));
+
+  m_fillers.push_back(std::make_unique<DTNtupleBmtfFiller>(consumesCollector(), m_config, m_tree, "tfBmtfOut"));
 
 }
 
@@ -85,7 +91,7 @@ void DTNtupleProducer::beginJob()
 void DTNtupleProducer::beginRun(const edm::Run & run, const edm::EventSetup & environment )
 {
 
-  m_config->getES(environment);
+  m_config->getES(run, environment);
 
 }
 

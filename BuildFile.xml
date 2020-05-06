@@ -6,9 +6,14 @@
 <use name="CalibMuon/DTDigiSync"/>
 <use name="Geometry/Records"/>
 <use name="TrackingTools/GeomPropagators"/>
+<use name="HLTrigger/HLTcore"/>
+<use name="DataFormats/Common"/>
+<use name="DataFormats/HLTReco"/>
 <use name="DataFormats/DTDigi"/>
 <use name="DataFormats/DTRecHit"/>
+<use name="DataFormats/MuonReco"/>
 <use name="DataFormats/L1DTTrackFinder"/>
+<use name="DataFormats/L1TMuon"/>
 
 <export>
    <lib name="1"/>

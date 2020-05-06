@@ -2,7 +2,7 @@ import FWCore.ParameterSet.Config as cms
 
 dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   genPartTag = cms.untracked.InputTag("prunedGenParticles"),
-
+                                  
                                   dtFedBxTag = cms.untracked.InputTag("none"),
 
                                   puInfoTag = cms.untracked.InputTag("none"),
@@ -14,10 +14,12 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   ph1TwinMuxInTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
                                   ph1TwinMuxOutTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
-                                  ph1BmtfInTag = cms.untracked.InputTag("none"),
+                                  ph1BmtfInTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
+
+                                  ph1BmtfOutTag  = cms.untracked.InputTag("simBmtfDigis", "BMTF"),
 
                                   ph1TwinMuxInThTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
-                                  ph1BmtfInThTag = cms.untracked.InputTag("none"),
+                                  ph1BmtfInThTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
 
                                   ph2TPGPhiHwTag = cms.untracked.InputTag("dtTriggerPhase2AmPrimitiveDigis"),
                                   ph2TPGPhiEmuHbTag = cms.untracked.InputTag("dtTriggerPhase2HbPrimitiveDigis","MMTCHT"),
@@ -25,6 +27,14 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),
                                   ph2DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),
+
+                                  muonTag = cms.untracked.InputTag("none"),
+
+                                  trigEventTag = cms.untracked.InputTag("none"),
+                                  trigResultsTag = cms.untracked.InputTag("none"),
+
+                                  trigName = cms.untracked.string('none'),
+                                  isoTrigName = cms.untracked.string('none'),
 
                                   tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   tTrigModeConfig = cms.untracked.PSet(
