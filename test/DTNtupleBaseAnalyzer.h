@@ -490,7 +490,7 @@ public :
    vector<unsigned short> *ltBmtfInTh_hitMap;
    UInt_t          tfBmtfOut_nBmtfCands;
    vector<float>   *tfBmtfOut_pt;
-   vector<int>     *tfBmtfOut_phi;
+   vector<float>   *tfBmtfOut_phi;
    vector<float>   *tfBmtfOut_eta;
    vector<int>     *tfBmtfOut_dxy;
    vector<int>     *tfBmtfOut_qual;

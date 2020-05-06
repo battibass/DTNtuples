@@ -165,8 +165,11 @@ void DTNtupleBmtfFiller::fill(const edm::Event & ev)
                     }
                 }
 	      
+	      int iPhi = bmtfCand->hwPhi() + bmtfCand->processor() * 48 - 15;
+	      if (iPhi < 0) iPhi += 576;
+
 	      m_tf_pt.push_back((bmtfCand->hwPt()) * PT_SCALE);
-              m_tf_phi.push_back(bmtfCand->hwPhi() * PHI_SCALE); //no conversion yet
+              m_tf_phi.push_back(iPhi * PHI_SCALE); //no conversion yet
               m_tf_eta.push_back((bmtfCand->hwEta()) * ETA_SCALE);
 	      m_tf_dxy.push_back(bmtfCand->hwDXY()); 
 	      m_tf_qual.push_back(bmtfCand->hwQual());
