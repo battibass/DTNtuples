@@ -68,7 +68,7 @@ options.register('applyRandomBkg',
                  "If True applies random background to phase-2 digis and emulator")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_11_0_1_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_11_0_2_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
