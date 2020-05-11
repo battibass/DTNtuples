@@ -60,8 +60,13 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   m_inputTags["ph1BmtfOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfOutTag", none);
 
-  m_dtSync = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("tTrigMode"),
-					       config.getUntrackedParameter<edm::ParameterSet>("tTrigModeConfig"));
+  if (m_inputTags["ph1DtSegmentTag"].label() != "none")
+    m_dtSyncs[PhaseTag::PH1] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph1tTrigMode"),
+								 config.getUntrackedParameter<edm::ParameterSet>("ph1tTrigModeConfig"));
+
+  if (m_inputTags["ph2DtSegmentTag"].label() != "none")
+    m_dtSyncs[PhaseTag::PH2] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph2tTrigMode"),
+								 config.getUntrackedParameter<edm::ParameterSet>("ph2tTrigModeConfig"));
 
   m_isoTrigName = config.getUntrackedParameter<std::string>("isoTrigName", "HLT_IsoMu24_v*");
   m_trigName = config.getUntrackedParameter<std::string>("trigName", "HLT_Mu50_v*");
@@ -71,7 +76,11 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 void DTNtupleConfig::getES(const edm::EventSetup & environment) 
 { 
 
-  m_dtSync->setES(environment);
+  if (m_inputTags["ph1DtSegmentTag"].label() != "none")
+    m_dtSyncs[PhaseTag::PH1]->setES(environment);
+
+  if (m_inputTags["ph2DtSegmentTag"].label() != "none")
+    m_dtSyncs[PhaseTag::PH2]->setES(environment);
 
   environment.get<MuonGeometryRecord>().get(m_dtGeometry);
   environment.get<GlobalTrackingGeometryRecord>().get(m_trackingGeometry);

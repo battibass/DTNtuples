@@ -40,6 +40,8 @@ class DTNtupleConfig
 
  public :
 
+  enum class PhaseTag { PH1 = 0, PH2 };
+
   /// Constructor
   DTNtupleConfig(const edm::ParameterSet & config);
 
@@ -54,7 +56,7 @@ class DTNtupleConfig
   std::map<std::string, edm::InputTag> m_inputTags;
 
   /// The class to handle DT trigger time pedestals
-  std::unique_ptr<DTTTrigBaseSync> m_dtSync;
+  std::map<PhaseTag, std::unique_ptr<DTTTrigBaseSync>> m_dtSyncs;
 
   /// The class to perform DT local trigger coordinate conversions
   std::unique_ptr<DTTrigGeomUtils> m_trigGeomUtils;

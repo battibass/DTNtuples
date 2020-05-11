@@ -36,15 +36,29 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   trigName = cms.untracked.string('none'),
                                   isoTrigName = cms.untracked.string('none'),
 
-                                  tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
-                                  tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),
-                                                                       doTOFCorrection = cms.bool(False),
-                                                                       tofCorrType = cms.int32(2),
-                                                                       wirePropCorrType = cms.int32(0),
-                                                                       doWirePropCorrection = cms.bool(False),
-                                                                       doT0Correction = cms.bool(True),
-                                                                       tTrigLabel = cms.string(''),
-                                                                       debug = cms.untracked.bool(False)
-                                                                       ),
+                                  ph1tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
+                                  ph1tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),
+                                                                          doTOFCorrection = cms.bool(False),
+                                                                          tofCorrType = cms.int32(0),
+                                                                          doWirePropCorrection = cms.bool(False),
+                                                                          wirePropCorrType = cms.int32(0),
+                                                                          doT0Correction = cms.bool(True),
+                                                                          t0Label = cms.string(''),
+                                                                          tTrigLabel = cms.string('cosmics'),
+                                                                          debug = cms.untracked.bool(False)
+                                                                         ),
+
+                                  ph2tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
+                                  ph2tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),
+                                                                          doTOFCorrection = cms.bool(False),
+                                                                          tofCorrType = cms.int32(0),
+                                                                          doWirePropCorrection = cms.bool(False),
+                                                                          wirePropCorrType = cms.int32(0),
+                                                                          doT0Correction = cms.bool(True),
+                                                                          t0Label = cms.string('ph2'),
+                                                                          tTrigLabel = cms.string('cosmics_ph2'),
+                                                                          debug = cms.untracked.bool(False),
+                                                                         )
+
 )
 
