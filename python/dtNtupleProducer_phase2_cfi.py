@@ -22,9 +22,11 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph1BmtfInThTag = cms.untracked.InputTag("simDtTriggerPrimitiveDigis"),
 
                                   ph2TPGPhiHwTag = cms.untracked.InputTag("dtTriggerPhase2AmPrimitiveDigis"),
-                                  # ph2TPGPhiEmuHbTag = cms.untracked.InputTag("dtTriggerPhase2HbPrimitiveDigis","MMTCHT"),
-                                  ph2TPGPhiEmuHbTag = cms.untracked.InputTag("none"),
+                                  ph2TPGPhiEmuHbTag = cms.untracked.InputTag("dtTriggerPhase2HbPrimitiveDigis","MMTCHT"),
                                   ph2TPGPhiEmuAmTag = cms.untracked.InputTag("dtTriggerPhase2AmPrimitiveDigis"),
+                                  
+                                  ph2TPGEtaHwTag = cms.untracked.InputTag("dtTriggerPhase2AmPrimitiveDigis"),
+                                  ph2TPGEtaEmuAmTag = cms.untracked.InputTag("dtTriggerPhase2AmPrimitiveDigis"), 
 
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),
                                   ph2DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),

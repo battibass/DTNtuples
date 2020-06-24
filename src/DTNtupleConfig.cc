@@ -58,6 +58,9 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
   m_inputTags["ph2TPGPhiEmuHbTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuHbTag", none);
   m_inputTags["ph2TPGPhiEmuAmTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGPhiEmuAmTag", none);
 
+  m_inputTags["ph2TPGEtaHwTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGEtaHwTag", none);
+  m_inputTags["ph2TPGEtaEmuAmTag"] = config.getUntrackedParameter<edm::InputTag>("ph2TPGEtaEmuAmTag", none);
+
   m_inputTags["ph1BmtfOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfOutTag", none);
 
   if (m_inputTags["ph1DtSegmentTag"].label() != "none")
