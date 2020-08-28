@@ -13,7 +13,7 @@ cmsenv
 git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v9.3
 git cms-merge-topic battibass:Phase2_DTReco_111X
 git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_1_X_v2
-git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples -b 111X_preparation
+git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
 scramv1 b -j 5
 ```
 
