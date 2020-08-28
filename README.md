@@ -7,15 +7,13 @@ In the present days this code is evolving fast, hence the installation recipe ma
 
 ### Installation:
 ```
-cmsrel CMSSW_11_0_2
-cd CMSSW_11_0_2/src/
+cmsrel CMSSW_11_1_3
+cd CMSSW_11_1_3/src/
 cmsenv
-git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v9.2
-git cms-merge-topic battibass:Phase2_DTReco_110X
-git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_0_X_v2 
-git cms-merge-topic -u battibass:HB_From106X_for110X # MTT-CHT emulator (brute force copy from Nicola)
-git cms-merge-topic -u dtp2-tpg-am:AM_106X_11_0_1_noDF # AM emulator
-git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
+git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v9.3
+git cms-merge-topic battibass:Phase2_DTReco_111X
+git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_1_X_v2
+git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples -b 111X_preparation
 scramv1 b -j 5
 ```
 
