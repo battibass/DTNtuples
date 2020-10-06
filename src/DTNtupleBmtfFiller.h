@@ -48,7 +48,7 @@ class DTNtupleBmtfFiller : public DTNtupleBaseFiller
   static constexpr double ETA_SCALE = 0.010875;
 
   /// Scale to convert HW eta to rad
-  static constexpr double PHI_SCALE = 0.010908308; // 2*pi/576 
+  static constexpr double PHI_SCALE = 0.010908308; // 2 * pi / 576 
 
   /// Number of DT stations
   static constexpr int N_STAT= 0.5;
@@ -62,6 +62,7 @@ class DTNtupleBmtfFiller : public DTNtupleBaseFiller
   std::vector<float> m_tf_pt;       // BMTF cand pt  [GeV/c]
   std::vector<float> m_tf_phi;      // BMTF cand phi [rad]
   std::vector<float> m_tf_eta;      // BMTF cand eta 
+  std::vector<int> m_tf_bx;         // BMTF cand BX
   std::vector<int> m_tf_dxy;        // BMTF cand dxy [cm??] CB check this
   std::vector<int> m_tf_qual;       // BMTF cand quality
   std::vector<int> m_tf_etaFine;    // fine eta bit

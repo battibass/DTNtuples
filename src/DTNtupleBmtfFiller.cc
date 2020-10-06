@@ -44,6 +44,7 @@ void DTNtupleBmtfFiller::initialize()
   m_tree->Branch((m_label + "_nBmtfCands").c_str(), &m_nBmtfCands, (m_label + "_nBmtfCands/i").c_str());
 
   m_tree->Branch((m_label + "_pt").c_str(),     &m_tf_pt);
+  m_tree->Branch((m_label + "_bx").c_str(),     &m_tf_bx);
   m_tree->Branch((m_label + "_phi").c_str(),    &m_tf_phi);
   m_tree->Branch((m_label + "_eta").c_str(),    &m_tf_eta);
   m_tree->Branch((m_label + "_dxy").c_str(),    &m_tf_dxy);
@@ -59,6 +60,7 @@ void DTNtupleBmtfFiller::clear()
   m_nBmtfCands = 0;
 
   m_tf_pt.clear();
+  m_tf_bx.clear();
   m_tf_phi.clear();
   m_tf_eta.clear();
   m_tf_dxy.clear();
@@ -168,6 +170,7 @@ void DTNtupleBmtfFiller::fill(const edm::Event & ev)
 	      int iPhi = bmtfCand->hwPhi() + bmtfCand->processor() * 48 - 15;
 	      if (iPhi < 0) iPhi += 576;
 
+	      m_tf_bx.push_back(bmtfCandBX);
 	      m_tf_pt.push_back((bmtfCand->hwPt()) * PT_SCALE);
               m_tf_phi.push_back(iPhi * PHI_SCALE); //no conversion yet
               m_tf_eta.push_back((bmtfCand->hwEta()) * ETA_SCALE);
