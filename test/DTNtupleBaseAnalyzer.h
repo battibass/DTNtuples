@@ -492,6 +492,7 @@ public :
    vector<float>   *tfBmtfOut_pt;
    vector<float>   *tfBmtfOut_phi;
    vector<float>   *tfBmtfOut_eta;
+   vector<int>     *tfBmtfOut_bx;
    vector<int>     *tfBmtfOut_dxy;
    vector<int>     *tfBmtfOut_qual;
    vector<int>     *tfBmtfOut_etaFine;
@@ -771,6 +772,7 @@ public :
    TBranch        *b_tfBmtfOut_pt;   //!
    TBranch        *b_tfBmtfOut_phi;   //!
    TBranch        *b_tfBmtfOut_eta;   //!
+   TBranch        *b_tfBmtfOut_bx;   //!
    TBranch        *b_tfBmtfOut_dxy;   //!
    TBranch        *b_tfBmtfOut_qual;   //!
    TBranch        *b_tfBmtfOut_etaFine;   //!

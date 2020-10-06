@@ -251,6 +251,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    tfBmtfOut_pt = 0;
    tfBmtfOut_phi = 0;
    tfBmtfOut_eta = 0;
+   tfBmtfOut_bx = 0;
    tfBmtfOut_dxy = 0;
    tfBmtfOut_qual = 0;
    tfBmtfOut_etaFine = 0;
@@ -539,6 +540,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("tfBmtfOut_pt", &tfBmtfOut_pt, &b_tfBmtfOut_pt);
    fChain->SetBranchAddress("tfBmtfOut_phi", &tfBmtfOut_phi, &b_tfBmtfOut_phi);
    fChain->SetBranchAddress("tfBmtfOut_eta", &tfBmtfOut_eta, &b_tfBmtfOut_eta);
+   fChain->SetBranchAddress("tfBmtfOut_bx", &tfBmtfOut_bx, &b_tfBmtfOut_bx);
    fChain->SetBranchAddress("tfBmtfOut_dxy", &tfBmtfOut_dxy, &b_tfBmtfOut_dxy);
    fChain->SetBranchAddress("tfBmtfOut_qual", &tfBmtfOut_qual, &b_tfBmtfOut_qual);
    fChain->SetBranchAddress("tfBmtfOut_etaFine", &tfBmtfOut_etaFine, &b_tfBmtfOut_etaFine);
