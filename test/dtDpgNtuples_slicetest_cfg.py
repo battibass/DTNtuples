@@ -2,6 +2,13 @@ import FWCore.ParameterSet.Config as cms
 import FWCore.ParameterSet.VarParsing as VarParsing
 from Configuration.StandardSequences.Eras import eras
 
+import lxml.etree as etree
+import subprocess
+import sys
+import os
+
+XML_FOLDER = "./cmsrun_xml/"
+
 def appendToGlobalTag(process, rcd, tag, fileName, label) :
 
     if  not fileName :
@@ -20,14 +27,10 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 
     return process
 
-import subprocess
-import sys
-import os
-
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '111X_dataRun3_Prompt_v2', #default value
+                 '112X_dataRun3_Prompt_v2', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -39,7 +42,7 @@ options.register('nEvents',
                  "Maximum number of processed events")
 
 options.register('runNumber',
-                 '336978', #default value
+                 '338150', #default value
                   VarParsing.VarParsing.multiplicity.singleton,
                   VarParsing.VarParsing.varType.int,
                  "Run number to be looked for in either 'inputFolderCentral' or 'inputFolderDT' folders")
@@ -107,7 +110,7 @@ options.register('ntupleName',
 
 options.parseArguments()
 
-process = cms.Process("DTNTUPLES",eras.Run2_2018)
+process = cms.Process("DTNTUPLES",eras.Run3)
 
 process.load('Configuration.StandardSequences.Services_cff')
 process.load('FWCore.MessageService.MessageLogger_cfi')
@@ -116,7 +119,7 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(options.nEvents))
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
@@ -175,7 +178,7 @@ process.TFileService = cms.Service('TFileService',
 process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
-process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
+process.load('Configuration.StandardSequences.RawToDigi_DataMapper_cff')
 process.load('EventFilter.DTRawToDigi.dtab7unpacker_cfi')
 
 process.dtAB7unpacker.channelMapping = cms.untracked.string("july2019")
@@ -197,3 +200,23 @@ process.p = cms.Path(process.muonDTDigis
 if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", options.tTrigFilePh2, options.t0FilePh2)
+
+xml_base = etree.Element("options") 
+
+for var, val in options._singletons.iteritems():
+    if var == "ntupleName":
+        etree.SubElement(xml_base, var).text = os.path.abspath(ntupleName)
+    elif var.find("File") > -1 and val != "":
+        etree.SubElement(xml_base, var).text = os.path.abspath(val)
+    else:
+        etree.SubElement(xml_base, var).text = str(val)
+
+if not os.path.exists(XML_FOLDER):
+    os.makedirs(XML_FOLDER)
+
+xml_string = etree.tostring(xml_base, pretty_print=True)
+
+out_file_name = "ntuple_cfg_run" + str(options.runNumber) + ".xml"
+out_file_path = os.path.join(XML_FOLDER, out_file_name)
+
+with open(out_file_path, 'w') as file: file.write(xml_string)
