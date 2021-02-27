@@ -176,3 +176,23 @@ def customiseForRandomBkg(process, pathName) :
         process.CalibratedDigis.dtDigiTag = "bkgDtDigis"
 
     return process
+
+def customiseForTestPulseRun(process) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print("[customiseForTestPulseRun]: updating ntuple input tags")
+
+        process.dtNtupleProducer.ph1TwinMuxInTag  = "none"
+        process.dtNtupleProducer.ph1TwinMuxOutTag = "none"
+        process.dtNtupleProducer.ph1BmtfInTag  = "none"
+        process.dtNtupleProducer.ph1BmtfOutTag  = "none"
+
+        process.dtNtupleProducer.ph1TwinMuxInThTag = "none"
+        process.dtNtupleProducer.ph1BmtfInThTag  = "none"
+
+        process.dtNtupleProducer.ph2TPGPhiHwTag  = "none"
+
+        process.dtNtupleProducer.ph1DtSegmentTag = "none"
+        process.dtNtupleProducer.ph2DtSegmentTag = "none"
+
+    return process
