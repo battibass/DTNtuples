@@ -33,18 +33,18 @@ A few tools are also provided to manipulate existing DTNtuples :
 Each script can accepts command-line arguments. Their use can be listed by issuing:
 
 ```bash
-[./skimTree,./printTree,./jsonToCut] --help
+[skimTree,printTree,jsonToCut] --help
 ```
 
 An example, you can issue a skimming command as :
 
 ```bash
-./skimTree -c "event_lumiBlock >=2" -r "seg_*" DTDPGNtuple_run333510.root DTDPGNtuple_skim.root
+skimTree -c "event_lumiBlock >=2" -r "seg_*" DTDPGNtuple_run333510.root DTDPGNtuple_skim.root
 ```
 
 and you can compare the size of the ntuple before and after the skim by issuing :
 
 ```bash
-./printTree DTDPGNtuple_run333510.root
-./printTree DTDPGNtuple_skim.root
+printTree DTDPGNtuple_run333510.root
+printTree DTDPGNtuple_skim.root
 ```
