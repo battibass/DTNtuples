@@ -7,10 +7,6 @@ def customiseForPhase2Emulator(process, pathName) :
 
     process.load("L1Trigger.DTTriggerPhase2.dtTriggerPhase2PrimitiveDigis_cfi")
 
-    process.CalibratedDigis.scenario = 2
-    process.CalibratedDigis.scenario = 2
-
-
     #Scenario -> 2 (SliceTest only)
     process.CalibratedDigis.scenario = 2
     process.dtTriggerPhase2PrimitiveDigis.scenario = 2
