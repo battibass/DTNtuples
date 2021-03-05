@@ -195,13 +195,49 @@ process.load('RecoLocalMuon.Configuration.RecoLocalMuonCosmics_cff')
 
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_slicetest_cfi')
 
+process.load("L1Trigger.DTTriggerPhase2.CalibratedDigis_cfi")
+process.CalibratedDigis.dtDigiTag = cms.InputTag('dtAB7unpacker')
+
+process.load("L1Trigger.DTTriggerPhase2.dtTriggerPhase2PrimitiveDigis_cfi")
+
+#Scenario -> 2 (SliceTest only)
+process.CalibratedDigis.scenario = 2
+process.dtTriggerPhase2PrimitiveDigis.scenario = 2
+
+#SL TanPhi cut
+process.dtTriggerPhase2PrimitiveDigis.tanPhiTh = cms.untracked.double(1.5)
+#process.dtTriggerPhase2PrimitiveDigis.tanPhiTh = cms.untracked.double(1.)
+
+#Chi2 -> Changing a lot lately
+process.dtTriggerPhase2PrimitiveDigis.chi2Th = cms.untracked.double(0.01)
+process.dtTriggerPhase2PrimitiveDigis.chi2corTh = cms.untracked.double(0.1) #in cm^2
+
+#Correlate with BX
+process.dtTriggerPhase2PrimitiveDigis.useBX_correlation = True
+process.dtTriggerPhase2PrimitiveDigis.dBX_correlate_TP = 1
+
+#Correlate with tanPsi
+process.dtTriggerPhase2PrimitiveDigis.dTanPsi_correlate_TP = cms.untracked.double(620./4096.)
+#process.dtTriggerPhase2PrimitiveDigis.dTanPsi_correlate_TP = cms.untracked.double(99999./4096.)
+
+#Confirmation forbidden
+process.dtTriggerPhase2PrimitiveDigis.allow_confirmation = False
+
+# Update ntuple prducer InputTag
+process.dtNtupleProducer.ph2TPGPhiEmuAmTag = 'dtTriggerPhase2PrimitiveDigis'
+
 process.p = cms.Path(process.muonDTDigis
                      + process.dtAB7unpacker
                      + process.dtUpgradeFedL1AProducer
                      + process.twinMuxStage2Digis
                      + process.bmtfDigis
                      + process.dtlocalrecoT0Seg
+                     + process.CalibratedDigis
+                     + process.dtTriggerPhase2PrimitiveDigis
                      + process.dtNtupleProducer)
+
+from DTDPGAnalysis.DTNtuples.customiseDtPhase2Emulator_cff import customiseForPhase2Emulator
+process = customiseForPhase2Emulator(process,"p")
 
 if options.tTrigFilePh2 and options.t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
