@@ -66,7 +66,7 @@ for branch in TREE_INPUT.GetListOfBranches():
     print("    Name : {:40.40} - size : {:12.2f}".format(branchName, branchSize))
     TOTAL_SIZE += branchSize
     fillerName = branchName.split("_")[0]
-    if FILLER_SIZES.has_key(fillerName):
+    if fillerName in FILLER_SIZES:
         FILLER_SIZES[fillerName] += branchSize
     else:
         FILLER_SIZES[fillerName] = branchSize
@@ -74,7 +74,7 @@ print("")
 
 print("Fillers and size (kB) :")
 print("-----------------------")
-for filler, size in FILLER_SIZES.iteritems():
+for filler, size in FILLER_SIZES.items():
     print("    Name : {:20.20} - size : {:12.2f} \t - % of total : {:12.2f}".format(filler, size, size / TOTAL_SIZE * 100))
 print("")
 
