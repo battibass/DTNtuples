@@ -68,7 +68,7 @@ options.register('applyRandomBkg',
                  "If True applies random background to phase-2 digis and emulator")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_11_1_0_patch2_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_11_2_3_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -130,6 +130,12 @@ process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
 process.dtTriggerPhase2AmPrimitiveDigis = process.dtTriggerPhase2PrimitiveDigis.clone()
 process.dtTriggerPhase2AmPrimitiveDigis.useRPC = True
 
+# process.load('L1Trigger.DTHoughTPG.DTTPG_cfi')
+
+# process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
+# process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
+# process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
+
 process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
 process.dt1DRecHits.dtDigiLabel = "simMuonDTDigis"
 process.rpcRecHits.rpcDigiLabel = "simMuonRPCDigis"
@@ -147,6 +153,7 @@ process.p = cms.Path(process.rpcRecHits
                      + process.CalibratedDigis
                      + process.simBmtfDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
+                     # + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
 from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRandomBkg, customiseForRunningOnMC, customiseForFakePhase2Info, customiseForAgeing
