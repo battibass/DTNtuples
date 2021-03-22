@@ -1,4 +1,4 @@
-/** \class DTNtuplePh2TPGEtaFiller DTNtuplePh2TPGEtaFiller.cc DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGEtaFiller.cc
+/** \class DTNtuplePh2TPGThetaFiller DTNtuplePh2TPGThetaFiller.cc DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGThetaFiller.cc
  *  
  * Helper class : the Phase-1 local trigger filler for TwinMux in/out and BMTF in (the DataFormat is the same)
  *
@@ -7,7 +7,7 @@
  *
  */
 
-#include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGEtaFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGThetaFiller.h"
 
 #include "FWCore/Framework/interface/Event.h"
 #include "FWCore/Framework/interface/EDAnalyzer.h"
@@ -16,10 +16,10 @@
 #include <iostream>
 
 
-DTNtuplePh2TPGEtaFiller::DTNtuplePh2TPGEtaFiller(edm::ConsumesCollector && collector,
-						 const std::shared_ptr<DTNtupleConfig> config,
-						 std::shared_ptr<TTree> tree, const std::string & label,
-						 TriggerTag tag) :
+DTNtuplePh2TPGThetaFiller::DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && collector,
+						     const std::shared_ptr<DTNtupleConfig> config,
+						     std::shared_ptr<TTree> tree, const std::string & label,
+						     TriggerTag tag) :
   DTNtupleBaseFiller(config, tree, label), m_tag(tag)
 {
   edm::InputTag iTag;
@@ -27,21 +27,21 @@ DTNtuplePh2TPGEtaFiller::DTNtuplePh2TPGEtaFiller(edm::ConsumesCollector && colle
   switch (m_tag)
     {
     case TriggerTag::HW :
-      iTag = m_config->m_inputTags["ph2TPGEtaHwTag"];
+      iTag = m_config->m_inputTags["ph2TPGThHwTag"];
       break;
     case TriggerTag::AM :
-      iTag = m_config->m_inputTags["ph2TPGEtaEmuAmTag"];
+      iTag = m_config->m_inputTags["ph2TPGThEmuAmTag"];
     }
 
-  if (iTag.label() != "none") m_dtTriggerToken = collector.consumes<L1Phase2MuDTEtaContainer>(iTag);
+  if (iTag.label() != "none") m_dtTriggerToken = collector.consumes<L1Phase2MuDTThContainer>(iTag);
 }
 
-DTNtuplePh2TPGEtaFiller::~DTNtuplePh2TPGEtaFiller() 
+DTNtuplePh2TPGThetaFiller::~DTNtuplePh2TPGThetaFiller() 
 { 
 
 };
 
-void DTNtuplePh2TPGEtaFiller::initialize()
+void DTNtuplePh2TPGThetaFiller::initialize()
 {
   
   m_tree->Branch((m_label + "_nTrigs").c_str(), &m_nTrigs, (m_label + "_nTrigs/i").c_str());
@@ -65,7 +65,7 @@ void DTNtuplePh2TPGEtaFiller::initialize()
   
 }
 
-void DTNtuplePh2TPGEtaFiller::clear()
+void DTNtuplePh2TPGThetaFiller::clear()
 {
 
   m_nTrigs = 0;
@@ -89,12 +89,12 @@ void DTNtuplePh2TPGEtaFiller::clear()
 
 }
 
-void DTNtuplePh2TPGEtaFiller::fill(const edm::Event & ev)
+void DTNtuplePh2TPGThetaFiller::fill(const edm::Event & ev)
 {
 
   clear();
 
-  auto trigColl = conditionalGet<L1Phase2MuDTEtaContainer>(ev, m_dtTriggerToken,"L1Phase2MuDTEtaContainer");
+  auto trigColl = conditionalGet<L1Phase2MuDTThContainer>(ev, m_dtTriggerToken,"L1Phase2MuDTThContainer");
 
   if (trigColl.isValid()) 
     {      

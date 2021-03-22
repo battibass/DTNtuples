@@ -1,7 +1,7 @@
-#ifndef DTNtuple_DTNtuplePh2TPGEtaFiller_h
-#define DTNtuple_DTNtuplePh2TPGEtaFiller_h
+#ifndef DTNtuple_DTNtuplePh2TPGThetaFiller_h
+#define DTNtuple_DTNtuplePh2TPGThetaFiller_h
 
-/** \class DTNtuplePh2TPGEtaFiller DTNtuplePh2TPGEtaFiller.h DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGEtaFiller.h
+/** \class DTNtuplePh2TPGThetaFiller DTNtuplePh2TPGThetaFiller.h DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGThetaFiller.h
  *  
  * Helper class : the Phase-1 local trigger filler for TwinMux in/out and BMTF in (the DataFormat is the same)
  *
@@ -12,13 +12,13 @@
 
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBaseFiller.h"
 
-#include "DataFormats/L1DTTrackFinder/interface/L1Phase2MuDTEtaContainer.h"
+#include "DataFormats/L1DTTrackFinder/interface/L1Phase2MuDTThContainer.h"
 
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 
 #include <vector>
 
-class DTNtuplePh2TPGEtaFiller : public DTNtupleBaseFiller
+class DTNtuplePh2TPGThetaFiller : public DTNtupleBaseFiller
 {
 
  public:
@@ -26,13 +26,13 @@ class DTNtuplePh2TPGEtaFiller : public DTNtupleBaseFiller
   enum class TriggerTag { HW = 0, AM };
 
   /// Constructor
-  DTNtuplePh2TPGEtaFiller(edm::ConsumesCollector && collector,
+  DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && collector,
 			  const std::shared_ptr<DTNtupleConfig> config, 
 			  std::shared_ptr<TTree> tree, const std::string & label,
 			  TriggerTag tag);
 
   ///Destructor
-  virtual ~DTNtuplePh2TPGEtaFiller();
+  virtual ~DTNtuplePh2TPGThetaFiller();
  
   /// Intialize function : setup tree branches etc ... 
   virtual void initialize() final;
@@ -50,7 +50,7 @@ class DTNtuplePh2TPGEtaFiller : public DTNtupleBaseFiller
   TriggerTag m_tag;
 
   /// The digi token
-  edm::EDGetTokenT<L1Phase2MuDTEtaContainer> m_dtTriggerToken;
+  edm::EDGetTokenT<L1Phase2MuDTThContainer> m_dtTriggerToken;
 
   /// The variables holding
   /// all digi related information

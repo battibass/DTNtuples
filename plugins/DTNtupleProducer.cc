@@ -33,7 +33,7 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGPhiFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleTPGThetaFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGPhiFiller.h"
-#include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGEtaFiller.h"
+#include "DTDPGAnalysis/DTNtuples/src/DTNtuplePh2TPGThetaFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleEnvironmentFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBmtfFiller.h"
 
@@ -73,8 +73,8 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuHb", DTNtuplePh2TPGPhiFiller::TriggerTag::HB));
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuAm", DTNtuplePh2TPGPhiFiller::TriggerTag::AM));
 
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGEtaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgEtaHw",    DTNtuplePh2TPGEtaFiller::TriggerTag::HW));
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGEtaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgEtaEmuAm", DTNtuplePh2TPGEtaFiller::TriggerTag::AM));
+  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGThetaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgThHw",    DTNtuplePh2TPGThetaFiller::TriggerTag::HW));
+  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGThetaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgThEmuAm", DTNtuplePh2TPGThetaFiller::TriggerTag::AM));
 					  
   m_fillers.push_back(std::make_unique<DTNtupleBmtfFiller>(consumesCollector(), m_config, m_tree, "tfBmtfOut"));
 					  
