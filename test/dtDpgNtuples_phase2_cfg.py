@@ -8,7 +8,7 @@ import sys
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '110X_mcRun4_realistic_v3', #default value
+                 '112X_mcRun4_realistic_v7', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")
@@ -68,7 +68,7 @@ options.register('applyRandomBkg',
                  "If True applies random background to phase-2 digis and emulator")
 
 options.register('ntupleName',
-                 './DTDPGNtuple_11_1_0_patch2_Phase2_Simulation.root', #default value
+                 './DTDPGNtuple_11_2_3_Phase2_Simulation.root', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Folder and name ame for output ntuple")
@@ -84,7 +84,7 @@ process.options   = cms.untracked.PSet( wantSummary = cms.untracked.bool(True) )
 process.MessageLogger.cerr.FwkReport.reportEvery = 100
 process.maxEvents = cms.untracked.PSet(input = cms.untracked.int32(options.nEvents))
 
-process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_condDBv2_cff')
+process.load('Configuration.StandardSequences.FrontierConditions_GlobalTag_cff')
 
 process.GlobalTag.globaltag = cms.string(options.globalTag)
 
@@ -117,8 +117,8 @@ process.TFileService = cms.Service('TFileService',
 process.load('SimGeneral.MixingModule.mixNoPU_cfi')
 process.load('Configuration.StandardSequences.Services_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
-process.load('Configuration.Geometry.GeometryExtended2026D41Reco_cff')
-process.load('Configuration.Geometry.GeometryExtended2026D41_cff')
+process.load('Configuration.Geometry.GeometryExtended2026D49Reco_cff')
+process.load('Configuration.Geometry.GeometryExtended2026D49_cff')
 
 # process.DTGeometryESModule.applyAlignment = False
 # process.DTGeometryESModule.fromDDD = False
@@ -129,6 +129,12 @@ process.load("L1Trigger.DTTriggerPhase2.dtTriggerPhase2PrimitiveDigis_cfi")
 process.CalibratedDigis.dtDigiTag = "simMuonDTDigis"
 process.dtTriggerPhase2AmPrimitiveDigis = process.dtTriggerPhase2PrimitiveDigis.clone()
 process.dtTriggerPhase2AmPrimitiveDigis.useRPC = True
+
+# process.load('L1Trigger.DTHoughTPG.DTTPG_cfi')
+
+# process.dtTriggerPhase2HbPrimitiveDigis = process.DTTPG.clone()
+# process.dtTriggerPhase2HbPrimitiveDigis.FirstBX = cms.untracked.int32(20)
+# process.dtTriggerPhase2HbPrimitiveDigis.LastBX = cms.untracked.int32(20)
 
 process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
 process.dt1DRecHits.dtDigiLabel = "simMuonDTDigis"
@@ -147,6 +153,7 @@ process.p = cms.Path(process.rpcRecHits
                      + process.CalibratedDigis
                      + process.simBmtfDigis
                      + process.dtTriggerPhase2AmPrimitiveDigis
+                     # + process.dtTriggerPhase2HbPrimitiveDigis
                      + process.dtNtupleProducer)
 
 from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRandomBkg, customiseForRunningOnMC, customiseForFakePhase2Info, customiseForAgeing
