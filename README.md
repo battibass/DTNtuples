@@ -7,13 +7,14 @@ In the present days this code is evolving fast, hence the installation recipe ma
 
 ### Installation:
 ```
-cmsrel CMSSW_11_2_2
-cd CMSSW_11_2_2/src/
+cmsrel CMSSW_11_2_3
+cd CMSSW_11_2_3/src/
 cmsenv
 git cms-init
 git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v9.7.1
 git cms-merge-topic dtp2-tpg-am:AM_11_2_1_newAnalyzer
 git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_2_X 
+git clone git@github.com:dtp2-tpg-am/L1Trigger-DTTriggerPhase2.git L1Trigger/DTTriggerPhase2/data
 git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples -b 112X_preparation
 scramv1 b -j 5
 ```
