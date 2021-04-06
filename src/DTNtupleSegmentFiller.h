@@ -97,6 +97,9 @@ class DTNtupleSegmentFiller : public DTNtupleBaseFiller
   std::vector<float> m_seg4D_posLoc_x_midPlane; // position x at SL1 - SL3 mid plane in local coordinates (float in cm)
 
   std::vector<float> m_seg4D_posGlb_phi; // position phi in global coordinates (float in radians [-pi:pi])
+  std::vector<float> m_seg4D_posGlb_phi_midPlane; // position phi at SL1 - SL3 mid plane in global coordinates (float in radians [-pi:pi])
+  std::vector<float> m_seg4D_posGlb_phi_SL1; // position phi at SL1 in global coordinates (float in radians [-pi:pi])
+  std::vector<float> m_seg4D_posGlb_phi_SL3; // position phi at SL3 in global coordinates (float in radians [-pi:pi])
   std::vector<float> m_seg4D_posGlb_eta; // position eta in global coordinates (float)
   std::vector<float> m_seg4D_dirGlb_phi; // position phi in global coordinates (float in radians [-pi:pi])
   std::vector<float> m_seg4D_dirGlb_eta; // position eta in global coordinates (float)

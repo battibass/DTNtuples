@@ -14,6 +14,9 @@
 #include "DataFormats/L1DTTrackFinder/interface/L1MuDTChambPhDigi.h"
 #include "DataFormats/L1DTTrackFinder/interface/L1Phase2MuDTPhDigi.h"
 
+// DT AM Emulator constants
+#include "L1Trigger/DTTriggerPhase2/interface/constants.h"
+
 // Geometry & Segment
 #include "DataFormats/DTRecHit/interface/DTRecSegment4DCollection.h"
 #include "Geometry/Records/interface/MuonGeometryRecord.h"
@@ -27,6 +30,7 @@
 
 using namespace edm;
 using namespace std;
+using namespace cmsdt;
 
 
 DTTrigGeomUtils::DTTrigGeomUtils(ESHandle<DTGeometry> muonGeom, bool dirInDeg) : muonGeom_(muonGeom) 
@@ -289,11 +293,11 @@ float DTTrigGeomUtils::trigPosAM(const L1Phase2MuDTPhDigi* trig)
   double deltaphi = phicenter-phin;
 
   double zRF=0;
-  if (quality>=6 && quality !=7) zRF=zcn_[st-1];
-  if ((quality <6 || quality==7) && sl==1) zRF=zsl1_[st-1];
-  if ((quality <6 || quality==7) && sl==3) zRF=zsl3_[st-1];
+  if (quality == LOWLOWQ || quality == HIGHLOWQ || quality == HIGHHIGHQ) zRF=zcn_[st-1];
+  else if (sl==1) zRF=zsl1_[st-1];
+  else if (sl==3) zRF=zsl3_[st-1];
 
-  double x = (tan(phi*0.8/65536.))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
+  double x = (tan(phi/PHIRES_CONV))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
 
   if (hasPosRF(wh,sec)){ x = -x; } // change sign in case of positive wheels
 
@@ -308,7 +312,7 @@ float DTTrigGeomUtils::trigDirAM(const L1Phase2MuDTPhDigi* trig)
   int phi  = trig->phi();
   int phib = trig->phiBend();
 
-  float dir = (phib*1.4/2048.+phi*0.8/65536.)*radToDeg_;
+  float dir = (phib/PHIBRES_CONV+phi/PHIRES_CONV)*radToDeg_;
   
   // change sign in case of negative wheels
   if (!hasPosRF(wh,sec)) { dir = -dir; }
