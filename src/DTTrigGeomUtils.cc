@@ -30,7 +30,6 @@
 
 using namespace edm;
 using namespace std;
-using namespace cmsdt;
 
 
 DTTrigGeomUtils::DTTrigGeomUtils(ESHandle<DTGeometry> muonGeom, bool dirInDeg) : muonGeom_(muonGeom) 
@@ -293,11 +292,11 @@ float DTTrigGeomUtils::trigPosAM(const L1Phase2MuDTPhDigi* trig)
   double deltaphi = phicenter-phin;
 
   double zRF=0;
-  if (quality == LOWLOWQ || quality == HIGHLOWQ || quality == HIGHHIGHQ) zRF=zcn_[st-1];
+  if (quality == cmsdt::LOWLOWQ || quality == cmsdt::HIGHLOWQ || quality == cmsdt::HIGHHIGHQ) zRF=zcn_[st-1];
   else if (sl==1) zRF=zsl1_[st-1];
   else if (sl==3) zRF=zsl3_[st-1];
 
-  double x = (tan(phi/PHIRES_CONV))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
+  double x = (tan(phi/cmsdt::PHIRES_CONV))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
 
   if (hasPosRF(wh,sec)){ x = -x; } // change sign in case of positive wheels
 
@@ -312,7 +311,7 @@ float DTTrigGeomUtils::trigDirAM(const L1Phase2MuDTPhDigi* trig)
   int phi  = trig->phi();
   int phib = trig->phiBend();
 
-  float dir = (phib/PHIBRES_CONV+phi/PHIRES_CONV)*radToDeg_;
+  float dir = (phib/cmsdt::PHIBRES_CONV+phi/cmsdt::PHIRES_CONV)*radToDeg_;
   
   // change sign in case of negative wheels
   if (!hasPosRF(wh,sec)) { dir = -dir; }
