@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 """
 This program can be used to print DTNtuples size for each
 of the tree branches and fillers.
