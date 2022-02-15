@@ -13,6 +13,7 @@
 
 #include "FWCore/ParameterSet/interface/ParameterSet.h"
 #include "FWCore/Framework/interface/EventSetup.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Framework/interface/Run.h"
 
 #include "Geometry/Records/interface/GlobalTrackingGeometryRecord.h"
@@ -23,7 +24,7 @@
 #include "TString.h"
 #include "TRegexp.h"
 
-DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config) 
+DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config,  edm::ConsumesCollector &&collector)
 { 
 
   edm::InputTag none = edm::InputTag("none");
@@ -62,11 +63,11 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config)
 
   if (m_inputTags["ph1DtSegmentTag"].label() != "none")
     m_dtSyncs[PhaseTag::PH1] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph1tTrigMode"),
-								 config.getUntrackedParameter<edm::ParameterSet>("ph1tTrigModeConfig"));
+	 							 config.getUntrackedParameter<edm::ParameterSet>("ph1tTrigModeConfig"), collector);
 
   if (m_inputTags["ph2DtSegmentTag"].label() != "none")
     m_dtSyncs[PhaseTag::PH2] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph2tTrigMode"),
-								 config.getUntrackedParameter<edm::ParameterSet>("ph2tTrigModeConfig"));
+								 config.getUntrackedParameter<edm::ParameterSet>("ph2tTrigModeConfig"), collector);
 
   m_isoTrigName = config.getUntrackedParameter<std::string>("isoTrigName", "HLT_IsoMu24_v*");
   m_trigName = config.getUntrackedParameter<std::string>("trigName", "HLT_Mu50_v*");

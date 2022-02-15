@@ -34,7 +34,7 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 options = VarParsing.VarParsing()
 
 options.register('globalTag',
-                 '120X_dataRun3_Prompt_v2', #default value
+                 '122X_dataRun3_Express_v3', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Global Tag")

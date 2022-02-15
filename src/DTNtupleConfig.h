@@ -43,7 +43,7 @@ class DTNtupleConfig
   enum class PhaseTag { PH1 = 0, PH2 };
 
   /// Constructor
-  DTNtupleConfig(const edm::ParameterSet & config);
+  DTNtupleConfig(const edm::ParameterSet & config, edm::ConsumesCollector &&collector);
 
   /// Update EventSetup information
   void getES(const edm::EventSetup & environment);

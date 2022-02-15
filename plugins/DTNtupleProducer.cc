@@ -45,34 +45,35 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   edm::Service<TFileService> fileService;
   m_tree = std::shared_ptr<TTree>(fileService->make<TTree>("DTTREE","DT Tree"));
 
-  m_config = std::make_shared<DTNtupleConfig>(DTNtupleConfig(config));
+  m_config = std::make_shared<DTNtupleConfig>(DTNtupleConfig(config,consumesCollector()));
 
-  m_fillers.push_back(std::make_unique<DTNtupleGenFiller>(consumesCollector(), m_config, m_tree, "gen"));
+  auto pushToF = [this]<typename T>(T&& filler) { m_fillers.push_back(std::make_unique<T>(filler)); };
 
-  m_fillers.push_back(std::make_unique<DTNtupleEventFiller>(consumesCollector(), m_config, m_tree, "event"));
-  
-  m_fillers.push_back(std::make_unique<DTNtupleEnvironmentFiller>(consumesCollector(), m_config, m_tree, "environment"));
+  pushToF(DTNtupleGenFiller(consumesCollector(), m_config, m_tree, "gen"));
 
-  m_fillers.push_back(std::make_unique<DTNtupleDigiFiller>(consumesCollector(), m_config, m_tree, "digi",    DTNtupleDigiFiller::DigiTag::PH1));
-  m_fillers.push_back(std::make_unique<DTNtupleDigiFiller>(consumesCollector(), m_config, m_tree, "ph2Digi", DTNtupleDigiFiller::DigiTag::PH2));
+  pushToF(DTNtupleEventFiller(consumesCollector(), m_config, m_tree, "event"));  
+  pushToF(DTNtupleEnvironmentFiller(consumesCollector(), m_config, m_tree, "environment"));
 
-  m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
-  m_fillers.push_back(std::make_unique<DTNtupleSegmentFiller>(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
+  pushToF(DTNtupleDigiFiller(consumesCollector(), m_config, m_tree, "digi",    DTNtupleDigiFiller::DigiTag::PH1));
+  pushToF(DTNtupleDigiFiller(consumesCollector(), m_config, m_tree, "ph2Digi", DTNtupleDigiFiller::DigiTag::PH2));
+
+  pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
+  pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
 
   // m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
 
-  m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
-  m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
-  m_fillers.push_back(std::make_unique<DTNtupleTPGPhiFiller>(consumesCollector(), m_config, m_tree, "ltBmtfIn",     DTNtupleTPGPhiFiller::TriggerTag::BMTF_IN));
+  pushToF(DTNtupleTPGPhiFiller(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
+  pushToF(DTNtupleTPGPhiFiller(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
+  pushToF(DTNtupleTPGPhiFiller(consumesCollector(), m_config, m_tree, "ltBmtfIn",     DTNtupleTPGPhiFiller::TriggerTag::BMTF_IN));
 
-  m_fillers.push_back(std::make_unique<DTNtupleTPGThetaFiller>(consumesCollector(), m_config, m_tree, "ltTwinMuxInTh",  DTNtupleTPGThetaFiller::TriggerTag::TM_IN));
-  m_fillers.push_back(std::make_unique<DTNtupleTPGThetaFiller>(consumesCollector(), m_config, m_tree, "ltBmtfInTh",     DTNtupleTPGThetaFiller::TriggerTag::BMTF_IN));
+  pushToF(DTNtupleTPGThetaFiller(consumesCollector(), m_config, m_tree, "ltTwinMuxInTh",  DTNtupleTPGThetaFiller::TriggerTag::TM_IN));
+  pushToF(DTNtupleTPGThetaFiller(consumesCollector(), m_config, m_tree, "ltBmtfInTh",     DTNtupleTPGThetaFiller::TriggerTag::BMTF_IN));
 
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiHw",    DTNtuplePh2TPGPhiFiller::TriggerTag::HW));
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuHb", DTNtuplePh2TPGPhiFiller::TriggerTag::HB));
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGPhiFiller>(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuAm", DTNtuplePh2TPGPhiFiller::TriggerTag::AM));
+  pushToF(DTNtuplePh2TPGPhiFiller(consumesCollector(), m_config, m_tree, "ph2TpgPhiHw",    DTNtuplePh2TPGPhiFiller::TriggerTag::HW));
+  pushToF(DTNtuplePh2TPGPhiFiller(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuHb", DTNtuplePh2TPGPhiFiller::TriggerTag::HB));
+  pushToF(DTNtuplePh2TPGPhiFiller(consumesCollector(), m_config, m_tree, "ph2TpgPhiEmuAm", DTNtuplePh2TPGPhiFiller::TriggerTag::AM));
 
-  m_fillers.push_back(std::make_unique<DTNtupleBmtfFiller>(consumesCollector(), m_config, m_tree, "tfBmtfOut"));
+  pushToF(DTNtupleBmtfFiller(consumesCollector(), m_config, m_tree, "tfBmtfOut"));
 
 }
 
