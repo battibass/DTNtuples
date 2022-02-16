@@ -105,8 +105,10 @@ void DTNtupleProducer::endJob()
 
 void DTNtupleProducer::analyze(const edm::Event & ev, const edm::EventSetup & environment )
 {
+ 
+  m_config->getES(environment);
 
- for (const auto & filler : m_fillers) 
+  for (const auto & filler : m_fillers) 
     {
       filler->fill(ev);
     }

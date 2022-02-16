@@ -97,7 +97,7 @@ void DTNtupleConfig::getES(const edm::EventSetup & environment)
 void DTNtupleConfig::getES(const edm::Run &run, const edm::EventSetup & environment) 
 {
  
-  getES(environment);
+  // getES(environment);
 
   bool changed = true;
   m_hltConfig.init(run, environment, "HLT", changed);
