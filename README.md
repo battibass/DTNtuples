@@ -13,7 +13,7 @@ cmsenv
 git cms-init
 # Quick intallation patch, to be fixed
 git cms-rebase-topic --old-base CMSSW_11_2_1_patch2 oglez:Phase2_DTAB7Unpacker_v9.7.1 
-# git cms-merge-topic dtp2-tpg-am:AM_11_2_1_newAnalyzer
+git cms-merge-topic dtp2-tpg-am:AM_12_2_1_v1
 # git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_2_X 
 # git clone git@github.com:dtp2-tpg-am/L1Trigger-DTTriggerPhase2.git L1Trigger/DTTriggerPhase2/data
 git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
