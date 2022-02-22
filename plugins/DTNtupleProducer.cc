@@ -60,7 +60,7 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "seg",    DTNtupleSegmentFiller::SegmentTag::PH1));
   pushToF(DTNtupleSegmentFiller(consumesCollector(), m_config, m_tree, "ph2Seg", DTNtupleSegmentFiller::SegmentTag::PH2));
 
-  // m_fillers.push_back(std::make_unique<DTNtupleMuonFiller>(consumesCollector(), m_config, m_tree, "mu"));
+  pushToF(DTNtupleMuonFiller(consumesCollector(), m_config, m_tree, "mu"));
 
   pushToF(DTNtupleTPGPhiFiller(consumesCollector(), m_config, m_tree, "ltTwinMuxIn",  DTNtupleTPGPhiFiller::TriggerTag::TM_IN));
   pushToF(DTNtupleTPGPhiFiller(consumesCollector(), m_config, m_tree, "ltTwinMuxOut", DTNtupleTPGPhiFiller::TriggerTag::TM_OUT));
