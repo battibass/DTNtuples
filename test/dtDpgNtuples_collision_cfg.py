@@ -80,12 +80,15 @@ process.load('Configuration/StandardSequences/GeometryRecoDB_cff')
 process.load("Configuration.StandardSequences.MagneticField_cff")
 
 process.load('Configuration.StandardSequences.RawToDigi_Data_cff')
+process.load('RecoLocalMuon.Configuration.RecoLocalMuon_cff')
+
 process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 
 process.p = cms.Path(process.muonDTDigis 
                      + process.bmtfDigis
                      + process.twinMuxStage2Digis
                      + process.scalersRawToDigi
+                     + process.dtlocalreco
                      + process.dtNtupleProducer)
 
 if options.runOnMC :
