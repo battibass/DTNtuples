@@ -16,17 +16,15 @@
 #include "FWCore/Framework/interface/ConsumesCollector.h"
 #include "FWCore/Framework/interface/Run.h"
 
-#include "Geometry/Records/interface/GlobalTrackingGeometryRecord.h"
-#include "Geometry/Records/interface/MuonGeometryRecord.h"
-
 #include "CalibMuon/DTDigiSync/interface/DTTTrigSyncFactory.h"
 
 #include "TString.h"
 #include "TRegexp.h"
 
-DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config,  edm::ConsumesCollector &&collector)
-{ 
-
+DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet &config, edm::ConsumesCollector &&collector)
+    : m_trackingGeomToken{collector.esConsumes<>()},
+      m_dtGeomToken{collector.esConsumes<edm::Transition::BeginRun>()},
+      m_dtIdealGeomToken{collector.esConsumes<edm::Transition::BeginRun>(edm::ESInputTag("", "idealForDigi"))} {
   edm::InputTag none = edm::InputTag("none");
 
   m_inputTags["genPartTag"] = config.getUntrackedParameter<edm::InputTag>("genPartTag", none);
@@ -62,41 +60,39 @@ DTNtupleConfig::DTNtupleConfig(const edm::ParameterSet & config,  edm::ConsumesC
   m_inputTags["ph1BmtfOutTag"] = config.getUntrackedParameter<edm::InputTag>("ph1BmtfOutTag", none);
 
   if (m_inputTags["ph1DtSegmentTag"].label() != "none")
-    m_dtSyncs[PhaseTag::PH1] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph1tTrigMode"),
-	 							 config.getUntrackedParameter<edm::ParameterSet>("ph1tTrigModeConfig"), collector);
+    m_dtSyncs[PhaseTag::PH1] =
+        DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph1tTrigMode"),
+                                          config.getUntrackedParameter<edm::ParameterSet>("ph1tTrigModeConfig"),
+                                          collector);
 
   if (m_inputTags["ph2DtSegmentTag"].label() != "none")
-    m_dtSyncs[PhaseTag::PH2] = DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph2tTrigMode"),
-								 config.getUntrackedParameter<edm::ParameterSet>("ph2tTrigModeConfig"), collector);
+    m_dtSyncs[PhaseTag::PH2] =
+        DTTTrigSyncFactory::get()->create(config.getUntrackedParameter<std::string>("ph2tTrigMode"),
+                                          config.getUntrackedParameter<edm::ParameterSet>("ph2tTrigModeConfig"),
+                                          collector);
 
   m_isoTrigName = config.getUntrackedParameter<std::string>("isoTrigName", "HLT_IsoMu24_v*");
   m_trigName = config.getUntrackedParameter<std::string>("trigName", "HLT_Mu50_v*");
-
 }
 
-void DTNtupleConfig::getES(const edm::EventSetup & environment) 
-{ 
+void DTNtupleConfig::getES(const edm::EventSetup &environment) {
+  m_trackingGeometry = environment.getHandle(m_trackingGeomToken);
 
   if (m_inputTags["ph1DtSegmentTag"].label() != "none")
     m_dtSyncs[PhaseTag::PH1]->setES(environment);
 
   if (m_inputTags["ph2DtSegmentTag"].label() != "none")
     m_dtSyncs[PhaseTag::PH2]->setES(environment);
+}
 
-  environment.get<MuonGeometryRecord>().get(m_dtGeometry);
-  environment.get<GlobalTrackingGeometryRecord>().get(m_trackingGeometry);
+void DTNtupleConfig::getES(const edm::Run &run, const edm::EventSetup &environment) {
+  m_dtGeometry = environment.getHandle(m_dtGeomToken);
 
-  edm::ESHandle<DTGeometry> dtIdealGeom; 
-  environment.get<MuonGeometryRecord>().get("idealForDigi",dtIdealGeom);
+  const auto dtIdealGeom = environment.getHandle(m_dtIdealGeomToken);
 
   m_trigGeomUtils.reset();
   m_trigGeomUtils = std::make_unique<DTTrigGeomUtils>(dtIdealGeom);
 
-}
-
-void DTNtupleConfig::getES(const edm::Run &run, const edm::EventSetup & environment) 
-{
- 
   // getES(environment);
 
   bool changed = true;
@@ -107,25 +103,18 @@ void DTNtupleConfig::getES(const edm::Run &run, const edm::EventSetup & environm
   TString tName = TString(m_trigName);
   TRegexp tNamePattern = TRegexp(tName, enableWildcard);
 
-  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) 
-    {
+  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) {
+    TString pathName = TString(m_hltConfig.triggerName(iPath));
+    if (pathName.Contains(tNamePattern))
+      m_trigIndices.push_back(static_cast<int>(iPath));
+  }
 
-      TString pathName = TString(m_hltConfig.triggerName(iPath));
-      if (pathName.Contains(tNamePattern)) 
-          m_trigIndices.push_back(static_cast<int>(iPath));
-
-    }
-  
   tName = TString(m_isoTrigName);
   tNamePattern = TRegexp(tName, enableWildcard);
- 
-  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) 
-    {
 
-      TString pathName = TString(m_hltConfig.triggerName(iPath));
-      if (pathName.Contains(tNamePattern)) 
-	m_isoTrigIndices.push_back(static_cast<int>(iPath));
-
-    }
-
+  for (unsigned iPath = 0; iPath < m_hltConfig.size(); ++iPath) {
+    TString pathName = TString(m_hltConfig.triggerName(iPath));
+    if (pathName.Contains(tNamePattern))
+      m_isoTrigIndices.push_back(static_cast<int>(iPath));
+  }
 }

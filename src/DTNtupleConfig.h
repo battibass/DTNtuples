@@ -15,10 +15,15 @@
 
 #include "FWCore/Utilities/interface/InputTag.h"
 #include "FWCore/Framework/interface/ESHandle.h"
+#include "FWCore/Framework/interface/ConsumesCollector.h"
 
 #include "CalibMuon/DTDigiSync/interface/DTTTrigBaseSync.h"
+
 #include "Geometry/CommonDetUnit/interface/GlobalTrackingGeometry.h"
+#include "Geometry/Records/interface/GlobalTrackingGeometryRecord.h"
+
 #include "Geometry/DTGeometry/interface/DTGeometry.h"
+#include "Geometry/Records/interface/MuonGeometryRecord.h"
 
 #include "DTDPGAnalysis/DTNtuples/src/DTTrigGeomUtils.h"
 
@@ -28,29 +33,24 @@
 #include <string>
 #include <memory>
 
-namespace edm
-{
+namespace edm {
   class ParameterSet;
   class EventSetup;
   class Run;
-}
+}  // namespace edm
 
-class DTNtupleConfig
-{
-
- public :
-
+class DTNtupleConfig {
+public:
   enum class PhaseTag { PH1 = 0, PH2 };
 
   /// Constructor
-  DTNtupleConfig(const edm::ParameterSet & config, edm::ConsumesCollector &&collector);
+  DTNtupleConfig(const edm::ParameterSet &config, edm::ConsumesCollector &&collector);
 
   /// Update EventSetup information
-  void getES(const edm::EventSetup & environment);
+  void getES(const edm::EventSetup &environment);
 
   /// Update EventSetup information
-  void getES(const edm::Run &run, 
-	     const edm::EventSetup & environment);
+  void getES(const edm::Run &run, const edm::EventSetup &environment);
 
   /// Map containing different input tags
   std::map<std::string, edm::InputTag> m_inputTags;
@@ -61,15 +61,18 @@ class DTNtupleConfig
   /// The class to perform DT local trigger coordinate conversions
   std::unique_ptr<DTTrigGeomUtils> m_trigGeomUtils;
 
-  /// Handle to the tracking geometry
+  /// Tracking geometry
+  edm::ESGetToken<GlobalTrackingGeometry, GlobalTrackingGeometryRecord> m_trackingGeomToken;
   edm::ESHandle<GlobalTrackingGeometry> m_trackingGeometry;
 
-  /// Handle to the DT geometry
+  /// DT geometry
+  edm::ESGetToken<DTGeometry, MuonGeometryRecord> m_dtGeomToken;
+  edm::ESGetToken<DTGeometry, MuonGeometryRecord> m_dtIdealGeomToken;
   edm::ESHandle<DTGeometry> m_dtGeometry;
 
   /// HLT config procider
   HLTConfigProvider m_hltConfig;
-  
+
   /// Name and indices of the isolated trigger used by muon filler for trigger matching
   std::string m_isoTrigName;
   std::vector<int> m_isoTrigIndices;
@@ -77,7 +80,6 @@ class DTNtupleConfig
   /// Name and indices of the non isolated trigger used by muon filler for trigger matching
   std::string m_trigName;
   std::vector<int> m_trigIndices;
-
 };
 
 #endif
