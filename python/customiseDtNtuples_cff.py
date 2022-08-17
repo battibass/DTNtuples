@@ -196,3 +196,21 @@ def customiseForTestPulseRun(process) :
         process.dtNtupleProducer.ph2DtSegmentTag = "none"
 
     return process
+
+def customiseForRAW(process) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print("[customiseForRAW]: updating ntuple input tags")
+        
+        lumiScalerTag = "none"
+        primaryVerticesTag = "none"
+
+        ph1BmtfInTag = "none"                          
+        ph1BmtfOutTag = "none"
+        ph1BmtfInThTag = "none"
+        
+        muonTag = "none"
+
+    return process
+
+        
