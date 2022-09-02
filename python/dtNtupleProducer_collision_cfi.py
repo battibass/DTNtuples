@@ -6,7 +6,7 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   dtFedBxTag = cms.untracked.InputTag("none"),
 
                                   puInfoTag = cms.untracked.InputTag("none"),
-                                  lumiScalerTag = cms.untracked.InputTag("none"),
+                                  lumiScalerTag = cms.untracked.InputTag("onlineMetaDataDigis"),
                                   primaryVerticesTag = cms.untracked.InputTag("offlinePrimaryVertices"),
 
                                   ph1DtDigiTag = cms.untracked.InputTag("muonDTDigis"),
