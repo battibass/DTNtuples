@@ -62,6 +62,7 @@ class DTNtupleEnvironmentFiller : public DTNtupleBaseFiller
 
   int m_instLumi; // The instantaneous luminosity from online scalers
                   // (int in unit 10^30 cm^-1 s^-1)
+  short m_onlinePileUp;  // The online <PU> value from soft FED 1022 (short)
 
   short m_nPV;  // Number of reconstructed primary vertices (short)
 
