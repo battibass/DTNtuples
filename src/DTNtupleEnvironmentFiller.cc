@@ -46,6 +46,7 @@ void DTNtupleEnvironmentFiller:: initialize()
   m_tree->Branch((m_label + "_actualPileUp").c_str(), &m_actualPileUp, (m_label + "_actualPileUp/S").c_str());
 
   m_tree->Branch((m_label + "_instLumi").c_str(), &m_instLumi, (m_label + "_instLumi/I").c_str());
+  m_tree->Branch((m_label + "_onlinePileUp").c_str(), &m_onlinePileUp, (m_label + "_onlinePileUp/S").c_str());
 
   m_tree->Branch((m_label + "_nPV").c_str(), &m_nPV, (m_label + "_nPV/S").c_str());
 
@@ -69,7 +70,8 @@ void DTNtupleEnvironmentFiller::clear()
   m_truePileUp   = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
   m_actualPileUp = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 
-  m_instLumi = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
+  m_instLumi     = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
+  m_onlinePileUp = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 
   m_nPV = 0;
 
@@ -115,6 +117,7 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
   if (lumiScalers.isValid()) 
     {
       m_instLumi = lumiScalers->instLumi();
+      m_onlinePileUp = lumiScalers->avgPileUp();
     }
 
   auto primaryVtx = conditionalGet<reco::VertexCollection>(ev, m_primariVerticesToken,"VertexCollection");
