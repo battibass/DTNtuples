@@ -112,14 +112,14 @@ process.load('DTDPGAnalysis.DTNtuples.dtNtupleProducer_collision_cfi')
 process.p = cms.Path(process.muonDTDigis 
                      + process.bmtfDigis
                      + process.twinMuxStage2Digis
-                     + process.scalersRawToDigi      # probably can be removed?
-                     + process.tcdsDigis             # necessary?
+                     # + process.scalersRawToDigi      # probably can be removed?
+                     # + process.tcdsDigis             # necessary?
                      + process.onlineMetaDataDigis   # likely this is needed for online lumi
                      + process.dtlocalreco
                      + process.dtNtupleProducer)
-# if options.runOnMC :
-#     from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC
-#     customiseForRunningOnMC(process,"p")
+if options.runOnMC :
+    from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseForRunningOnMC
+    customiseForRunningOnMC(process,"p")
 
 
 # process.raw2digi_step = cms.Path(process.RawToDigi)
