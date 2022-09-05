@@ -320,6 +320,7 @@ void DTNtupleBaseAnalyzer::Init(TTree *tree)
    fChain->SetBranchAddress("environment_truePileUp", &environment_truePileUp, &b_environment_truePileUp);
    fChain->SetBranchAddress("environment_actualPileUp", &environment_actualPileUp, &b_environment_actualPileUp);
    fChain->SetBranchAddress("environment_instLumi", &environment_instLumi, &b_environment_instLumi);
+   fChain->SetBranchAddress("environment_onlinePileUp", &environment_onlinePileUp, &b_environment_onlinePileUp);
    fChain->SetBranchAddress("environment_nPV", &environment_nPV, &b_environment_nPV);
    fChain->SetBranchAddress("environment_pv_x", &environment_pv_x, &b_environment_pv_x);
    fChain->SetBranchAddress("environment_pv_y", &environment_pv_y, &b_environment_pv_y);
