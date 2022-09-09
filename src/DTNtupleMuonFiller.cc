@@ -129,7 +129,7 @@ void DTNtupleMuonFiller::initialize()
   m_tree->Branch((m_label + "_matches_edgeX").c_str()   , &m_matches_edgeX   , 2048000, 0);
   m_tree->Branch((m_label + "_matches_edgeY").c_str()   , &m_matches_edgeY   , 2048000, 0);
   m_tree->Branch((m_label + "_matches_dXdZ").c_str()    , &m_matches_dXdZ    , 2048000, 0);
-  m_tree->Branch((m_label + "_matches_dYdZ").c_str()    , &m_matches_dXdZ    , 2048000, 0);
+  m_tree->Branch((m_label + "_matches_dYdZ").c_str()    , &m_matches_dYdZ    , 2048000, 0);
 
   m_tree->Branch((m_label + "_staMu_nMatchSeg").c_str(), &m_staMu_nMatchSeg);
   m_tree->Branch((m_label + "_staMu_matchSegIdx").c_str(), &m_staMu_matchSegIdx, 2048000, 0);
