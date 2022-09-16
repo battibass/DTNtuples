@@ -96,7 +96,7 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
 {
 
   clear();
-  bool debug = true;
+  bool debug = false;
 
   auto puInfo = conditionalGet<std::vector<PileupSummaryInfo> >(ev, m_puInfoToken, "vector<PileupSummaryInfo>");
   if(debug) std::cout<<"[DTNupleEnvironmentFiller] puInfo.isValid() = "<<puInfo.isValid()<<std::endl;
