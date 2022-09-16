@@ -51,8 +51,8 @@ class DTNtupleEnvironmentFiller : public DTNtupleBaseFiller
   edm::EDGetTokenT<std::vector<PileupSummaryInfo> > m_puInfoToken;
 
   /// The lumi scalers token
-  // edm::EDGetTokenT<OnlineLuminosityRecord> m_lumiScalerToken; // 2018-2022
-  edm::EDGetTokenT<LumiScalersCollection> m_lumiScalerToken;     // 2017
+  edm::EDGetTokenT<OnlineLuminosityRecord> m_lumiScalerToken;         // 2018-2022
+  edm::EDGetTokenT<LumiScalersCollection> m_lumiScalerToken_2017;     // 2017
 
   /// The primary vertices token
   edm::EDGetTokenT<reco::VertexCollection> m_primariVerticesToken;
