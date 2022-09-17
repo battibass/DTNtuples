@@ -29,7 +29,7 @@ looseMuonsForSkim = muonsForNtuples.clone()
 
 tightMuonsForSkim = cms.EDFilter("MuonSelector",
                                  src = cms.InputTag("looseMuonsForSkim"),
-                                 cut = cms.string('isTight && pt > 25 && abs(eta) < 2.4)'),
+                                 cut = cms.string('(selectors & 3) && ((isolationR03.sumPt)/(pt) < 0.05) && pt > 25.0 && abs(eta) < 2.4'),
                                  filter = cms.bool(True)                                
                                 )
 
@@ -40,7 +40,7 @@ dimuonsForSkim = cms.EDProducer("CandViewShallowCloneCombiner",
                                )
 
 dimuonsFilterForSkim = cms.EDFilter("CandViewCountFilter",
-                                    src = cms.InputTag("dimuonsZMuSkim"),
+                                    src = cms.InputTag("dimuonsForSkim"),
                                     minNumber = cms.uint32(1)
                                    )
 

@@ -30,11 +30,11 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
 
                                   muonTag = cms.untracked.InputTag("muons"),
 
-                                  trigEventTag = cms.untracked.InputTag("none"),
-                                  trigResultsTag = cms.untracked.InputTag("none"),
+                                  trigEventTag = cms.untracked.InputTag("hltTriggerSummaryAOD::HLT"),
+                                  trigResultsTag = cms.untracked.InputTag("TriggerResults::HLT"),
 
                                   trigName = cms.untracked.string('none'),
-                                  isoTrigName = cms.untracked.string('none'),
+                                  isoTrigName = cms.untracked.string('HLT_IsoMu*'),
 
                                   ph1tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   ph1tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),
