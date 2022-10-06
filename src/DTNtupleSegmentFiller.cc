@@ -435,7 +435,12 @@ void DTNtupleSegmentFiller::fillPhi(const DTChamberRecSegment2D* phiSeg, const G
       superLayerRechits(iRecHit) = layerId.superlayer();
 
       float digiTime = recHit.digiTime();
-      float tTrig = m_config->m_dtSync->offset(wireId);
+
+      auto phaseTag = m_tag == SegmentTag::PH1 ?
+	              DTNtupleConfig::PhaseTag::PH1 :
+	              DTNtupleConfig::PhaseTag::PH2;
+
+      float tTrig = m_config->m_dtSyncs[phaseTag]->offset(wireId);
 
       timeRechits(iRecHit)  = digiTime;
       timeCaliRechits(iRecHit)  = digiTime - tTrig;
@@ -500,7 +505,12 @@ void DTNtupleSegmentFiller::fillZ(const DTSLRecSegment2D* zSeg, const GeomDet* c
       layerRechits(iRecHit)      = layerId.layer();
 
       float digiTime = recHit.digiTime();
-      float tTrig = m_config->m_dtSync->offset(wireId);
+
+      auto phaseTag = m_tag == SegmentTag::PH1 ?
+	              DTNtupleConfig::PhaseTag::PH1 :
+	              DTNtupleConfig::PhaseTag::PH2;
+
+      float tTrig = m_config->m_dtSyncs[phaseTag]->offset(wireId);
 
       timeRechits(iRecHit)  = digiTime;
       timeCaliRechits(iRecHit)  = digiTime - tTrig;

@@ -227,7 +227,7 @@ float DTTrigGeomUtils::trigPosCHT(const L1Phase2MuDTPhDigi* trig)
   if ((quality <6 || quality==7) && sl==1) zRF=zsl1_[st-1];
   if ((quality <6 || quality==7) && sl==3) zRF=zsl3_[st-1];
 
-  double x = (tan(phi*0.8/65536.))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
+  double x = (tan(phi*0.5/65536.))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
 
   if (hasPosRF(wh,sec)){ x = -x; } // change sign in case of positive wheels
 
@@ -244,7 +244,7 @@ float DTTrigGeomUtils::trigDirCHT(const L1Phase2MuDTPhDigi* trig)
   int phi  = trig->phi();
   int phib = trig->phiBend();
   
-  float dir = (phib*1.4/2048.+phi*0.8/65536.)*radToDeg_;
+  float dir = (phib*2./4096.+phi*0.5/65536.)*radToDeg_;
 
   // change sign in case of negative wheels
   if (!hasPosRF(wh,sec)) { dir = -dir; }
@@ -293,7 +293,7 @@ float DTTrigGeomUtils::trigPosAM(const L1Phase2MuDTPhDigi* trig)
   if ((quality <6 || quality==7) && sl==1) zRF=zsl1_[st-1];
   if ((quality <6 || quality==7) && sl==3) zRF=zsl3_[st-1];
 
-  double x = (tan(phi*0.8/65536.))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
+  double x = (tan(phi*0.5/65536.))*(r*cos(deltaphi) - zRF)-r*sin(deltaphi); //zRF is in local coordinates -> z invreases approching to vertex
 
   if (hasPosRF(wh,sec)){ x = -x; } // change sign in case of positive wheels
 
@@ -308,7 +308,7 @@ float DTTrigGeomUtils::trigDirAM(const L1Phase2MuDTPhDigi* trig)
   int phi  = trig->phi();
   int phib = trig->phiBend();
 
-  float dir = (phib*1.4/2048.+phi*0.8/65536.)*radToDeg_;
+  float dir = (phib*2./4096.+phi*0.5/65536.)*radToDeg_;
   
   // change sign in case of negative wheels
   if (!hasPosRF(wh,sec)) { dir = -dir; }

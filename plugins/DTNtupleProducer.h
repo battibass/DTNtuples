@@ -13,12 +13,12 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleBaseFiller.h"
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleConfig.h"
 
-#include "FWCore/Framework/interface/EDAnalyzer.h"
+#include "FWCore/Framework/interface/one/EDAnalyzer.h"
 #include "FWCore/ParameterSet/interface/ConfigurationDescriptions.h"
 
 #include <memory>
 
-class DTNtupleProducer : public edm::EDAnalyzer // CB change it to appropriate class
+class DTNtupleProducer : public edm::one::EDAnalyzer<edm::one::SharedResources,edm::one::WatchRuns>
 {
  public:
 
@@ -26,16 +26,19 @@ class DTNtupleProducer : public edm::EDAnalyzer // CB change it to appropriate c
   DTNtupleProducer(const edm::ParameterSet &);
   
   /// Fill ntuples event by event
-  virtual void analyze(const edm::Event&, const edm::EventSetup&);
+  virtual void analyze(const edm::Event&, const edm::EventSetup&) override;
 
   /// Configure event setup
-  virtual void beginRun(const edm::Run&, const edm::EventSetup&);
+  virtual void beginRun(const edm::Run&, const edm::EventSetup&) override;
+
+  /// Empty, needed by interface
+  virtual void endRun(const edm::Run&, const edm::EventSetup&) override { };
 
   /// General "una tantum" configuration
-  virtual void beginJob();
+  virtual void beginJob() override;
 
   /// Write ntuples to file
-  virtual void endJob();
+  virtual void endJob() override;
   
  private:
   

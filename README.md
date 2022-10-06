@@ -6,14 +6,18 @@ Ntuples for the analysis of the CMS drift tubes detector performance
 In the present days this code is evolving fast, hence the installation recipe may change often. Please keep an eye on this page to check for updates.
 
 ### Installation:
-```
-cmsrel CMSSW_10_6_0
-cd CMSSW_10_6_0/src/
+```bash
+cmsrel CMSSW_12_2_1
+cd CMSSW_11_2_1/src/
 cmsenv
-git cms-merge-topic oglez:Phase2_CMSSW_10_6_0_pre4_Summer2019 # phase-2 unpacker
-git cms-merge-topic -u pozzobon:DTHough_NP_20190619_106X_noL1T # MTT-CHT emulator
-git cms-merge-topic -u dtp2-tpg-am:AM_106X_dev # AM emulator
-git clone --single-branch --branch addL1A https://github.com/jaimeleonh/DTNtuples.git DTDPGAnalysis/DTNtuples
+
+git cms-init
+git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v11.2
+git cms-merge-topic dtp2-tpg-am:AM_12_2_1_v1
+# Calibration part yet to be updated
+# git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_2_X 
+git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
+
 scramv1 b -j 5
 ```
 
@@ -30,9 +34,9 @@ cmsRun dtDpgNtuples_phase2_cfg.py nEvents=10000
 root -b
 root [0] .x loadExampleAnalysis.C
 
-root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_SX5.root","results.root")
+root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_run333510.root","results.root")
 // or
-root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_10_6_0_Phase2_Simulation.root","results.root")
+root [1] DTNtupleExampleAnalyzer analysis("DTDPGNtuple_11_0_2_Phase2_Simulation.root","results.root")
 
 root [2] analysis.Loop()
 ```
