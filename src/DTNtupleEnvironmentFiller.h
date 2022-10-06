@@ -14,7 +14,7 @@
 
 #include "SimDataFormats/PileupSummaryInfo/interface/PileupSummaryInfo.h"
 
-#include "DataFormats/Scalers/interface/LumiScalers.h"
+#include "DataFormats/OnlineMetaData/interface/OnlineLuminosityRecord.h"
 
 #include "DataFormats/VertexReco/interface/Vertex.h"
 #include "DataFormats/VertexReco/interface/VertexFwd.h"
@@ -51,7 +51,7 @@ class DTNtupleEnvironmentFiller : public DTNtupleBaseFiller
   edm::EDGetTokenT<std::vector<PileupSummaryInfo> > m_puInfoToken;
 
   /// The lumi scalers token
-  edm::EDGetTokenT<LumiScalersCollection> m_lumiScalerToken;
+  edm::EDGetTokenT<OnlineLuminosityRecord> m_lumiScalerToken;
 
   /// The primary vertices token
   edm::EDGetTokenT<reco::VertexCollection> m_primariVerticesToken;

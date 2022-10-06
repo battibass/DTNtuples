@@ -6,8 +6,8 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   dtFedBxTag = cms.untracked.InputTag("dtUpgradeFedL1AProducer"),
 
                                   puInfoTag = cms.untracked.InputTag("none"),
-                                  lumiScalerTag = cms.untracked.InputTag("none"),
-                                  primaryVerticesTag = cms.untracked.InputTag("none"),
+                                  lumiScalerTag = cms.untracked.InputTag("onlineMetaDataDigis"),
+                                  primaryVerticesTag = cms.untracked.InputTag("offlinePrimaryVertices"),
 
                                   ph1DtDigiTag = cms.untracked.InputTag("muonDTDigis"),
                                   ph2DtDigiTag = cms.untracked.InputTag("dtAB7unpacker"),
@@ -28,13 +28,13 @@ dtNtupleProducer = cms.EDAnalyzer("DTNtupleProducer",
                                   ph1DtSegmentTag = cms.untracked.InputTag("dt4DSegments"),        
                                   ph2DtSegmentTag = cms.untracked.InputTag("none"),
 
-                                  muonTag = cms.untracked.InputTag("none"),
+                                  muonTag = cms.untracked.InputTag("muons"),
 
-                                  trigEventTag = cms.untracked.InputTag("none"),
-                                  trigResultsTag = cms.untracked.InputTag("none"),
+                                  trigEventTag = cms.untracked.InputTag("hltTriggerSummaryAOD::HLT"),
+                                  trigResultsTag = cms.untracked.InputTag("TriggerResults::HLT"),
 
                                   trigName = cms.untracked.string('none'),
-                                  isoTrigName = cms.untracked.string('none'),
+                                  isoTrigName = cms.untracked.string('HLT_IsoMu*'),
 
                                   ph1tTrigMode = cms.untracked.string('DTTTrigSyncFromDB'),
                                   ph1tTrigModeConfig = cms.untracked.PSet(vPropWire = cms.double(24.4),

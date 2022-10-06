@@ -130,7 +130,6 @@ void DTNtupleMuonFiller::initialize()
   m_tree->Branch((m_label + "_matches_edgeY").c_str()   , &m_matches_edgeY   , 2048000, 0);
   m_tree->Branch((m_label + "_matches_dXdZ").c_str()    , &m_matches_dXdZ    , 2048000, 0);
   m_tree->Branch((m_label + "_matches_dYdZ").c_str()    , &m_matches_dYdZ    , 2048000, 0);
-
   m_tree->Branch((m_label + "_staMu_nMatchSeg").c_str(), &m_staMu_nMatchSeg);
   m_tree->Branch((m_label + "_staMu_matchSegIdx").c_str(), &m_staMu_matchSegIdx, 2048000, 0);
 
@@ -510,44 +509,27 @@ bool DTNtupleMuonFiller::hasTrigger(std::vector<int> & trigIndices,
 				    const reco::Muon & muon) 
 {
 
-  double matchDeltaR = 999.;
+	float dRMatch = 999.;
+  for (int trigIdx : trigIndices) {
+    const std::vector<std::string> trigModuleLabels = m_config->m_hltConfig.moduleLabels(trigIdx);
 
-  for(const auto & trigIndex : trigIndices) 
-    {
+    const unsigned trigModuleIndex =
+        std::find(trigModuleLabels.begin(), trigModuleLabels.end(), "hltBoolEnd") - trigModuleLabels.begin() - 1;
+    const unsigned hltFilterIndex = trigEvent->filterIndex(edm::InputTag(trigModuleLabels[trigModuleIndex], "", "HLT"));
+    if (hltFilterIndex < trigEvent->sizeFilters()) {
+      const trigger::Keys keys = trigEvent->filterKeys(hltFilterIndex);
+      const trigger::Vids vids = trigEvent->filterIds(hltFilterIndex);
+      const unsigned nTriggers = vids.size();
 
-    const std::vector<std::string> moduleLabels(m_config->m_hltConfig.moduleLabels(trigIndex));
+      for (unsigned iTrig = 0; iTrig < nTriggers; ++iTrig) {
+        trigger::TriggerObject trigObj = trigObjs[keys[iTrig]];
+        float dR = deltaR(muon, trigObj);
+        if (dR < dRMatch)
+          dRMatch = dR;
+      }
+    }
+  }
 
-    // find index of the last module:
-    const unsigned moduleIndex = m_config->m_hltConfig.size(trigIndex) - 2;
-
-    // find index of HLT trigger name:
-    const unsigned hltFilterIndex = trigEvent->filterIndex(edm::InputTag(moduleLabels[moduleIndex], "", "HLT"));
-
-    if (hltFilterIndex < trigEvent->sizeFilters()) 
-      {
-	
-	const trigger::Keys triggerKeys(trigEvent->filterKeys(hltFilterIndex));
-	const trigger::Vids triggerVids(trigEvent->filterIds(hltFilterIndex));
-
-	const unsigned nTriggers = triggerVids.size();
-
-	for (size_t iTrig = 0; iTrig < nTriggers; ++iTrig) 
-	  {
-
-	    // loop over all trigger objects:
-	    const trigger::TriggerObject trigObject = trigObjs[triggerKeys[iTrig]];
-
-	    double dR = deltaR(muon, trigObject);
-
-	    if ( dR < matchDeltaR ) 
-		matchDeltaR = dR;
-	    
-	  } // loop over different trigger objects
-
-      } // if trigger is in event (should apply hltFilter with used trigger...)
-
-    } // loop over muon candidates
-
-  return matchDeltaR < 0.1; //CB should get it programmable
+  return dRMatch < 0.1; //CB should get it programmable
 
 }

@@ -26,7 +26,7 @@ DTNtupleEnvironmentFiller::DTNtupleEnvironmentFiller(edm::ConsumesCollector && c
 
   iTag = m_config->m_inputTags["lumiScalerTag"];
   if (iTag.label() != "none") 
-    m_lumiScalerToken = collector.consumes<LumiScalersCollection>(iTag);
+    m_lumiScalerToken = collector.consumes<OnlineLuminosityRecord>(iTag);
 
   iTag = m_config->m_inputTags["primaryVerticesTag"];
   if (iTag.label() != "none") 
@@ -110,11 +110,11 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
 	}
     }
 
-  auto lumiScalers = conditionalGet<LumiScalersCollection>(ev, m_lumiScalerToken, "LumiScalersCollection");
+  auto lumiScalers = conditionalGet<OnlineLuminosityRecord>(ev, m_lumiScalerToken, "OnlineLuminosityRecord");
 
   if (lumiScalers.isValid()) 
     {
-      m_instLumi = lumiScalers->begin()->instantLumi();
+      m_instLumi = lumiScalers->instLumi();
     }
 
   auto primaryVtx = conditionalGet<reco::VertexCollection>(ev, m_primariVerticesToken,"VertexCollection");
