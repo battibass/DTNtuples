@@ -13,8 +13,6 @@
 #include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
-#include <iostream>
-
 DTNtuplePh2TPGThetaFiller::DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && collector,
 					   const std::shared_ptr<DTNtupleConfig> config, 
 					   std::shared_ptr<TTree> tree, const std::string & label,
@@ -102,8 +100,7 @@ void DTNtuplePh2TPGThetaFiller::fill(const edm::Event & ev)
 
   if (trigColl.isValid()) 
     {      
-      const auto trigs = trigColl->getContainer();
-      for(const auto & trig : (*trigs))
+      for(const auto & trig : (*trigColl->getContainer()))
         {
 
           m_lt_wheel.push_back(trig.whNum());
@@ -123,12 +120,9 @@ void DTNtuplePh2TPGThetaFiller::fill(const edm::Event & ev)
 
           m_lt_index.push_back(trig.index());
 
-          m_nTrigs++;
+          ++m_nTrigs;
 
         }
     }
-
-  return;
-
 }
 
