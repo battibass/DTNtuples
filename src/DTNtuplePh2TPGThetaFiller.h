@@ -70,9 +70,9 @@ class DTNtuplePh2TPGThetaFiller : public DTNtupleBaseFiller
   std::vector<short> m_lt_rpcFlag; // quality (short in [X:Y] range)
                                    // ... // CB to be defined
 
-  std::vector<int> m_lt_z;    // z : (int with a given scale)
+  std::vector<int> m_lt_z;    // z : (int with a given scale, cm units)
                               // 65536 corresponds to 1500
-  std::vector<int> m_lt_k;    // k bending : (int with a given scale)
+  std::vector<int> m_lt_k;    // k bending : (int with a given scale, dimensionless)
                               // 65536 corresponds to 2
 
   std::vector<int> m_lt_bx;  // BX : (short with a given range)
