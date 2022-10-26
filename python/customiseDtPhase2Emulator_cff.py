@@ -37,6 +37,7 @@ def customiseForPhase2Emulator(process, pathName) :
         print("[customiseForPhase2Reco]: including phase-2 emulator in ntuples")
 
         process.dtNtupleProducer.ph2TPGPhiEmuAmTag = 'dtTriggerPhase2PrimitiveDigis'
+        process.dtNtupleProducer.ph2TPGThEmuAmTag = 'dtTriggerPhase2PrimitiveDigis'
 
         getattr(process,pathName).replace(process.dtNtupleProducer,
                                           process.CalibratedDigis

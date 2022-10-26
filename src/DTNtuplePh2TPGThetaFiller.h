@@ -23,7 +23,7 @@ class DTNtuplePh2TPGThetaFiller : public DTNtupleBaseFiller
 
  public:
 
-  enum class TriggerTag { HW = 0, HB, AM };
+  enum class TriggerTag { HW = 0, AM };
 
   /// Constructor
   DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && collector,

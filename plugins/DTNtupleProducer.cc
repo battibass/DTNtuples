@@ -77,7 +77,6 @@ DTNtupleProducer::DTNtupleProducer( const edm::ParameterSet & config )
   pushToF(DTNtupleBmtfFiller(consumesCollector(), m_config, m_tree, "tfBmtfOut"));
 
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGThetaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgThetaHw",    DTNtuplePh2TPGThetaFiller::TriggerTag::HW));
-  m_fillers.push_back(std::make_unique<DTNtuplePh2TPGThetaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgThetaEmuHb", DTNtuplePh2TPGThetaFiller::TriggerTag::HB));
   m_fillers.push_back(std::make_unique<DTNtuplePh2TPGThetaFiller>(consumesCollector(), m_config, m_tree, "ph2TpgThetaEmuAm", DTNtuplePh2TPGThetaFiller::TriggerTag::AM));
 
 }

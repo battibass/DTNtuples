@@ -25,13 +25,10 @@ DTNtuplePh2TPGThetaFiller::DTNtuplePh2TPGThetaFiller(edm::ConsumesCollector && c
   switch (m_tag)
     {
     case TriggerTag::HW :
-      iTag = m_config->m_inputTags["ph2TPGPhiHwTag"];
-      break;
-    case TriggerTag::HB :
-      iTag = m_config->m_inputTags["ph2TPGPhiEmuHbTag"];
+      iTag = m_config->m_inputTags["ph2TPGThHwTag"];
       break;
     case TriggerTag::AM :
-      iTag = m_config->m_inputTags["ph2TPGPhiEmuAmTag"];
+      iTag = m_config->m_inputTags["ph2TPGThEmuAmTag"];
     }
 
   if (iTag.label() != "none") m_dtTriggerToken = collector.consumes<L1Phase2MuDTThContainer>(iTag);
