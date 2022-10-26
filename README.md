@@ -7,15 +7,13 @@ In the present days this code is evolving fast, hence the installation recipe ma
 
 ### Installation:
 ```bash
-cmsrel CMSSW_12_2_1
-cd CMSSW_11_2_1/src/
+cmsrel CMSSW_12_4_2
+cd CMSSW_11_4_2/src/
 cmsenv
 
 git cms-init
-git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v11.2
-git cms-merge-topic dtp2-tpg-am:AM_12_2_1_v1
-# Calibration part yet to be updated
-# git cms-merge-topic swiedenb:DTCalibOfflineSlice_11_2_X 
+# To be updated
+# git cms-merge-topic oglez:Phase2_DTAB7Unpacker_v11.2
 git clone https://github.com/battibass/DTNtuples.git DTDPGAnalysis/DTNtuples
 
 scramv1 b -j 5
