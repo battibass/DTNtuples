@@ -26,7 +26,11 @@ DTNtupleEnvironmentFiller::DTNtupleEnvironmentFiller(edm::ConsumesCollector && c
 
   iTag = m_config->m_inputTags["lumiScalerTag"];
   if (iTag.label() != "none") 
-    m_lumiScalerToken = collector.consumes<OnlineLuminosityRecord>(iTag);
+    m_lumiScalerToken = collector.consumes<OnlineLuminosityRecord>(iTag);     // 2018-2022
+
+  iTag = m_config->m_inputTags["lumiScalerTag2017"];
+  if (iTag.label() != "none") 
+    m_lumiScalerToken_2017 = collector.consumes<LumiScalersCollection>(iTag); // 2017
 
   iTag = m_config->m_inputTags["primaryVerticesTag"];
   if (iTag.label() != "none") 
@@ -46,6 +50,7 @@ void DTNtupleEnvironmentFiller:: initialize()
   m_tree->Branch((m_label + "_actualPileUp").c_str(), &m_actualPileUp, (m_label + "_actualPileUp/S").c_str());
 
   m_tree->Branch((m_label + "_instLumi").c_str(), &m_instLumi, (m_label + "_instLumi/I").c_str());
+  m_tree->Branch((m_label + "_onlinePileUp").c_str(), &m_onlinePileUp, (m_label + "_onlinePileUp/S").c_str());
 
   m_tree->Branch((m_label + "_nPV").c_str(), &m_nPV, (m_label + "_nPV/S").c_str());
 
@@ -69,7 +74,8 @@ void DTNtupleEnvironmentFiller::clear()
   m_truePileUp   = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
   m_actualPileUp = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 
-  m_instLumi = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
+  m_instLumi     = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
+  m_onlinePileUp = DTNtupleBaseFiller::DEFAULT_INT_VAL_POS;
 
   m_nPV = 0;
 
@@ -90,9 +96,10 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
 {
 
   clear();
+  bool debug = false;
 
   auto puInfo = conditionalGet<std::vector<PileupSummaryInfo> >(ev, m_puInfoToken, "vector<PileupSummaryInfo>");
-
+  if(debug) std::cout<<"[DTNupleEnvironmentFiller] puInfo.isValid() = "<<puInfo.isValid()<<std::endl;
   if (puInfo.isValid()) 
     {
 
@@ -108,17 +115,32 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
 	      break;
 	    }
 	}
+      if(debug) std::cout<<"[DTNupleEnvironmentFiller] actualPU = "<<m_actualPileUp<<" | truePU = "<<m_truePileUp<<std::endl;
     }
 
-  auto lumiScalers = conditionalGet<OnlineLuminosityRecord>(ev, m_lumiScalerToken, "OnlineLuminosityRecord");
-
-  if (lumiScalers.isValid()) 
+  auto lumiScalers     = conditionalGet<OnlineLuminosityRecord>(ev, m_lumiScalerToken, "OnlineLuminosityRecord");     // 2018-2022
+  auto lumiScalers2017 = conditionalGet<LumiScalersCollection>(ev,  m_lumiScalerToken_2017, "LumiScalersCollection"); // 2017
+  double instLumi_2018=0, instLumi_2017=0;
+  int    onlinePileUp_2018=0, onlinePileUp_2017=0;
+  if(debug) std::cout<<"[DTNupleEnvironmentFiller] lumiScalers.isValid() = "<<lumiScalers.isValid()<<" lumiScalers2017.isValid() = "<<lumiScalers2017.isValid()<<std::endl;
+  if (lumiScalers.isValid()) // 2018-2022
     {
-      m_instLumi = lumiScalers->instLumi();
+      instLumi_2018 = lumiScalers->instLumi();      // 2018-2022
+      onlinePileUp_2018 = lumiScalers->avgPileUp(); // 2018-2022
+      std::cout<<"[DTNupleEnvironmentFiller] [lumiScalers 2018-2022] instLumi = "<<instLumi_2018<<" E30 cm-2s-1 | avgPU = "<<onlinePileUp_2018<<std::endl;
     }
+  if (lumiScalers2017.isValid()) // 2017
+    {
+      instLumi_2017 = lumiScalers2017->begin()->instantLumi(); // 2017
+      onlinePileUp_2017 = lumiScalers2017->begin()->pileup();  // 2017
+      std::cout<<"[DTNupleEnvironmentFiller] [lumiScalers 20XX-2017] instLumi = "<<instLumi_2017<<" E30 cm-2s-1 | avgPU = "<<onlinePileUp_2017<<std::endl;
+    }
+  if(instLumi_2017>0) { m_instLumi = instLumi_2017; m_onlinePileUp = onlinePileUp_2017; }
+  if(instLumi_2018>0) { m_instLumi = instLumi_2018; m_onlinePileUp = onlinePileUp_2018; }
+  std::cout<<"[DTNupleEnvironmentFiller] instLumi = "<<m_instLumi<<" E30 cm-2s-1 | avgPU = "<<m_onlinePileUp<<std::endl;
 
   auto primaryVtx = conditionalGet<reco::VertexCollection>(ev, m_primariVerticesToken,"VertexCollection");
-
+  if(debug) std::cout<<"[DTNupleEnvironmentFiller] primaryVtx.isValid() = "<<primaryVtx.isValid()<<std::endl;
   if (primaryVtx.isValid()) 
     {
 
@@ -141,6 +163,7 @@ void DTNtupleEnvironmentFiller::fill(const edm::Event & ev)
           m_pv_yzErr = firstPV.covariance(1,2);
 
 	}
+      if(debug) std::cout<<"[DTNupleEnvironmentFiller] number of primary vertices = "<<m_nPV<<std::endl;
     }
     
   return;

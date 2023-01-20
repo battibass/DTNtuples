@@ -279,6 +279,7 @@ public :
    Short_t         environment_truePileUp;
    Short_t         environment_actualPileUp;
    Int_t           environment_instLumi;
+   Short_t         environment_onlinePileUp;
    Short_t         environment_nPV;
    Float_t         environment_pv_x;
    Float_t         environment_pv_y;
@@ -559,6 +560,7 @@ public :
    TBranch        *b_environment_truePileUp;   //!
    TBranch        *b_environment_actualPileUp;   //!
    TBranch        *b_environment_instLumi;   //!
+   TBranch        *b_environment_onlinePileUp;   //!
    TBranch        *b_environment_nPV;   //!
    TBranch        *b_environment_pv_x;   //!
    TBranch        *b_environment_pv_y;   //!
