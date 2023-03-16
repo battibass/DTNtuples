@@ -77,9 +77,10 @@ private:
   void beginRun(edm::Run const &, edm::EventSetup const &) override;
 
   // ----------member data ---------------------------
-  
-  std::vector<std::string> m_geomTags;
 
+  std::vector<std::string> m_geomTags;
+  using GeomToken = edm::ESGetToken<DTGeometry, MuonGeometryRecord>;
+  std::map<std::string, GeomToken> m_dtGeomTokens;
 };
 
 //
@@ -90,68 +91,49 @@ private:
 // constructors and destructor
 //
 DTGeometryDumper::DTGeometryDumper(const edm::ParameterSet &iConfig)
-  : m_geomTags(iConfig.getParameter<std::vector<std::string>>("geomTags")) 
-{
-
+    : m_geomTags(iConfig.getParameter<std::vector<std::string>>("geomTags")) {
+  for (const auto &geomTag : m_geomTags) {
+    m_dtGeomTokens[geomTag] = consumesCollector().esConsumes<edm::Transition::BeginRun>(edm::ESInputTag("", geomTag));
+  }
 }
 
-DTGeometryDumper::~DTGeometryDumper() 
-{
-
-}
+DTGeometryDumper::~DTGeometryDumper() {}
 
 //
 // member functions
 //
 
 // ------------ method called to produce the data  ------------
-void DTGeometryDumper::produce(edm::Event &event, const edm::EventSetup &conditions) 
-{
-
-}
+void DTGeometryDumper::produce(edm::Event &event, const edm::EventSetup &conditions) {}
 
 // ------------ method called when starting to processes a run  ------------
-void DTGeometryDumper::beginRun(edm::Run const &run, edm::EventSetup const &conditions) 
-{
+void DTGeometryDumper::beginRun(edm::Run const &run, edm::EventSetup const &conditions) {
+  std::map<std::string, edm::ESHandle<DTGeometry>> dtGeometries;
 
-  std::map<std::string,edm::ESHandle<DTGeometry>> dtGeometries;
-  
-  for (const auto & geomTag : m_geomTags)
-    {
-      edm::ESHandle<DTGeometry> geom;
-      conditions.get<MuonGeometryRecord>().get(geomTag,geom);
-      dtGeometries[geomTag] = geom;
+  for (const auto &geomTokenPair : m_dtGeomTokens) {
+    dtGeometries[geomTokenPair.first] = conditions.getHandle(geomTokenPair.second);
+  }
+
+  for (const auto &dtTagGeomPair : dtGeometries) {
+    std::cout << "Geometry tag : " << dtTagGeomPair.first << " **********" << std::endl;
+
+    for (const auto chamb : dtTagGeomPair.second->chambers()) {
+      auto chId = chamb->id();
+      if (chId.sector() == 4) {
+        auto globPos = chamb->position();
+        std::cout << chId << " x: " << globPos.x() << " y: " << globPos.y() << " z: " << globPos.z() << std::endl;
+      }
     }
-
-  for (const auto dtTagGeomPair : dtGeometries)
-    {
-
-      std::cout << "Geometry tag : " << dtTagGeomPair.first << " **********" << std::endl;
-      
-      for (const auto chamb : dtTagGeomPair.second->chambers())
-	{
-	  auto chId = chamb->id();
-	  if (chId.sector() == 4)
-	    {
-	      auto globPos = chamb->position();
-	      std::cout << chId << " x: " << globPos.x() << " y: " << globPos.y() << " z: " << globPos.z() << std::endl;
-	    }
-	}
-
-    }
-
+  }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the
 // module  ------------
-void DTGeometryDumper::fillDescriptions(edm::ConfigurationDescriptions &descriptions) 
-{
-
+void DTGeometryDumper::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
   edm::ParameterSetDescription desc;
   desc.add<std::vector<std::string>>("geomTags", {"", "idealForDigi"});
-  
-  descriptions.add("dtGeometryDumper", desc);
 
+  descriptions.add("dtGeometryDumper", desc);
 }
 
 // define this as a plug-in
