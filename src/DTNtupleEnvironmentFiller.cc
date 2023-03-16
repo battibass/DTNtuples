@@ -11,7 +11,6 @@
 
 #include "FWCore/Framework/interface/Event.h"
 
-#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
 DTNtupleEnvironmentFiller::DTNtupleEnvironmentFiller(edm::ConsumesCollector && collector,

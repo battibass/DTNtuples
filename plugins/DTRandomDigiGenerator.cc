@@ -76,6 +76,7 @@ private:
   // ----------member data ---------------------------
 
   edm::EDGetTokenT<DTDigiCollection> m_digiToken;
+  edm::ESGetToken<DTGeometry, MuonGeometryRecord> m_dtGeomToken;
 
   std::map<std::string, double> m_stRateSlopes;
 
@@ -95,9 +96,8 @@ private:
 // constructors and destructor
 //
 DTRandomDigiGenerator::DTRandomDigiGenerator(const edm::ParameterSet &iConfig)
-  : m_digiToken(consumes<DTDigiCollection>(iConfig.getParameter<edm::InputTag>("digiTag"))) 
-{
-
+    : m_digiToken{consumes<DTDigiCollection>(iConfig.getParameter<edm::InputTag>("digiTag"))},
+    m_dtGeomToken{consumesCollector().esConsumes<edm::Transition::BeginRun>()} {
   m_stRateSlopes["-2_1"] = iConfig.getParameter<double>("rateSlopeYBm2MB1");
   m_stRateSlopes["-2_2"] = iConfig.getParameter<double>("rateSlopeYBm2MB2");
   m_stRateSlopes["-2_3"] = iConfig.getParameter<double>("rateSlopeYBm2MB3");
@@ -106,157 +106,126 @@ DTRandomDigiGenerator::DTRandomDigiGenerator(const edm::ParameterSet &iConfig)
   m_stRateSlopes["-1_2"] = iConfig.getParameter<double>("rateSlopeYBm1MB2");
   m_stRateSlopes["-1_3"] = iConfig.getParameter<double>("rateSlopeYBm1MB3");
   m_stRateSlopes["-1_4"] = iConfig.getParameter<double>("rateSlopeYBm1MB4");
-  m_stRateSlopes["0_1"]  = iConfig.getParameter<double>("rateSlopeYB0MB1");
-  m_stRateSlopes["0_2"]  = iConfig.getParameter<double>("rateSlopeYB0MB2");
-  m_stRateSlopes["0_3"]  = iConfig.getParameter<double>("rateSlopeYB0MB3");
-  m_stRateSlopes["0_4"]  = iConfig.getParameter<double>("rateSlopeYB0MB4");
-  m_stRateSlopes["1_1"]  = iConfig.getParameter<double>("rateSlopeYB1MB1");
-  m_stRateSlopes["1_2"]  = iConfig.getParameter<double>("rateSlopeYB1MB2");
-  m_stRateSlopes["1_3"]  = iConfig.getParameter<double>("rateSlopeYB1MB3");
-  m_stRateSlopes["1_4"]  = iConfig.getParameter<double>("rateSlopeYB1MB4");
-  m_stRateSlopes["2_1"]  = iConfig.getParameter<double>("rateSlopeYB2MB1");
-  m_stRateSlopes["2_2"]  = iConfig.getParameter<double>("rateSlopeYB2MB2");
-  m_stRateSlopes["2_3"]  = iConfig.getParameter<double>("rateSlopeYB2MB3");
-  m_stRateSlopes["2_4"]  = iConfig.getParameter<double>("rateSlopeYB2MB4");
+  m_stRateSlopes["0_1"] = iConfig.getParameter<double>("rateSlopeYB0MB1");
+  m_stRateSlopes["0_2"] = iConfig.getParameter<double>("rateSlopeYB0MB2");
+  m_stRateSlopes["0_3"] = iConfig.getParameter<double>("rateSlopeYB0MB3");
+  m_stRateSlopes["0_4"] = iConfig.getParameter<double>("rateSlopeYB0MB4");
+  m_stRateSlopes["1_1"] = iConfig.getParameter<double>("rateSlopeYB1MB1");
+  m_stRateSlopes["1_2"] = iConfig.getParameter<double>("rateSlopeYB1MB2");
+  m_stRateSlopes["1_3"] = iConfig.getParameter<double>("rateSlopeYB1MB3");
+  m_stRateSlopes["1_4"] = iConfig.getParameter<double>("rateSlopeYB1MB4");
+  m_stRateSlopes["2_1"] = iConfig.getParameter<double>("rateSlopeYB2MB1");
+  m_stRateSlopes["2_2"] = iConfig.getParameter<double>("rateSlopeYB2MB2");
+  m_stRateSlopes["2_3"] = iConfig.getParameter<double>("rateSlopeYB2MB3");
+  m_stRateSlopes["2_4"] = iConfig.getParameter<double>("rateSlopeYB2MB4");
 
-  m_targetLumi    = iConfig.getParameter<double>("targetLumi");
+  m_targetLumi = iConfig.getParameter<double>("targetLumi");
 
   m_timeWindowMin = iConfig.getParameter<double>("timeWindowMin");
   m_timeWindowMax = iConfig.getParameter<double>("timeWindowMax");
-  m_deadTime      = iConfig.getParameter<double>("deadTime");
+  m_deadTime = iConfig.getParameter<double>("deadTime");
 
   produces<DTDigiCollection>();
-
 }
 
-DTRandomDigiGenerator::~DTRandomDigiGenerator() 
-{
-
-}
+DTRandomDigiGenerator::~DTRandomDigiGenerator() {}
 
 //
 // member functions
 //
 
 // ------------ method called to produce the data  ------------
-void DTRandomDigiGenerator::produce(edm::Event &event, const edm::EventSetup &conditions) 
-{
-
+void DTRandomDigiGenerator::produce(edm::Event &event, const edm::EventSetup &conditions) {
   edm::Service<edm::RandomNumberGenerator> randGenService;
   CLHEP::HepRandomEngine &randGen = randGenService->getEngine(event.streamID());
-  
+
   std::unique_ptr<DTDigiCollection> bkgDigis(new DTDigiCollection());
 
-  std::map<uint32_t,std::map<int,std::vector<double>>> digisByLayer;  
+  std::map<uint32_t, std::map<int, std::vector<double>>> digisByLayer;
 
-  if (!m_digiToken.isUninitialized()) 
-    {
-      
-      edm::Handle<DTDigiCollection> dtDigis;
-      event.getByToken(m_digiToken, dtDigis);
-      
-      for (const auto & dtDigiByLayer : (*dtDigis))
-	{
+  if (!m_digiToken.isUninitialized()) {
+    edm::Handle<DTDigiCollection> dtDigis;
+    event.getByToken(m_digiToken, dtDigis);
 
-	  const auto layRawId = dtDigiByLayer.first.rawId();
+    for (const auto &dtDigiByLayer : (*dtDigis)) {
+      const auto layRawId = dtDigiByLayer.first.rawId();
 
-	  auto dtDigiIt  = dtDigiByLayer.second.first;
-	  auto dtDigiEnd = dtDigiByLayer.second.second;
+      auto dtDigiIt = dtDigiByLayer.second.first;
+      auto dtDigiEnd = dtDigiByLayer.second.second;
 
-	  for (; dtDigiIt != dtDigiEnd; ++dtDigiIt)
-	    {
-	      digisByLayer[layRawId][dtDigiIt->wire()].push_back(dtDigiIt->time());
-	    }      
-
-	}
-
+      for (; dtDigiIt != dtDigiEnd; ++dtDigiIt) {
+        digisByLayer[layRawId][dtDigiIt->wire()].push_back(dtDigiIt->time());
+      }
     }
-  
-  edm::ESHandle<DTGeometry> dtGeometry;
-  conditions.get<MuonGeometryRecord>().get(dtGeometry);
+  }
 
-  for (const auto layer : dtGeometry->layers())
-    {
+  auto dtGeometry = conditions.getHandle(m_dtGeomToken);
 
-      auto layId = layer->id();
-      auto chId  = layer->chamber()->id();
-      auto & digiByWire = digisByLayer[layId.rawId()];
+  for (const auto layer : dtGeometry->layers()) {
+    auto layId = layer->id();
+    auto chId = layer->chamber()->id();
+    auto &digiByWire = digisByLayer[layId.rawId()];
 
-      const auto topology = layer->specificTopology();
-      
-      auto wireArea  = topology.cellWidth() * topology.cellLenght();
-      auto timeRange = (m_timeWindowMax - m_timeWindowMin) * 1E-9;
-      auto probPerWire = m_chRates[chId.rawId()] * wireArea * timeRange;
-      CLHEP::RandPoissonQ randPoissonQ(randGen, probPerWire);
+    const auto topology = layer->specificTopology();
 
-      // std::cout << layId << std::endl;
-      // std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
+    auto wireArea = topology.cellWidth() * topology.cellLenght();
+    auto timeRange = (m_timeWindowMax - m_timeWindowMin) * 1E-9;
+    auto probPerWire = m_chRates[chId.rawId()] * wireArea * timeRange;
+    CLHEP::RandPoissonQ randPoissonQ(randGen, probPerWire);
 
-      for (int wire = topology.firstChannel(); wire <= topology.lastChannel(); ++wire)
-	{
+    // std::cout << layId << std::endl;
+    // std::cout << m_chRates[chId.rawId()] << " " << wireArea << " " << probPerWire << std::endl;
 
-	  std::vector<double> digis;
-	  for (const auto & digiTime : digiByWire[wire])
-	    digis.push_back(digiTime);
+    for (int wire = topology.firstChannel(); wire <= topology.lastChannel(); ++wire) {
+      std::vector<double> digis;
+      for (const auto &digiTime : digiByWire[wire])
+        digis.push_back(digiTime);
 
-	  // int nCleanDigis = digis.size();
- 
-	  int nRandDigis = randPoissonQ.fire();
+      // int nCleanDigis = digis.size();
 
-	  for (int iDigi = 0; iDigi < nRandDigis; ++iDigi)
-	    digis.push_back(CLHEP::RandFlat::shoot(&randGen,m_timeWindowMin,m_timeWindowMax));
-	  
-	  std::sort(digis.begin(),digis.end());
+      int nRandDigis = randPoissonQ.fire();
 
-	  // std::cout << "wire : " << wire << " " << nCleanDigis << " " << nRandDigis << " " << digis.size() << std::endl;
+      for (int iDigi = 0; iDigi < nRandDigis; ++iDigi)
+        digis.push_back(CLHEP::RandFlat::shoot(&randGen, m_timeWindowMin, m_timeWindowMax));
 
-	  int iDigi = 0;
-	  double pDigiTime = -999.;
-	  for (const auto & digiTime : digis)
-	    {
-	      if ((digiTime - pDigiTime) > m_deadTime)
-		{
-		  bkgDigis->insertDigi(layId, DTDigi(wire,digiTime,iDigi));
-		  pDigiTime = digiTime;
-		  ++iDigi;
-		}
-	    }
-	      
-	}
+      std::sort(digis.begin(), digis.end());
+
+      // std::cout << "wire : " << wire << " " << nCleanDigis << " " << nRandDigis << " " << digis.size() << std::endl;
+
+      int iDigi = 0;
+      double pDigiTime = -999.;
+      for (const auto &digiTime : digis) {
+        if ((digiTime - pDigiTime) > m_deadTime) {
+          bkgDigis->insertDigi(layId, DTDigi(wire, digiTime, iDigi));
+          pDigiTime = digiTime;
+          ++iDigi;
+        }
+      }
     }
+  }
 
   event.put(std::move(bkgDigis));
-
 }
 
 // ------------ method called when starting to processes a run  ------------
-void DTRandomDigiGenerator::beginRun(edm::Run const &run, edm::EventSetup const &conditions) 
-{
-
+void DTRandomDigiGenerator::beginRun(edm::Run const &run, edm::EventSetup const &conditions) {
   m_chRates.clear();
 
-  edm::ESHandle<DTGeometry> dtGeometry;
-  conditions.get<MuonGeometryRecord>().get(dtGeometry);
+  auto  dtGeometry = conditions.getHandle(m_dtGeomToken);
 
-  for (const auto chamb : dtGeometry->chambers())
-    {
+  for (const auto chamb : dtGeometry->chambers()) {
+    auto chId = chamb->id();
+    std::string ringTag = std::to_string(chId.wheel()) + "_" + std::to_string(chId.station());
 
-      auto chId = chamb->id();
-      std::string ringTag = std::to_string(chId.wheel()) + "_" + std::to_string(chId.station());
+    m_chRates[chId.rawId()] = m_targetLumi * m_stRateSlopes[ringTag];
 
-      m_chRates[chId.rawId()] = m_targetLumi * m_stRateSlopes[ringTag];
-
-      // std::cout << chId << " " << m_chRates[chId.rawId()] << std::endl;
-      
-    }
-
+    // std::cout << chId << " " << m_chRates[chId.rawId()] << std::endl;
+  }
 }
 
 // ------------ method fills 'descriptions' with the allowed parameters for the
 // module  ------------
-void DTRandomDigiGenerator::fillDescriptions(edm::ConfigurationDescriptions &descriptions) 
-{
-
+void DTRandomDigiGenerator::fillDescriptions(edm::ConfigurationDescriptions &descriptions) {
   edm::ParameterSetDescription desc;
   desc.add<edm::InputTag>("digiTag", edm::InputTag("simMuonDTDigis"));
   desc.add<double>("rateSlopeYBm2MB1", 3.5);
@@ -267,27 +236,26 @@ void DTRandomDigiGenerator::fillDescriptions(edm::ConfigurationDescriptions &des
   desc.add<double>("rateSlopeYBm1MB2", 0.25);
   desc.add<double>("rateSlopeYBm1MB3", 0.1);
   desc.add<double>("rateSlopeYBm1MB4", 3.0);
-  desc.add<double>("rateSlopeYB0MB1",  0.5);
-  desc.add<double>("rateSlopeYB0MB2",  0.15);
-  desc.add<double>("rateSlopeYB0MB3",  0.1);
-  desc.add<double>("rateSlopeYB0MB4",  3.0);
-  desc.add<double>("rateSlopeYB1MB1",  1.5);
-  desc.add<double>("rateSlopeYB1MB2",  0.25);
-  desc.add<double>("rateSlopeYB1MB3",  0.1);
-  desc.add<double>("rateSlopeYB1MB4",  3.0); 
-  desc.add<double>("rateSlopeYB2MB1",  3.5);
-  desc.add<double>("rateSlopeYB2MB2",  0.7);
-  desc.add<double>("rateSlopeYB2MB3",  0.2);
-  desc.add<double>("rateSlopeYB2MB4",  4.0);
+  desc.add<double>("rateSlopeYB0MB1", 0.5);
+  desc.add<double>("rateSlopeYB0MB2", 0.15);
+  desc.add<double>("rateSlopeYB0MB3", 0.1);
+  desc.add<double>("rateSlopeYB0MB4", 3.0);
+  desc.add<double>("rateSlopeYB1MB1", 1.5);
+  desc.add<double>("rateSlopeYB1MB2", 0.25);
+  desc.add<double>("rateSlopeYB1MB3", 0.1);
+  desc.add<double>("rateSlopeYB1MB4", 3.0);
+  desc.add<double>("rateSlopeYB2MB1", 3.5);
+  desc.add<double>("rateSlopeYB2MB2", 0.7);
+  desc.add<double>("rateSlopeYB2MB3", 0.2);
+  desc.add<double>("rateSlopeYB2MB4", 4.0);
 
   desc.add<double>("targetLumi", 5.);
 
   desc.add<double>("timeWindowMin", 0.);
   desc.add<double>("timeWindowMax", 1250.);
   desc.add<double>("deadTime", 50.);
-  
-  descriptions.add("dtRandomDigiGenerator", desc);
 
+  descriptions.add("dtRandomDigiGenerator", desc);
 }
 
 // define this as a plug-in

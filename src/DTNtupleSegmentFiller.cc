@@ -10,7 +10,6 @@
 #include "DTDPGAnalysis/DTNtuples/src/DTNtupleSegmentFiller.h"
 
 #include "FWCore/Framework/interface/Event.h"
-#include "FWCore/Framework/interface/EDAnalyzer.h"
 #include "FWCore/Framework/interface/ESHandle.h"
 
 #include "TrackingTools/GeomPropagators/interface/StraightLinePlaneCrossing.h"
