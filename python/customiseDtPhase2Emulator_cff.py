@@ -1,9 +1,9 @@
 import FWCore.ParameterSet.Config as cms
 
-def customiseForPhase2Emulator(process, pathName) :
+def customiseForPhase2Emulator(process, pathName, isMC = False) :
 
     process.load("L1Trigger.DTTriggerPhase2.CalibratedDigis_cfi")
-    process.CalibratedDigis.dtDigiTag = cms.InputTag('dtAB7unpacker')
+    process.CalibratedDigis.dtDigiTag = cms.InputTag('muonDTDigis' if isMC else 'dtAB7unpacker')
 
     process.load("L1Trigger.DTTriggerPhase2.dtTriggerPhase2PrimitiveDigis_cfi")
 
@@ -11,9 +11,10 @@ def customiseForPhase2Emulator(process, pathName) :
     process.CalibratedDigis.scenario = 2
     process.dtTriggerPhase2PrimitiveDigis.scenario = 2
 
-    #tTrig and t0 from phase-2 db
-    process.CalibratedDigis.tTrigModeConfig.t0Label = 'ph2'
-    process.CalibratedDigis.tTrigModeConfig.tTrigLabel = 'cosmics_ph2'
+    if not isMC:
+        #tTrig and t0 from phase-2 db
+        process.CalibratedDigis.tTrigModeConfig.t0Label = 'ph2'
+        process.CalibratedDigis.tTrigModeConfig.tTrigLabel = 'cosmics_ph2'
 
     #SL TanPhi cut
     process.dtTriggerPhase2PrimitiveDigis.tanPhiTh = cms.double(1.5)

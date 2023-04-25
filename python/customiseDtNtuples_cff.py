@@ -83,6 +83,22 @@ def customiseForRecoMuons(process, pathName) :
                                               + process.dtNtupleProducer)
     return process
 
+def customiseToAddMuons(process) :
+
+    if hasattr(process,"dtNtupleProducer") :
+        print("[customiseToAddMuons]: updating ntuple input tags")
+
+        process.dtNtupleProducer.muonTag = "muons"
+        process.dtNtupleProducer.primaryVerticesTag = "offlinePrimaryVertices"
+        process.dtNtupleProducer.ph1DtSegmentTag = "dt4DSegments"
+
+        process.dtNtupleProducer.trigEventTag = "hltTriggerSummaryAOD::HLT"
+        process.dtNtupleProducer.trigResultsTag = "TriggerResults::HLT"
+
+        process.dtNtupleProducer.isoTrigName = "HLT_IsoMu24_v*"
+        process.dtNtupleProducer.trigName = "HLT_Mu50_v*"
+
+    return process
 
 def customiseForAgeing(process, pathName, segmentAgeing, triggerAgeing, rpcAgeing) :
 
