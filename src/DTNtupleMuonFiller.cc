@@ -42,7 +42,7 @@ DTNtupleMuonFiller::DTNtupleMuonFiller(edm::ConsumesCollector && collector,
 {
 
   edm::InputTag & muonTag = m_config->m_inputTags["muonTag"];
-  if (muonTag.label() != "none") m_muToken = collector.consumes<reco::MuonCollection>(muonTag);
+  if (muonTag.label() != "none") m_muToken = collector.consumes<edm::View<reco::Muon>>(muonTag);
 
   edm::InputTag & primaryVerticesTag = m_config->m_inputTags["primaryVerticesTag"];
   if (primaryVerticesTag.label() != "none") m_primaryVerticesToken = collector.consumes<std::vector<reco::Vertex>>(primaryVerticesTag);
@@ -198,7 +198,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 
   clear();
 
-  auto muons = conditionalGet<reco::MuonCollection>(ev, m_muToken, "MuonCollection");
+  auto muons = conditionalGet<edm::View<reco::Muon>>(ev, m_muToken, "MuonCollection");
   auto segments = conditionalGet<DTRecSegment4DCollection>(ev,m_dtSegmentToken, "DTRecSegment4DCollection");
   auto vtxs = conditionalGet<std::vector<reco::Vertex>>(ev, m_primaryVerticesToken, "std::vector<reco::Vertex>");
 
@@ -284,7 +284,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	  m_trkMu_numberOfMatchedRPCLayers.push_back(muon.numberOfMatchedRPCLayers());
 
 	  //STANDALONE MUON VARIABLES
-	  if(muon.isStandAloneMuon())
+	  if(muon.isStandAloneMuon() && false)
 	    {
 	      
 	      const reco::TrackRef outerTrackRef = muon.outerTrack();
@@ -301,7 +301,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	    }
 
 	  //GLOBAL MUON VARIABLES
-	  if(muon.isGlobalMuon())
+	  if(muon.isGlobalMuon() && false)
 	    {
 	      
 	      const reco::TrackRef globalTrackRef = muon.globalTrack();
@@ -417,7 +417,7 @@ void DTNtupleMuonFiller::fill(const edm::Event & ev)
 	  TVectorF segmentMatches (10);
 	  int iSegMatches = 0;
 
-	  if(!muon.outerTrack().isNull())
+	  if(!muon.outerTrack().isNull() && false)
 	    {
 
 	      reco::TrackRef outerTrackRef = muon.outerTrack();
