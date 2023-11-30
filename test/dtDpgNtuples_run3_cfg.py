@@ -33,6 +33,12 @@ def appendToGlobalTag(process, rcd, tag, fileName, label) :
 
 options = VarParsing.VarParsing()
 
+options.register('inputFiles',
+                 '',
+                 VarParsing.VarParsing.multiplicity.list,
+                 VarParsing.VarParsing.varType.string,
+                 "Files to process")
+
 options.register('globalTag',
                  '130X_dataRun3_Express_v2', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
@@ -64,13 +70,13 @@ options.register('t0File',
                  "File with customised DT legacy t0is, used only if non ''")
 
 options.register('tTrigFilePh2',
-                 '', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2023_data/calib/phase2/ttrig_timeboxes_run346977_t0_run340746_phase2_trigBMTF_BOTTOM_ONLY_corrected.db', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 tTrigs, used only if non ''")
 
 options.register('t0FilePh2',
-                 '', #default value
+                 '/eos/cms/store/group/dpg_dt/comm_dt/commissioning_2021_data/calib/phase2/t0_run340746_phase2.db', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "File with customised DT phase-2 t0is, used only if non ''")
@@ -95,7 +101,7 @@ if HAS_AUTOCOND:
                  "Autocond label: valid ones are {}".format(autocond.labels()))
 
 options.register('runOnCosmics',
-                 False, #default value
+                 True, #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.bool,
                  "If set to True switches to Cosmic reconstruction and DTTrigger cosmic DB")
@@ -107,7 +113,7 @@ options.register('runOnRAW',
                  "If set to True disables us muon RECO info and runs local RECO")
 
 options.register('muonFilterConfig',
-                 '(selectors & 8) && (isGlobalMuon || isTrackerMuon) && abs(eta) < 1.2', #default value
+                 '', #default value
                  VarParsing.VarParsing.multiplicity.singleton,
                  VarParsing.VarParsing.varType.string,
                  "Enable filter using RECO muons if non ''")
@@ -144,10 +150,8 @@ process = appendToGlobalTag(process, "DTT0Rcd", "t0", t0FilePh2, "ph2")
 
 process = appendToGlobalTag(process, "DTMtimeRcd", "vDrift", options.vDriftFile, "")
 
-process.source = cms.Source("PoolSource",
-        fileNames = cms.untracked.vstring(
-                    '/store/express/Run2023B/ExpressPhysics/FEVT/Express-v1/000/366/504/00000/ac42696a-2fa8-4c89-922e-96aaf84b9d7a.root'
-        )
+process.source = cms.Source("PoolSource", 
+    fileNames = cms.untracked.vstring(options.inputFiles)
 )
 
 ntupleName = options.ntupleName if options.ntupleName else "./DTDPGNtuple_run" + str(options.runNumber) + ".root"  
