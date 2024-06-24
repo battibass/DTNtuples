@@ -207,8 +207,9 @@ if tTrigFilePh2 and t0FilePh2 :
     from DTDPGAnalysis.DTNtuples.customiseDtPhase2Reco_cff import customiseForPhase2Reco
     process = customiseForPhase2Reco(process,"p", tTrigFilePh2, t0FilePh2)
 
-    from DTDPGAnalysis.DTNtuples.customiseDtPhase2Emulator_cff import customiseForPhase2Emulator
-    process = customiseForPhase2Emulator(process,"p")
+    # comment to fix automation worflows
+    # from DTDPGAnalysis.DTNtuples.customiseDtPhase2Emulator_cff import customiseForPhase2Emulator
+    # process = customiseForPhase2Emulator(process,"p")
 
 if not options.runOnRAW and not options.runOnCosmics:
     from DTDPGAnalysis.DTNtuples.customiseDtNtuples_cff import customiseToAddMuons
